@@ -11,6 +11,9 @@ import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 
+//ADDED BY TAMAR
+import NavBar from "./modules/NavBar.js";
+
 /**
  * Define the "App" component
  */
@@ -43,6 +46,7 @@ const App = () => {
 
   return (
     <>
+      <NavBar />
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <NotFound default />
