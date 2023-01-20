@@ -32,6 +32,9 @@ const NavBar = () => {
                     <Link to ="/add-event/">
                         Add Event
                     </Link>
+                    <Link to ="/my-events/">
+                        My Events
+                    </Link>
                 </div>
             </div>
             <div className="dropdown">

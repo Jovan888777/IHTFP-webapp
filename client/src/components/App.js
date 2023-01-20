@@ -15,6 +15,7 @@ import { get, post } from "../utilities";
 import NavBar from "./modules/NavBar.js";
 import AddEvent from "./pages/AddEvent.js";
 import ViewEvent from "./pages/ViewEvent.js";
+import MyEvents from "./pages/MyEvents.js";
 import AutomaticCourseRoad from "./pages/AutomaticCourseRoad.js";
 import SharedClasses from "./pages/SharedClasses.js";
 import GeneralDining from "./pages/GeneralDining.js";
@@ -60,6 +61,7 @@ const App = () => {
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path = "/add-event/" />
         <ViewEvent path = "/view-event/" />
+        <MyEvents path = "/my-events/" />
         <AutomaticCourseRoad path = "/automatic-course-road/" />
         <SharedClasses path = "/shared-classes/" />
         <GeneralDining path = "/general-dining/" />
