@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "@reach/router";
 import "./NavBar.css";
 
 
@@ -11,8 +12,12 @@ const NavBar = () => {
                     <i className="fa fa-caret-down"></i>
                 </button>
                 <div className="dropdown-content">
-                    <a href = "">Automatic Course-Road</a>
-                    <a hred = "">Shared Classes</a>
+                    <Link to ="/automatic-course-road/">
+                        Automatic Course Road
+                    </Link>
+                    <Link to ="/shared-classes/">
+                        Shared Classes
+                    </Link>
                 </div>
             </div>
             <div className="dropdown">
@@ -21,8 +26,12 @@ const NavBar = () => {
                     <i className="fa fa-caret-down"></i>
                 </button>
                 <div className="dropdown-content">
-                    <a href = "">View Event</a>
-                    <a hred = "">Add Event</a>
+                    <Link to ="/view-event/">
+                        View Event
+                    </Link>
+                    <Link to ="/add-event/">
+                        Add Event
+                    </Link>
                 </div>
             </div>
             <div className="dropdown">
@@ -31,8 +40,12 @@ const NavBar = () => {
                     <i className="fa fa-caret-down"></i>
                 </button>
                 <div className="dropdown-content">
-                    <a href = "">General Dining</a>
-                    <a hred = "">Shared Dining</a>
+                    <Link to ="/general-dining/">
+                        General Dining
+                    </Link>
+                    <Link to ="/shared-dining/">
+                        Shared Dining
+                    </Link>
                 </div>
             </div>
             <div className="dropdown">
@@ -41,9 +54,15 @@ const NavBar = () => {
                     <i className="fa fa-caret-down"></i>
                 </button>
                 <div className="dropdown-content">
-                    <a href = "">My Profile</a>
-                    <a hred = "">Friends</a>
-                    <a href = "">Preferences</a>
+                    <Link to ="/general-profile/">
+                        My Profile
+                    </Link>
+                    <Link to ="/profile-friends/">
+                        Friends
+                    </Link>
+                    <Link to ="/profile-preferences/">
+                        Preferences
+                    </Link>
                     <a hred = "">Logout</a>
                 </div>
             </div>

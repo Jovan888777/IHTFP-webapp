@@ -13,6 +13,15 @@ import { get, post } from "../utilities";
 
 //ADDED BY TAMAR
 import NavBar from "./modules/NavBar.js";
+import AddEvent from "./pages/AddEvent.js";
+import ViewEvent from "./pages/ViewEvent.js";
+import AutomaticCourseRoad from "./pages/AutomaticCourseRoad.js";
+import SharedClasses from "./pages/SharedClasses.js";
+import GeneralDining from "./pages/GeneralDining.js";
+import SharedDining from "./pages/SharedDining.js";
+import GeneralProfile from "./pages/GeneralProfile.js";
+import ProfileFriends from "./pages/ProfileFriends.js";
+import ProfilePreferences from "./pages/ProfilePreferences.js";
 
 /**
  * Define the "App" component
@@ -49,6 +58,15 @@ const App = () => {
       <NavBar />
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <AddEvent path = "/add-event/" />
+        <ViewEvent path = "/view-event/" />
+        <AutomaticCourseRoad path = "/automatic-course-road/" />
+        <SharedClasses path = "/shared-classes/" />
+        <GeneralDining path = "/general-dining/" />
+        <SharedDining path = "/shared-dining/" />
+        <GeneralProfile path = "/general-profile/" />
+        <ProfileFriends path = "/profile-friends/" />
+        <ProfilePreferences path = "/profile-preferences/" />
         <NotFound default />
       </Router>
     </>
