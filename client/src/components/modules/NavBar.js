@@ -1,9 +1,19 @@
 import React from "react";
 import {Link} from "@reach/router";
+
+import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
+
 import "./NavBar.css";
 
 
-const NavBar = () => {
+const GOOGLE_CLIENT_ID = "700977180342-jgd43s318l777h9r9p17dpttm4rcgvv4.apps.googleusercontent.com";
+let log = "Login";
+
+const NavBar = ({token}) => {
+    if (token === "Logout") {
+        log = "Logout";
+        console.log(log);
+    }
     return (
         <nav className="navigation">
             <div className="nav-brand">
@@ -27,7 +37,7 @@ const NavBar = () => {
                     <Link to ="/profile-preferences/">
                         Preferences
                     </Link>
-                    <a hred = "">Logout</a>
+                    <a href = ""> {log} </a>
                 </div>
             </div>
             

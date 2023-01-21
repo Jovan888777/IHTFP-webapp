@@ -29,6 +29,7 @@ import ProfilePreferences from "./pages/ProfilePreferences.js";
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
+  const [token, setToken] = useState("Login");
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -40,6 +41,8 @@ const App = () => {
   }, []);
 
   const handleLogin = (credentialResponse) => {
+    setToken("Logout");
+    console.log("Logout");
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
@@ -50,13 +53,14 @@ const App = () => {
   };
 
   const handleLogout = () => {
+    setToken("Login");
     setUserId(undefined);
     post("/api/logout");
   };
 
   return (
     <>
-      <NavBar />
+      <NavBar token={token} />
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path = "/add-event/" />
