@@ -24,6 +24,8 @@ import GeneralProfile from "./pages/GeneralProfile.js";
 import ProfileFriends from "./pages/ProfileFriends.js";
 import ProfilePreferences from "./pages/ProfilePreferences.js";
 
+import "./App.css"
+
 /**
  * Define the "App" component
  */

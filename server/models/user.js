@@ -1,4 +1,4 @@
-const { isInteger } = require("core-js/core/number");
+//const { isInteger } = require("core-js/core/number");
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({

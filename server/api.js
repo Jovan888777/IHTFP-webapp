@@ -13,7 +13,7 @@ const express = require("express");
 const User = require("./models/user");
 const Event = require("./models/event");
 const Dining = require("./models/dining");
-const EventSettings = require("./models/eventSettings");
+const EventSettings = require("./models/eventsSettings");
 const ClassSettings = require("./models/classSettings");
 const DiningSettings = require("./models/diningSettings");
 

@@ -7,12 +7,15 @@ import "./NavBar.css";
 
 
 const GOOGLE_CLIENT_ID = "700977180342-jgd43s318l777h9r9p17dpttm4rcgvv4.apps.googleusercontent.com";
-let log = "Login";
 
 const NavBar = ({token}) => {
+    let log = "Login";
     if (token === "Logout") {
         log = "Logout";
         console.log(log);
+    }
+    else if (token === "Login") {
+        log = "Login";
     }
     return (
         <nav className="navigation">
