@@ -12,6 +12,7 @@ import "./App.css";
 import NavBar from "./modules/NavBar.js";
 
 // Pages
+import Home from "./pages/Home.js";
 import AddEvent from "./pages/AddEvent.js";
 import ViewEvent from "./pages/ViewEvent.js";
 import MyEvents from "./pages/MyEvents.js";
@@ -23,7 +24,6 @@ import GeneralProfile from "./pages/GeneralProfile.js";
 import ProfileFriends from "./pages/ProfileFriends.js";
 import ProfilePreferences from "./pages/ProfilePreferences.js";
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
 
 /**
  * Define the "App" component
@@ -63,7 +63,7 @@ const App = () => {
     <>
       <NavBar token={token} />
       <Router>
-        <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path="/add-event/" />
         <ViewEvent path="/events/" />
         <MyEvents path="/my-events/" />
