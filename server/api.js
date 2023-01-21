@@ -9,8 +9,13 @@
 
 const express = require("express");
 
-// import models so we can interact with the database
+// import models
 const User = require("./models/user");
+const Event = require("./models/event");
+const Dining = require("./models/dining");
+const EventSettings = require("./models/eventSettings");
+const ClassSettings = require("./models/classSettings");
+const DiningSettings = require("./models/diningSettings");
 
 // import authentication library
 const auth = require("./auth");
