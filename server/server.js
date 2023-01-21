@@ -14,27 +14,22 @@
 */
 
 // validator runs some basic checks to make sure you've set everything up correctly
-// this is a tool provided by staff, so you don't need to worry about it
 const validator = require("./validator");
 validator.checkSetup();
 
-//import libraries needed for the webserver to work!
 const http = require("http");
-const express = require("express"); // backend framework for our node server.
+const express = require("express");
 const session = require("express-session"); // library that stores info about each connected user
-const mongoose = require("mongoose"); // library to connect to MongoDB
+const mongoose = require("mongoose");
 const path = require("path"); // provide utilities for working with file and directory paths
 
 const api = require("./api");
 const auth = require("./auth");
-
-// socket stuff
 const socketManager = require("./server-socket");
 
-// Server configuration below
-// TODO change connection URL after setting up your team database
-const mongoConnectionURL = "mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
-// TODO change database name to the name you chose
+// database URL
+const mongoConnectionURL =
+  "mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
 const databaseName = "MainData";
 
 // connect to mongodb

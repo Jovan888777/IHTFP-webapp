@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
-
-import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
-
-import "../utilities.css";
-
 import { socket } from "../client-socket.js";
-
 import { get, post } from "../utilities";
 
-//ADDED BY TAMAR
+// CSS Files
+import "../utilities.css";
+import "./App.css";
+
+// Modules
 import NavBar from "./modules/NavBar.js";
+
+// Pages
 import AddEvent from "./pages/AddEvent.js";
 import ViewEvent from "./pages/ViewEvent.js";
 import MyEvents from "./pages/MyEvents.js";
@@ -23,8 +22,8 @@ import SharedDining from "./pages/SharedDining.js";
 import GeneralProfile from "./pages/GeneralProfile.js";
 import ProfileFriends from "./pages/ProfileFriends.js";
 import ProfilePreferences from "./pages/ProfilePreferences.js";
-
-import "./App.css"
+import NotFound from "./pages/NotFound.js";
+import Skeleton from "./pages/Skeleton.js";
 
 /**
  * Define the "App" component
@@ -65,16 +64,16 @@ const App = () => {
       <NavBar token={token} />
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <AddEvent path = "/add-event/" />
-        <ViewEvent path = "/view-event/" />
-        <MyEvents path = "/my-events/" />
-        <AutomaticCourseRoad path = "/automatic-course-road/" />
-        <SharedClasses path = "/shared-classes/" />
-        <GeneralDining path = "/general-dining/" />
-        <SharedDining path = "/shared-dining/" />
-        <GeneralProfile path = "/general-profile/" />
-        <ProfileFriends path = "/profile-friends/" />
-        <ProfilePreferences path = "/profile-preferences/" />
+        <AddEvent path="/add-event/" />
+        <ViewEvent path="/events/" />
+        <MyEvents path="/my-events/" />
+        <AutomaticCourseRoad path="/automatic-course-road/" />
+        <SharedClasses path="/shared-classes/" />
+        <GeneralDining path="/menus/" />
+        <SharedDining path="/shared-dining/" />
+        <GeneralProfile path="/profile/" />
+        <ProfileFriends path="/friends/" />
+        <ProfilePreferences path="/preferences/" />
         <NotFound default />
       </Router>
     </>

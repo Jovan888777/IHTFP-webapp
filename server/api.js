@@ -2,9 +2,6 @@
 |--------------------------------------------------------------------------
 | api.js -- server routes
 |--------------------------------------------------------------------------
-|
-| This file defines the routes for your server.
-|
 */
 
 const express = require("express");
@@ -47,6 +44,51 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+// router.get("/automatic-course-road", (req, res) => {
+//   if (!req.user) {
+//     // not logged in
+//     return res.send({});
+//   }
+
+// });
+
+// router.get("/shared-classes", (req, res) => {
+
+// });
+
+// router.get("/menus", (req, res) => {
+
+// });
+
+// router.get("/shared-dining", (req, res) => {
+
+// });
+
+router.get("/events", (req, res) => {
+  console.log("hi");
+  res.send({ msg: "hi" });
+});
+
+// router.get("/add-event", (req, res) => {
+
+// });
+
+// router.get("/my-events", (req, res) => {
+
+// });
+
+// router.get("/profile/{}", (req, res) => {
+
+// });
+
+// router.get("/friends", (req, res) => {
+
+// });
+
+// router.get("/preferences", (req, res) => {
+
+// });
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

@@ -1,4 +1,3 @@
-//const { isInteger } = require("core-js/core/number");
 const mongoose = require("mongoose");
 
 const EventSchema = new mongoose.Schema({
