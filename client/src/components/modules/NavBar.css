@@ -8,6 +8,27 @@
     --link-hover-color: #c70a75;
 }
 
+.nav-brand {
+  float: left;
+  background-color: var(--nav-background);
+}
+
+.nav-brand .navbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  padding: 14px 40px 14px 20px;
+  text-align: left;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.logo {
+  color:white;
+  text-decoration: none;
+}
+
 /*Outer wrapper*/
 .navigation {
     height: var(--nav-height);
@@ -33,7 +54,7 @@
   
   /* The dropdown container */
   .dropdown {
-    float: left;
+    float: right;
     overflow: hidden;
   }
   
@@ -43,7 +64,7 @@
     border: none;
     outline: none;
     color: white;
-    padding: 14px 16px;
+    padding: 14px 30px;
     background-color: inherit;
     font-family: inherit; /* Important for vertical align on mobile phones */
     margin: 0; /* Important for vertical align on mobile phones */

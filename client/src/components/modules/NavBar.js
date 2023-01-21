@@ -6,6 +6,31 @@ import "./NavBar.css";
 const NavBar = () => {
     return (
         <nav className="navigation">
+            <div className="nav-brand">
+                <button className="navbtn">
+                    <Link to ="/" className="logo"> Home </Link>
+                </button>
+            </div>
+            
+            <div className="dropdown">
+                <button className="dropbtn">
+                    Profile
+                    <i className="fa fa-caret-down"></i>
+                </button>
+                <div className="dropdown-content">
+                    <Link to ="/general-profile/">
+                        My Profile
+                    </Link>
+                    <Link to ="/profile-friends/">
+                        Friends
+                    </Link>
+                    <Link to ="/profile-preferences/">
+                        Preferences
+                    </Link>
+                    <a hred = "">Logout</a>
+                </div>
+            </div>
+            
             <div className="dropdown">
                 <button className="dropbtn">
                     Classes
@@ -49,24 +74,6 @@ const NavBar = () => {
                     <Link to ="/shared-dining/">
                         Shared Dining
                     </Link>
-                </div>
-            </div>
-            <div className="dropdown">
-                <button className="dropbtn">
-                    Profile
-                    <i className="fa fa-caret-down"></i>
-                </button>
-                <div className="dropdown-content">
-                    <Link to ="/general-profile/">
-                        My Profile
-                    </Link>
-                    <Link to ="/profile-friends/">
-                        Friends
-                    </Link>
-                    <Link to ="/profile-preferences/">
-                        Preferences
-                    </Link>
-                    <a hred = "">Logout</a>
                 </div>
             </div>
         </nav>
