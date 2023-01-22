@@ -25,12 +25,15 @@ import ProfileFriends from "./pages/ProfileFriends.js";
 import ProfilePreferences from "./pages/ProfilePreferences.js";
 import NotFound from "./pages/NotFound.js";
 
+//Tamar
+import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
+
+
 /**
  * Define the "App" component
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
-  const [token, setToken] = useState("Login");
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -42,8 +45,6 @@ const App = () => {
   }, []);
 
   const handleLogin = (credentialResponse) => {
-    setToken("Logout");
-    console.log("Logout");
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
@@ -54,16 +55,15 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setToken("Login");
     setUserId(undefined);
     post("/api/logout");
   };
 
   return (
     <>
-      <NavBar token={token} />
+      <NavBar userId={userId} handleLogin = {handleLogin} handleLogout = {handleLogout}/>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
         <AddEvent path="/add-event/" />
         <ViewEvent path="/events/" />
         <MyEvents path="/my-events/" />

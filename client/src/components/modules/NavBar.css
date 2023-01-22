@@ -51,6 +51,11 @@
     padding: 14px 16px;
     text-decoration: none;
   }
+
+  .logbtn {
+    float: right;
+    overflow: hidden;
+  }
   
   /* The dropdown container */
   .dropdown {
