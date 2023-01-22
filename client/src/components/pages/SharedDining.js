@@ -42,7 +42,7 @@ const SharedDining = (props) => {
   return (
     <div className="wrapper">
       <h1>Select the meal to view the meal</h1>
-      <select value={optionsState}>
+      <select>
         <option value="breakfast">breakfast</option>
         <option value="lunch">lunch</option>
         <option value="dinner">dinner</option>
