@@ -53,40 +53,53 @@ router.post("/initsocket", (req, res) => {
 
 // });
 
-// router.get("/shared-classes", (req, res) => {
-
-// });
-
-// router.get("/menus", (req, res) => {
-
-// });
-
-// router.get("/shared-dining", (req, res) => {
-
-// });
-
-router.get("/events", (req, res) => {
-  console.log("hi");
-  res.send({ msg: "hi" });
+router.get("/current-classes", (req, res) => {
+  ClassSettings.find({ user_id: req.query.userid }).then((settings) =>
+    res.send(settings.currentClasses)
+  );
 });
 
-// router.get("/add-event", (req, res) => {
+router.get("/menus", (req, res) => {
+  Dining.find({}).then((menus) => res.send(menus));
+});
+
+router.get("/event-settings", (req, res) => {
+  EventSettings.find({ user_id: req.user._id }).then((settings) => res.send(settings));
+});
+
+router.get("/class-settings", (req, res) => {
+  ClassSettings.find({ user_id: req.user._id }).then((settings) => res.send(settings));
+});
+
+router.get("/dining-settings", (req, res) => {
+  DiningSettings.find({ user_id: req.user._id }).then((settings) => res.send(settings));
+});
+
+router.get("/events", (req, res) => {
+  Event.find({}).then((events) => res.send(events));
+});
+
+// router.post("/add-event", (req, res) => {
 
 // });
 
-// router.get("/my-events", (req, res) => {
+router.get("/my-events", (req, res) => {
+  Event.find({ user_id: req.user._id }).then((events) => res.send(events));
+});
 
-// });
+router.get("/profile", (req, res) => {
+  User.findById(req.query.userid).then((user) => res.send(user));
+});
 
-// router.get("/profile/{}", (req, res) => {
-
-// });
-
-// router.get("/friends", (req, res) => {
-
-// });
+router.get("/friends", (req, res) => {
+  User.findById(req.user._id).then((user) => res.send(user.friends));
+});
 
 // router.get("/preferences", (req, res) => {
+
+// });
+
+// router.post("/preferences", (req, res) => {
 
 // });
 

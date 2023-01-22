@@ -20,9 +20,9 @@ import AutomaticCourseRoad from "./pages/AutomaticCourseRoad.js";
 import SharedClasses from "./pages/SharedClasses.js";
 import GeneralDining from "./pages/GeneralDining.js";
 import SharedDining from "./pages/SharedDining.js";
-import GeneralProfile from "./pages/GeneralProfile.js";
-import ProfileFriends from "./pages/ProfileFriends.js";
-import ProfilePreferences from "./pages/ProfilePreferences.js";
+import Profile from "./pages/Profile.js";
+import Friends from "./pages/Friends.js";
+import Preferences from "./pages/Preferences.js";
 import NotFound from "./pages/NotFound.js";
 
 //Tamar
@@ -63,6 +63,7 @@ const App = () => {
     <>
       <NavBar userId={userId} handleLogin = {handleLogin} handleLogout = {handleLogout}/>
       <Router>
+<<<<<<< HEAD
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
         <AddEvent path="/add-event/" />
         <ViewEvent path="/events/" />
@@ -74,6 +75,19 @@ const App = () => {
         <GeneralProfile path="/profile/" />
         <ProfileFriends path="/friends/" />
         <ProfilePreferences path="/preferences/" />
+=======
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <AddEvent path="/add-event/" userId={userId} />
+        <ViewEvent path="/events/" userId={userId} />
+        <MyEvents path="/my-events/" userId={userId} />
+        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
+        <SharedClasses path="/shared-classes/" userId={userId} />
+        <GeneralDining path="/menus/" userId={userId} />
+        <SharedDining path="/shared-dining/" userId={userId} />
+        <Profile path="/profile/" />
+        <Friends path="/friends/" userId={userId} />
+        <Preferences path="/preferences/" userId={userId} />
+>>>>>>> cf2e265a2c5a362e201a38f6f4e4741d3da397d0
         <NotFound default />
       </Router>
     </>
