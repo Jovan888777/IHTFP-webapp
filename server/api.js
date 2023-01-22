@@ -60,7 +60,7 @@ router.get("/current-classes", (req, res) => {
 });
 
 router.get("/menus", (req, res) => {
-  Dining.find({}).then((menu) => res.send(menu));
+  Dining.find({}).then((menus) => res.send(menus));
 });
 
 router.get("/event-settings", (req, res) => {

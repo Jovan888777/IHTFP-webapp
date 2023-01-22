@@ -1,17 +1,6 @@
-/*NavBar Variables*/
-:root {
-  --content-width: 1000px;
-  --breakpoint: 799px;
-  --nav-height: 50px;
-  --nav-background: #32033fd3;
-  --nav-background-lighter: #6e0f89d3;
-  --nav-font-color: #ffffff;
-  --link-hover-color: #c70a75;
-}
-
 .nav-brand {
   float: left;
-  background-color: var(--nav-background);
+  background-color: var(--dark-purple);
 }
 
 .nav-brand .navbtn {
@@ -33,7 +22,7 @@
 /*Outer wrapper*/
 .navigation {
   height: var(--nav-height);
-  background: var(--nav-background);
+  background: var(--dark-purple);
 }
 
 /* Navbar container */
@@ -74,7 +63,7 @@
 /* Add a red background color to navbar links on hover */
 .navbar a:hover,
 .dropdown:hover .dropbtn {
-  background-color: #32033fed;
+  background-color: var(--nav-hover-purple);
 }
 
 /* Dropdown content (hidden by default) */

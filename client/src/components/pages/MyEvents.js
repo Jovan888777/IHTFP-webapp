@@ -1,11 +1,8 @@
 import React from "react";
+import "./MyEvents.css";
 
-const ViewEvent = () => {
-    return (
-        <div>
-            My Events
-        </div>
-    );
+const MyEvents = () => {
+  return <div>My Events</div>;
 };
 
-export default ViewEvent;
+export default MyEvents;

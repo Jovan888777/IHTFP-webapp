@@ -20,9 +20,9 @@ import AutomaticCourseRoad from "./pages/AutomaticCourseRoad.js";
 import SharedClasses from "./pages/SharedClasses.js";
 import GeneralDining from "./pages/GeneralDining.js";
 import SharedDining from "./pages/SharedDining.js";
-import GeneralProfile from "./pages/GeneralProfile.js";
-import ProfileFriends from "./pages/ProfileFriends.js";
-import ProfilePreferences from "./pages/ProfilePreferences.js";
+import Profile from "./pages/Profile.js";
+import Friends from "./pages/Friends.js";
+import Preferences from "./pages/Preferences.js";
 import NotFound from "./pages/NotFound.js";
 
 /**
@@ -71,9 +71,9 @@ const App = () => {
         <SharedClasses path="/shared-classes/" userId={userId} />
         <GeneralDining path="/menus/" userId={userId} />
         <SharedDining path="/shared-dining/" userId={userId} />
-        <GeneralProfile path="/profile/" />
-        <ProfileFriends path="/friends/" userId={userId} />
-        <ProfilePreferences path="/preferences/" userId={userId} />
+        <Profile path="/profile/" />
+        <Friends path="/friends/" userId={userId} />
+        <Preferences path="/preferences/" userId={userId} />
         <NotFound default />
       </Router>
     </>

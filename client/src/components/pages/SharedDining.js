@@ -7,6 +7,14 @@ const SharedDining = (props) => {
     chosen: [null, null, null],
     rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
   });
+  const [menus, setMenus] = useState([
+    { name: "Next", breakfast: [], lunch: [], dinner: [] },
+    { name: "Simmons", breakfast: [], lunch: [], dinner: [] },
+    { name: "Maseeh", breakfast: [], lunch: [], dinner: [] },
+    { name: "McCormmick", breakfast: [], lunch: [], dinner: [] },
+    { name: "New Vassar", breakfast: [], lunch: [], dinner: [] },
+    { name: "Baker", breakfast: [], lunch: [], dinner: [] },
+  ]);
 
   const loadDiningSettings = () => {
     get("/api/dining-settings").then((settings) => {
@@ -19,6 +27,16 @@ const SharedDining = (props) => {
 
   useEffect(() => {
     loadDiningSettings();
+  }, []);
+
+  const loadMenu = () => {
+    get("/api/menus").then((menus) => {
+      setMenus(menus);
+    });
+  };
+
+  useEffect(() => {
+    loadMenu();
   }, []);
 
   return (
