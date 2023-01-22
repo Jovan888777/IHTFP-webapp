@@ -3,6 +3,7 @@ import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
+import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
 // CSS Files
 import "../utilities.css";
@@ -24,9 +25,6 @@ import Profile from "./pages/Profile.js";
 import Friends from "./pages/Friends.js";
 import Preferences from "./pages/Preferences.js";
 import NotFound from "./pages/NotFound.js";
-
-//Tamar
-import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
 /**
  * Define the "App" component
