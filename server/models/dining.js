@@ -1,15 +1,23 @@
 const mongoose = require("mongoose");
 
-const MenuSchema = new mongoose.Schema({
+const DishSchema = new mongoose.Schema({
   dishName: String,
   restrictions: [String],
 });
-const DiningSchema = new mongoose.Schema({
-  name: String,
-  breakfast: [MenuSchema],
-  lunch: [MenuSchema],
-  dinner: [MenuSchema],
+
+const DiningHallSchema = new mongoose.Schema({
+  breakfast: [DishSchema],
+  lunch: [DishSchema],
+  dinner: [DishSchema],
+});
+const MenuSchema = new mongoose.Schema({
+  Next: DiningHallSchema,
+  Maseeh: DiningHallSchema,
+  Simmons: DiningHallSchema,
+  McCormmick: DiningHallSchema,
+  New_Vassar: DiningHallSchema,
+  Baker: DiningHallSchema,
 });
 
 // compile model from schema
-module.exports = mongoose.model("dining", DiningSchema);
+module.exports = mongoose.model("dining", MenuSchema);

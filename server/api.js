@@ -9,7 +9,7 @@ const express = require("express");
 // import models
 const User = require("./models/user");
 const Event = require("./models/event");
-const Dining = require("./models/dining");
+const Menu = require("./models/dining");
 const EventSettings = require("./models/eventsSettings");
 const ClassSettings = require("./models/classSettings");
 const DiningSettings = require("./models/diningSettings");
@@ -60,7 +60,7 @@ router.get("/current-classes", (req, res) => {
 });
 
 router.get("/menus", (req, res) => {
-  Dining.find({}).then((menus) => res.send(menus));
+  Menu.find({}).then((menus) => res.send(menus));
 });
 
 router.get("/event-settings", (req, res) => {

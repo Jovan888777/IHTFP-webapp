@@ -28,7 +28,6 @@ import NotFound from "./pages/NotFound.js";
 //Tamar
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
-
 /**
  * Define the "App" component
  */
@@ -61,21 +60,8 @@ const App = () => {
 
   return (
     <>
-      <NavBar userId={userId} handleLogin = {handleLogin} handleLogout = {handleLogout}/>
+      <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Router>
-<<<<<<< HEAD
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
-        <AddEvent path="/add-event/" />
-        <ViewEvent path="/events/" />
-        <MyEvents path="/my-events/" />
-        <AutomaticCourseRoad path="/automatic-course-road/" />
-        <SharedClasses path="/shared-classes/" />
-        <GeneralDining path="/menus/" />
-        <SharedDining path="/shared-dining/" />
-        <GeneralProfile path="/profile/" />
-        <ProfileFriends path="/friends/" />
-        <ProfilePreferences path="/preferences/" />
-=======
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path="/add-event/" userId={userId} />
         <ViewEvent path="/events/" userId={userId} />
@@ -87,7 +73,6 @@ const App = () => {
         <Profile path="/profile/" />
         <Friends path="/friends/" userId={userId} />
         <Preferences path="/preferences/" userId={userId} />
->>>>>>> cf2e265a2c5a362e201a38f6f4e4741d3da397d0
         <NotFound default />
       </Router>
     </>

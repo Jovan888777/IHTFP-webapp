@@ -7,14 +7,14 @@ const SharedDining = (props) => {
     chosen: [null, null, null],
     rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
   });
-  const [menus, setMenus] = useState([
-    { name: "Next", breakfast: [], lunch: [], dinner: [] },
-    { name: "Simmons", breakfast: [], lunch: [], dinner: [] },
-    { name: "Maseeh", breakfast: [], lunch: [], dinner: [] },
-    { name: "McCormmick", breakfast: [], lunch: [], dinner: [] },
-    { name: "New Vassar", breakfast: [], lunch: [], dinner: [] },
-    { name: "Baker", breakfast: [], lunch: [], dinner: [] },
-  ]);
+  const [menus, setMenus] = useState({
+    Next: { breakfast: [], lunch: [], dinner: [] },
+    Simmons: { breakfast: [], lunch: [], dinner: [] },
+    Maseeh: { breakfast: [], lunch: [], dinner: [] },
+    McCormmick: { breakfast: [], lunch: [], dinner: [] },
+    New_Vassar: { breakfast: [], lunch: [], dinner: [] },
+    Baker: { breakfast: [], lunch: [], dinner: [] },
+  });
 
   const loadDiningSettings = () => {
     get("/api/dining-settings").then((settings) => {
@@ -41,6 +41,13 @@ const SharedDining = (props) => {
 
   return (
     <div className="wrapper">
+      <h1>Select the meal to view the meal</h1>
+      <select value={optionsState}>
+        <option value="breakfast">breakfast</option>
+        <option value="lunch">lunch</option>
+        <option value="dinner">dinner</option>
+      </select>
+
       {diningSettings.rankings.map((item) => {
         return (
           <div className="dining-container">
