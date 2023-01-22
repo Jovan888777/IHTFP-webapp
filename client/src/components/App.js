@@ -64,16 +64,16 @@ const App = () => {
       <NavBar token={token} />
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <AddEvent path="/add-event/" />
-        <ViewEvent path="/events/" />
-        <MyEvents path="/my-events/" />
-        <AutomaticCourseRoad path="/automatic-course-road/" />
-        <SharedClasses path="/shared-classes/" />
-        <GeneralDining path="/menus/" />
-        <SharedDining path="/shared-dining/" />
+        <AddEvent path="/add-event/" userId={userId} />
+        <ViewEvent path="/events/" userId={userId} />
+        <MyEvents path="/my-events/" userId={userId} />
+        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
+        <SharedClasses path="/shared-classes/" userId={userId} />
+        <GeneralDining path="/menus/" userId={userId} />
+        <SharedDining path="/shared-dining/" userId={userId} />
         <GeneralProfile path="/profile/" />
-        <ProfileFriends path="/friends/" />
-        <ProfilePreferences path="/preferences/" />
+        <ProfileFriends path="/friends/" userId={userId} />
+        <ProfilePreferences path="/preferences/" userId={userId} />
         <NotFound default />
       </Router>
     </>
