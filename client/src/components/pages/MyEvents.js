@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { get } from "../../utilities";
 import "./MyEvents.css";
 
+import EventDisplay from "../modules/EventDisplay";
+
 const MyEvents = (props) => {
 
   //My events array and setting it
