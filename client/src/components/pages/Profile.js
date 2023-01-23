@@ -7,7 +7,7 @@ const Profile = () => {
   return (
     <div>
       <div class="container">
-        <img src="/pic.jpg" alt="profilePic"/>
+        <div className="Profile-avatar"></div>
 
         <ul>
           <li>Name Surname</li>
@@ -18,9 +18,7 @@ const Profile = () => {
         </ul>
       </div>
 
-      <h2>
-        Mutual Friends
-      </h2>
+      <h2>Mutual Friends</h2>
     </div>
   );
 };

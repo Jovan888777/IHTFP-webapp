@@ -1,5 +1,26 @@
 .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.Profile-avatar {
+  width: 25%;
+  height: auto;
+  display: block;
+  /* div height to be the same as width*/
+  padding-top: 25%;
+
+  /* make it a circle */
+  border-radius: 50%;
+
+  /* Centering on image`s center*/
+  background-position-y: center;
+  background-position-x: center;
+  background-repeat: no-repeat;
+
+  /* it makes the clue thing, takes smaller dimension to fill div */
+  background-size: cover;
+
+  background-image: url("../../public/pic.jpg");
 }

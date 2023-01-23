@@ -40,21 +40,25 @@ const SharedDining = (props) => {
   }, []);
 
   return (
-    <div className="wrapper">
-      <h1>Select the meal to view the meal</h1>
-      <select>
-        <option value="breakfast">breakfast</option>
-        <option value="lunch">lunch</option>
-        <option value="dinner">dinner</option>
-      </select>
-
-      {diningSettings.rankings.map((item) => {
-        return (
-          <div className="dining-container">
-            <h1>{item}</h1>
-          </div>
-        );
-      })}
+    <div>
+      <div className="center">
+        <h1>Select the meal to view the meal</h1>
+        <select>
+          <option value="breakfast">breakfast</option>
+          <option value="lunch">lunch</option>
+          <option value="dinner">dinner</option>
+        </select>
+      </div>
+      <br></br>
+      <div className="wrapper">
+        {diningSettings.rankings.map((item) => {
+          return (
+            <div className="dining-container">
+              <h1>{item}</h1>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
