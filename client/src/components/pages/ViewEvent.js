@@ -3,81 +3,65 @@ import "./ViewEvent.css";
 import { get } from "../../utilities";
 
 const ViewEvent = (props) => {
-
   //List of events
   const [events, setEvents] = useState({
-    events: []
+    events: [],
+  });
+
+  //List of events
+  const [preferedevents, setPreferedEvents] = useState({
+    events: [],
   });
 
   //Maintaining preferences
-  const [eventsSettings, seteventsSettings] = useState({
+  const [eventSettings, seteventsSettings] = useState({
     user_id: 0,
     allowEmails: false,
     keywords: [],
   });
-  
-  //filtered is a variable that shows if the checkbox is checked
-  let filter = true;
-  let checkbox = document.getElementById("filter"); 
-  if (checkbox.checked == false) {
-    filter = false;
-  }
 
-  //Function to filter through preferences when the checkbox is checked
-  const arrayFilter = (element, preferences) => {
-    for (let i = 0; i < element.keywords.size(); i++) {
-      if (preferences.includes(element.keywords[i]))
-        return true;
+  const changeEventView = (checkedVal) => {
+    if (checkedVal) {
+      return null;
     }
-    return false;
-  }
-
+    return null;
+  };
   //Getting preferences from the server
   const loadPreferences = () => {
-    get("api/events-settings").then(
-      (settings) => {
-        seteventsSettings ({
-        user_id: settings.user_id,
-        allowEmails: settings.allowEmails,
-        keywords: settings.keywords,
-      });
+    get("api/events-settings").then((settings) => {
+      seteventsSettings(settings);
     });
   };
 
   //Getting Events from the server
   //And filtering through them
-  const loadEvents = (filter) => {
-    //if the checkbox is checked filtering the events
-    if (filter === true) {
-      get("api/events").then(
-        (settings) => {
-          setEvents({
-            events: settings.filter((element) => {arrayFilter(element, settings.keywords)})
-          })
-        });
-    }
-    else {
-      get("api/events").then(
-        (settings) => {
-          setEvents({
-            events: settings,
-          })
-        });
-    }
-  } 
+  const loadEvents = () => {
+    get("api/events").then((allEvents) => {
+      setEvents(allEvents);
+    });
+  };
 
-  useEffect((filter) => {
+  const loadPreredEvents = () => {
+    setPreferedEvents(
+      events.filter((element) => {
+        return eventSettings.preferences.includes(element);
+      })
+    );
+  };
+
+  useEffect(() => {
     loadPreferences();
-    loadEvents(filter);
-  }, []); 
+    loadEvents();
+    loadPreredEvents();
+  }, []);
 
   return (
     <div>
       <h1> Upcoming Events </h1>
       <label className="container">
         Filtered
-        <input type = "checkbox" id = "filter" />
-        <span class = "checkmark"> </span>
+        <input type="checkbox" onChange={changeEventView(this.checked)} />
+        <span class="checkmark"></span>
       </label>
     </div>
   );
