@@ -1,0 +1,21 @@
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .container input {
+    position: absolute;
+    opacity: 100;
+    cursor: pointer;
+    height: 20px;
+    width: 15px;
+  }
