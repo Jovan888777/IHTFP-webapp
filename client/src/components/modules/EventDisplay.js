@@ -4,7 +4,7 @@ import "./EventDisplay.css";
 const EventDisplay = (props) => {
     return (
         <div>
-            <div class="row">
+            <div className="row">
                 <div className = "column">
                     <div className="event-container"><div className = "event-picture"/> </div>
                 </div>
