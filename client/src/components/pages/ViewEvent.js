@@ -24,7 +24,7 @@ const ViewEvent = (props) => {
   }
 
   //Function to filter through preferences when the checkbox is checked
-  /*const arrayFilter = (element, preferences) => {
+  const arrayFilter = (element, preferences) => {
     for (let i = 0; i < element.keywords.size(); i++) {
       if (preferences.includes(element.keywords[i]))
         return true;
@@ -33,7 +33,7 @@ const ViewEvent = (props) => {
   }
 
   //Getting preferences from the server
-  /*const loadPreferences = () => {
+  const loadPreferences = () => {
     get("api/events-settings").then(
       (settings) => {
         seteventsSettings ({
@@ -60,7 +60,7 @@ const ViewEvent = (props) => {
       get("api/events").then(
         (settings) => {
           setEvents({
-            events: settings
+            events: settings,
           })
         });
     }
@@ -69,7 +69,7 @@ const ViewEvent = (props) => {
   useEffect((filter) => {
     loadPreferences();
     loadEvents(filter);
-  }, []); */
+  }, []); 
 
   return (
     <div>
