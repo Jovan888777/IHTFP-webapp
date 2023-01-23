@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { get } from "../../utilities";
 import "./MyEvents.css";
-import EventDisplay from "../modules/EventDisplay";
 
 const MyEvents = (props) => {
 
@@ -37,8 +36,6 @@ const MyEvents = (props) => {
     <div>
       <h1>My Events</h1>
       {myEvents.map((element, index) => (<EventDisplay {...element}/>))}
-      <EventDisplay name = "Weblab deadline" group="Sleep-deprived sophomores" 
-      start="01/01/01" end = "02/02/02" location = "zoom" description= ""/>
     </div>
 
   );
