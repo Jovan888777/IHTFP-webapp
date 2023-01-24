@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+// import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
 import { get, post } from "../../utilities";
 
@@ -48,7 +48,9 @@ const AddEvent = (props) => {
         guestlistNeeded: eventGuestlistNeeded,
         guests: [],
       };
-      // post("api/add-event", newEvent).then(console.log("event added successfully!"));
+      post("/api/add-event", newEvent)
+        .then(console.log("event added successfully!"))
+        .catch((err) => console.log(err));
       console.log(newEvent);
       setDone(true);
       // navigate("/my-events");
@@ -57,7 +59,7 @@ const AddEvent = (props) => {
 
   return (
     <div className="center">
-      {done && <Navigate to="/my-events" replace={true} />}
+      {/* {done && <Navigate to="/my-events" replace={true} />} */}
       <h1>Add Event</h1>
       Name:{" "}
       <input
