@@ -9,6 +9,7 @@ const DiningHallSchema = new mongoose.Schema({
   breakfast: [DishSchema],
   lunch: [DishSchema],
   dinner: [DishSchema],
+  lateNight: [DishSchema],
 });
 const MenuSchema = new mongoose.Schema({
   Next: DiningHallSchema,

@@ -56,7 +56,7 @@ router.get("/current-classes", (req, res) => {
 });
 
 router.get("/menus", (req, res) => {
-  Menu.find({})
+  Menu.findOne({})
     .then((menus) => res.send(menus))
     .catch((err) => {
       console.log(`failed to get menus:${err}`);
@@ -134,6 +134,8 @@ router.get("/user-friends", (req, res) => {
 });
 
 //////////////////// POST METHODS ////////////////////////////
+
+//////////////////// ADDING ////////////////////////////
 
 // add user
 router.post("/add-user", auth.ensureLoggedIn, (req, res) => {
@@ -220,6 +222,57 @@ router.post("/add-event", auth.ensureLoggedIn, (req, res) => {
     .catch((err) => console.log("failed at adding event:" + err));
 });
 
+// add menus
+router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
+  const newMenus = new Menu({
+    Next: {
+      breakfast: req.body.nextb,
+      lunch: [],
+      dinner: req.body.nextd,
+      lateNight: [],
+    },
+    Maseeh: {
+      breakfast: req.body.maseehb,
+      lunch: req.body.maseehl,
+      dinner: req.body.maseehd,
+      lateNight: req.body.maseehln,
+    },
+    Simmons: {
+      breakfast: req.body.simmonsb,
+      lunch: [],
+      dinner: req.body.simmonsd,
+      lateNight: req.body.simmonsln,
+    },
+    McCormmick: {
+      breakfast: req.body.mccormmickb,
+      lunch: [],
+      dinner: req.body.mccormmickd,
+      lateNight: [],
+    },
+    NewVassar: {
+      breakfast: req.body.newvassarb,
+      lunch: req.body.newvassarl,
+      dinner: req.body.newvassard,
+      lateNight: [],
+    },
+    Baker: {
+      breakfast: req.body.bakerb,
+      lunch: [],
+      dinner: req.body.bakerd,
+      lateNight: [],
+    },
+  });
+
+  newMenus
+    .save()
+    .then((event) => {
+      res.send(event);
+    })
+    .catch((err) => console.log("failed at adding menus:" + err));
+});
+
+//////////////////// UPDATING ////////////////////////////
+
 // update event details
 router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
   Event.findById(req.body.eventId)
@@ -285,6 +338,8 @@ router.post("/dining-settings", auth.ensureLoggedIn, (req, res) => {
     });
 });
 
+//////////////////// DELETING ////////////////////////////
+
 // delete event
 router.post("/delete-event", auth.ensureLoggedIn, (req, res) => {
   Event.deleteOne({ _id: req.body.eventId })
@@ -307,6 +362,19 @@ router.post("/delete-user", auth.ensureLoggedIn, (req, res) => {
     })
     .catch((err) => {
       console.log(`failed to deleted user:${err}`);
+      res.send(false);
+    });
+});
+
+// delete all menus
+router.post("/delete-menus", auth.ensureLoggedIn, (req, res) => {
+  Event.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted menus");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted menus:${err}`);
       res.send(false);
     });
 });
