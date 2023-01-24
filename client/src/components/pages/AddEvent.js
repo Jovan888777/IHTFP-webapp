@@ -3,97 +3,128 @@ import "./AddEvent.css";
 import { get } from "../../utilities";
 
 const AddEvent = (props) => {
-  const eventname = document.querySelector("input[name=eventname]");
-  const group = document.querySelector("input[name=group]");
-  const location = document.querySelector("input[name=location]");
-  const start = document.querySelector("input[name=start]");
-  const end = document.querySelector("input[name=end]");
-  const description = document.querySelector("input[name=description]");
-  const keywords = document.querySelector("input[name=keywords]");
-  const guestlistneeded = document.querySelector("input[name=guestlistneeded]");
-  const guests = document.querySelector("input[name=guests]");
-
-
-  const [newEvent, setnewEvent] = useState({
-    user_id: 0,
-    name: "",
-    group: "",
-    location: "",
-    start: null,
-    end: null,
-    description: "",
-    keywords: [],
-    guestlistNeeded: false,
-    guests: [],
-  });
-
-  if (eventname) {
-    eventname.addEventListener('change', function() {
-      setnewEvent({name: this.target.value});
-    });
-  }
-  if (group) {
-    group.addEventListener('change', function() {
-      setnewEvent({group: this.target.value});
-    });
-  }
-  if (location) {
-    location.addEventListener('change', function() {
-      setnewEvent({location: this.target.value});
-    });
-  }
-  if (start) {
-    start.addEventListener('change', function() {
-      setnewEvent({start: this.target.value});
-    });
-  }
-
-  const loadTest = () => {
-    console.log(newEvent);
-  }
-
-  const loadNewEvent = () => {
-    setnewEvent({
-      user_id: props.user_id
-    });
-  }
+  const [eventName, setEventName] = useState("");
+  const [eventGroup, setEventGroup] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventStart, setEventStart] = useState(undefined);
+  const [eventEnd, setEventEnd] = useState(undefined);
+  const [eventKeywords, setEventKeywords] = useState([]);
+  const [eventGuestlistNeeded, setEventGuestlistNeeded] = useState(false);
+  const [err, setErr] = useState("");
 
   //posting the new event to database
   //ask how to pass arguments
-  const postNewEvent = () => {
-    post("api/add-event");
-  }
-
-  /*useEffect( () => {
-      loadNewEvent();
-      postNewEvent();
-  }, []); */
-
-  useEffect( () => {
-    loadTest();
-  }, []);
-
+  const postNewEvent = (event) => {
+    event.preventDefault();
+    if (
+      !(
+        eventName &&
+        eventGroup &&
+        eventLocation &&
+        eventDescription &&
+        eventStart &&
+        eventEnd &&
+        eventKeywords
+      )
+    ) {
+      setErr("One of your input fields is empty. Please fill them all to proceed.");
+    } else if (Date.parse(eventStart) > Date.parse(eventEnd)) {
+      //end is less than start
+      setErr("The end date is less than the start date. Please fix to proceed.");
+    } else {
+      setErr("");
+      let newEvent = {
+        name: eventName,
+        group: eventGroup,
+        location: eventLocation,
+        start: eventStart,
+        end: eventEnd,
+        description: eventDescription,
+        keywords: eventKeywords,
+        guestlistNeeded: eventGuestlistNeeded,
+        guests: [],
+      };
+      // post("api/add-event", newEvent);
+      console.log(newEvent);
+    }
+  };
 
   return (
-    <div>
+    <div className="center">
       <h1>Add Event</h1>
-      Name:
-      <input name = "eventname" type = "textbox" placeholder="Enter some text" />
+      Name:{" "}
+      <input
+        name="eventname"
+        type="textbox"
+        placeholder="Enter some text"
+        value={eventName}
+        onChange={(event) => setEventName(event.target.value)}
+        required
+      />
+      <br></br>
       Group:
-      <input name = "group" type = "textbox" placeholder="Enter some text"/>
+      <input
+        name="group"
+        type="textbox"
+        placeholder="Enter some text"
+        value={eventGroup}
+        onChange={(event) => setEventGroup(event.target.value)}
+        required
+      />
+      <br></br>
       Location:
-      <input name = "location" type = "textbox" placeholder="Enter some text"/>
+      <input
+        name="location"
+        type="textbox"
+        placeholder="Enter some text"
+        value={eventLocation}
+        onChange={(event) => setEventLocation(event.target.value)}
+        required
+      />
+      <br></br>
       Description:
-      <input name = "description" type = "textbox" placeholder="Enter some text"/>
-      Start Date:
-      <input type="date" name ="start" min="2018-01-01" max="2023-12-31"/>
-      Guest List Needed:
-      <input name = "guestlistneeded" type = "checkbox"/>
-      Guest List:
-      <input name = "guestlist" type = "search" placeholder="Enter guest names"/>
-
+      <textarea
+        name="description"
+        placeholder="Enter some text"
+        value={eventDescription}
+        onChange={(event) => setEventDescription(event.target.value)}
+        required
+      ></textarea>
+      <br></br>
+      Start Date and Time:
+      <input
+        type="datetime-local"
+        name="start"
+        min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
+        max="2023-12-31T23:59"
+        value={eventStart}
+        onChange={(event) => setEventStart(event.target.value)}
+        required
+      />
+      <br></br>
+      End Date and Time:
+      <input
+        type="datetime-local"
+        name="start"
+        min={eventStart}
+        max="2023-12-31T23:59"
+        value={eventEnd}
+        onChange={(event) => setEventEnd(event.target.value)}
+        required
+      />
+      <br></br>
+      Guest List Needed:{" "}
+      <input
+        name="guestlistneeded"
+        type="checkbox"
+        value={eventGuestlistNeeded}
+        onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
+      />
+      <br></br>
+      <input value="Add" type="submit" onClick={postNewEvent} />
+      <div>{err}</div>
     </div>
-    
   );
 };
 
