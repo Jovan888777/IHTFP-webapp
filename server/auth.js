@@ -1,7 +1,10 @@
-//require("dotenv").config(); 
+//require("dotenv").config();
 
 const { OAuth2Client } = require("google-auth-library");
 const User = require("./models/user");
+const EventSettings = require("./models/eventsSettings");
+const ClassSettings = require("./models/classSettings");
+const DiningSettings = require("./models/diningSettings");
 const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
@@ -28,7 +31,56 @@ function getOrCreateUser(user) {
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
+      kerb: "",
+      pronouns: "",
+      year: "",
+      pic: "",
+      primaryMajor: "",
+      secondaryMajor: "",
+      minorOne: "",
+      minorTwo: "",
+      concentration: "",
+      friends: [],
     });
+
+    const newDiningSettings = new DiningSettings({
+      user_id: newUser._id,
+      restrictions: [],
+      chosen: [null, null, null],
+      rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
+    });
+
+    const newClassSettings = new ClassSettings({
+      user_id: newUser._id,
+      max_finals: 4,
+      max_units: 48,
+      electiveClasses: [],
+      concClasses: [],
+      HASSClasses: [],
+      CIClasses: [],
+      otherClasses: [],
+      completedClasses: [],
+      currentClasses: [],
+    });
+
+    const newEventSettings = new EventSettings({
+      user_id: newUser._id,
+      allowEmails: true,
+      keywords: [],
+    });
+
+    newDiningSettings
+      .save()
+      .then(() => console.log("successfully added dining settings"))
+      .catch((err) => console.log(`failed to add dining settings:${err}`));
+    newClassSettings
+      .save()
+      .then(() => console.log("successfully added class settings"))
+      .catch((err) => console.log(`failed to add class settings:${err}`));
+    newEventSettings
+      .save()
+      .then(() => console.log("successfully added event settings"))
+      .catch((err) => console.log(`failed to add event settings:${err}`));
 
     return newUser.save();
   });

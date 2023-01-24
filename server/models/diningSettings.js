@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const DiningSettingsSchema = new mongoose.Schema({
-  user_id: Number,
+  user_id: String,
   restrictions: [String],
   chosen: [String],
   rankings: [String],

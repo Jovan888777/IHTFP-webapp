@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 const AddEvent = (props) => {
   const [eventName, setEventName] = useState("");
@@ -12,6 +13,8 @@ const AddEvent = (props) => {
   const [eventKeywords, setEventKeywords] = useState([]);
   const [eventGuestlistNeeded, setEventGuestlistNeeded] = useState(false);
   const [err, setErr] = useState("");
+  const [done, setDone] = useState(null);
+  // const navigate = useNavigate();
 
   //posting the new event to database
   //ask how to pass arguments
@@ -45,13 +48,16 @@ const AddEvent = (props) => {
         guestlistNeeded: eventGuestlistNeeded,
         guests: [],
       };
-      // post("api/add-event", newEvent);
+      // post("api/add-event", newEvent).then(console.log("event added successfully!"));
       console.log(newEvent);
+      setDone(true);
+      // navigate("/my-events");
     }
   };
 
   return (
     <div className="center">
+      {done && <Navigate to="/my-events" replace={true} />}
       <h1>Add Event</h1>
       Name:{" "}
       <input

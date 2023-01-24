@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const EventSettingsSchema = new mongoose.Schema({
-  user_id: Number,
+  user_id: String,
   allowEmails: Boolean,
   keywords: [String],
 });

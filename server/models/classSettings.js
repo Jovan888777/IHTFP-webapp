@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ClassSettingsSchema = new mongoose.Schema({
-  user_id: Number,
+  user_id: String,
   max_finals: Number,
   max_units: Number,
   electiveClasses: [Number],

@@ -81,12 +81,20 @@ router.get("/my-events", (req, res) => {
   Event.find({ user_id: req.user._id }).then((events) => res.send(events));
 });
 
-router.get("/profile", (req, res) => {
-  User.findById(req.query.userid).then((user) => res.send(user));
+router.get("/profile-by-id", (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => res.send(user))
+    .catch((err) => `failed to find user :${err}`);
 });
 
-router.get("/friends", (req, res) => {
-  User.findById(req.query.userid).then((user) => res.send(user.friends));
+router.get("/profile-by-kerb", (req, res) => {
+  User.find({ kerb: req.query.kerb }).then((user) => res.send(user));
+});
+
+router.get("/user-friends", (req, res) => {
+  User.find({ _id: req.query.userId })
+    .then((user) => res.send(user.friends))
+    .catch((err) => `failed to find user :${err}`);
 });
 
 //////////////////// POST METHODS ////////////////////////////
@@ -96,16 +104,16 @@ router.post("/add-user", (req, res) => {
   const newUser = new User({
     name: req.body.name,
     googleid: req.body.googleid,
-    kerb: req.body.kerb,
-    pronouns: req.body.pronouns,
-    year: req.body.year,
-    pic: req.body.pic,
-    primaryMajor: req.body.primaryMajor,
-    secondaryMajor: req.body.secondaryMajor,
-    minorOne: req.body.minorOne,
-    minorTwo: req.body.minorTwo,
-    concentration: req.body.concentration,
-    friends: req.body.friends,
+    kerb: "",
+    pronouns: "",
+    year: "",
+    pic: "",
+    primaryMajor: "",
+    secondaryMajor: "",
+    minorOne: "",
+    minorTwo: "",
+    concentration: "",
+    friends: [],
   });
 
   const newDiningSettings = new DiningSettings({
@@ -219,6 +227,71 @@ router.post("/dining-settings", (req, res) => {
       settings.save();
     })
     .then((settings) => res.send(settings));
+});
+
+// delete event
+router.post("/delete-event", (req, res) => {
+  Event.deleteOne({ _id: req.body.eventId })
+    .then(() => {
+      console.log("successfully deleted event");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event:${err}`);
+      res.send(false);
+    });
+});
+
+// delete user
+router.post("/delete-user", (req, res) => {
+  User.deleteOne({ _id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted user");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted user:${err}`);
+      res.send(false);
+    });
+});
+
+// delete dining settings
+router.post("/delete-dining-settings", (req, res) => {
+  DiningSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted dining settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted dining settings:${err}`);
+      res.send(false);
+    });
+});
+
+// delete class settings
+router.post("/delete-class-settings", (req, res) => {
+  ClassSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted class settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted class settings:${err}`);
+      res.send(false);
+    });
+});
+
+// delete event settings
+router.post("/delete-event-settings", (req, res) => {
+  EventSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted event settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event settings:${err}`);
+      res.send(false);
+    });
 });
 
 // anything else falls to this "not found" case
