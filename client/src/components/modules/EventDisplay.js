@@ -16,9 +16,11 @@ const EventDisplay = (props) => {
                     <li>End time: {props.end}</li>
                     <li>Location: {props.location}</li>
                     <li>Description: {props.description}</li>
+                    <li>Keywords: {JSON.stringify(props.keywords)}</li>
                     </ul>
                 </div>
             </div>
+            
         </div>
       );
 };

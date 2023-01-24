@@ -15,7 +15,7 @@ const MenuSchema = new mongoose.Schema({
   Maseeh: DiningHallSchema,
   Simmons: DiningHallSchema,
   McCormmick: DiningHallSchema,
-  New_Vassar: DiningHallSchema,
+  NewVassar: DiningHallSchema,
   Baker: DiningHallSchema,
 });
 

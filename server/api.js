@@ -165,7 +165,7 @@ router.post("/add-event", (req, res) => {
     description: req.body.description,
     keywords: req.body.keywords,
     guestlistNeeded: req.body.guestlistNeeded,
-    guests: req.body.guests,
+    guests: [],
   });
 
   newEvent.save().then((event) => res.send(event));
