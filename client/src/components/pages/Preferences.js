@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Preferences.css";
 import { get, post } from "../../utilities";
-// import Accordian from "./modules/Accordian.js";
+import Accordian from "../modules/Accordian.js";
 
-const Preferences = () => {
+const Preferences = (props) => {
   const [profile, setProfile] = useState(undefined);
-  const [diningSettings, setDiningSettings] = useState(undefined);
-  const [classSettings, setClassSettings] = useState(undefined);
-  const [eventSettings, setEventSettings] = useState(undefined);
+  const [diningSettings, setDiningSettings] = useState({});
+  const [classSettings, setClassSettings] = useState({});
+  const [eventSettings, setEventSettings] = useState({});
+  const [profileContent, setProfileContent] = useState(<div></div>);
+  const [diningContent, setDiningContent] = useState(<div></div>);
+  const [classContent, setClassContent] = useState(<div></div>);
+  const [eventContent, setEventContent] = useState(<div></div>);
 
   const loadProfile = () => {
-    get("/api/profile-by-id", { userId: props.profileId })
+    get("/api/profile-by-id", { userId: props.userId })
       .then((user) => {
         if (user) {
           let newData = {
@@ -28,6 +32,26 @@ const Preferences = () => {
           setProfile(newData);
         }
       })
+      .then(() => {
+        if (profile) {
+          setProfileContent(
+            <div>
+              Name:{" "}
+              <input name="name" type="textbox" placeholder="Name" value={profile.name} required />
+              Kerb:{" "}
+              <input name="kerb" type="textbox" placeholder="Kerb" value={profile.kerb} required />
+              Pronouns:{" "}
+              <input
+                name="name"
+                type="textbox"
+                placeholder="Pronouns"
+                value={profile.pronouns}
+                required
+              />
+            </div>
+          );
+        }
+      })
       .catch((err) => {
         console.log(`failed to get profile:${err}`);
       });
@@ -43,6 +67,7 @@ const Preferences = () => {
           });
         }
       })
+      .then(() => setDiningContent(<div></div>))
       .catch((err) => {
         console.log(`failed to get dining settings:${err}`);
       });
@@ -52,12 +77,37 @@ const Preferences = () => {
     get("/api/class-settings")
       .then((settings) => {
         if (settings) {
-          setClassSettings({
-            max_finals: settings.max_finals,
-            max_units: settings.max_units,
-          });
+          classSettings.max_finals = settings.max_finals;
+          classSettings.max_units = settings.max_units;
         }
       })
+      .then(() => {
+        console.log(classSettings);
+        if (classSettings) {
+          setClassContent(
+            <div>
+              Max Number of Finals:{" "}
+              <input
+                name="max_finals"
+                type="number"
+                placeholder="Max Finals"
+                value={classSettings.max_finals}
+                required
+              />
+              <br></br>
+              Max Number of Units:{" "}
+              <input
+                name="max_units"
+                type="number"
+                placeholder="Max Units"
+                value={classSettings.max_units}
+                required
+              />
+            </div>
+          );
+        }
+      })
+
       .catch((err) => {
         console.log(`failed to get class settings:${err}`);
       });
@@ -73,6 +123,11 @@ const Preferences = () => {
           });
         }
       })
+      .then(
+        setEventContent(() => {
+          <div></div>;
+        })
+      )
       .catch((err) => {
         console.log(`failed to get event settings:${err}`);
       });
@@ -85,89 +140,36 @@ const Preferences = () => {
     loadEventSettings();
   }, []);
 
-  let profileContent = (
-    <div>
-      Name:{" "}
-      <input
-        name="name"
-        type="textbox"
-        placeholder="Name"
-        value={profile.name}
-        onChange={(event) => updateVals(event)}
-        required
-      />
-      Kerb:{" "}
-      <input
-        name="kerb"
-        type="textbox"
-        placeholder="Kerb"
-        value={profile.kerb}
-        onChange={(event) => updateVals(event)}
-        required
-      />
-      Pronouns:{" "}
-      <input
-        name="name"
-        type="textbox"
-        placeholder="Pronouns"
-        value={profile.pronouns}
-        onChange={(event) => updateVals(event)}
-        required
-      />
-    </div>
-  );
-
-  let diningContent = <div></div>;
-  let eventContent = (
-    <div>
-      Max Number of Finals:{" "}
-      <input
-        name="max_finals"
-        type="number"
-        placeholder="Max Finals"
-        value={eventSettings.max_finals}
-        onChange={(event) => updateVals(event)}
-        required
-      />
-      Max Number of Units:{" "}
-      <input
-        name="max_units"
-        type="number"
-        placeholder="Max Units"
-        value={eventSettings.max_units}
-        onChange={(event) => updateVals(event)}
-        required
-      />
-    </div>
-  );
-  let classContent = <div></div>;
-
   return (
-    <div class="accordion">
-      {/* <Accordian
+    <div className="accordion">
+      <Accordian
         data={profile}
         changing="update-user"
         title="Profile Details"
         content={profileContent}
+        parentFXN={setProfile}
       />
       <Accordian
         data={diningSettings}
         changing="dining-settings"
         title="Dining Settings"
         content={diningContent}
+        parentFXN={setDiningSettings}
       />
       <Accordian
         data={eventSettings}
         changing="event-settings"
         title="Event Settings"
         content={eventContent}
+        parentFXN={setEventSettings}
       />
       <Accordian
         data={classSettings}
         changing="class-settings"
         title="Class Settings"
         content={classContent}
-      /> */}
+        parentFXN={setClassSettings}
+      />
     </div>
   );
 };

@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { get } from "../../utilities";
+import { Link, navigate } from "@reach/router";
+
 import "./MyEvents.css";
 
 import EventDisplay from "../modules/EventDisplay";
-
-const click = () => {
-  navigate("/add-event/")
-}
+import AddEvent from "./AddEvent";
 
 const MyEvents = (props) => {
   //My events array and setting it
   const [myEvents, setmyEvents] = useState([
-    
   ]);
 
   //Function that sets the My events array
@@ -33,7 +31,9 @@ const MyEvents = (props) => {
         <div>
           <EventDisplay {...element} />
           <div className="column">
-            <button onclick = {() => click()}> Edit </button>
+            <button onClick={() => {
+              props.handleEditing(element);
+            }}> Edit </button>
           </div>
         </div>
       ))}

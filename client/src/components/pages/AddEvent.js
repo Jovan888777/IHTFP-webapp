@@ -16,6 +16,24 @@ const AddEvent = (props) => {
   const [done, setDone] = useState(null);
   // const navigate = useNavigate();
 
+  //Setting values according to props preposting
+  const prepost = () => {
+    console.log("success");
+    console.log(props);
+    if (props.eventName) setEventName(props.eventName);
+    if (props.eventGroup) setEventGroup(props.eventGroup);
+    if (props.eventDescription) setEventDescription(props.eventDescription);
+    if (props.eventStart) setEventStart(props.eventStart);
+    if (props.eventEnd) setEventEnd(props.eventEnd);
+    if (props.eventKeywords) setEventKeywords(props.eventKeywords);
+    if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
+    if (props.eventLocation) setEventLocation(props.eventLocation);
+  }
+
+  useEffect( () => {
+    prepost();
+  });
+
   //posting the new event to database
   //ask how to pass arguments
   const postNewEvent = (event) => {
