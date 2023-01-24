@@ -290,7 +290,16 @@ router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
 router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
-      user = req.body.newUser; // NEEDS TO BE CHANGED SO THAT ID AND OTHER THINGS RNT LOST
+      user.name = req.body.new.name;
+      user.kerb = req.body.new.kerb;
+      user.pronouns = req.body.new.pronouns;
+      user.year = req.body.new.year;
+      user.pic = req.body.new.pic;
+      user.primaryMajor = req.body.new.primaryMajor;
+      user.secondaryMajor = req.body.new.secondaryMajor;
+      user.minorOne = req.body.new.minorOne;
+      user.minorTwo = req.body.new.minorTwo;
+      user.concentration = req.body.new.concentration;
       user.save();
     })
     .then((user) => res.send(user))
@@ -303,7 +312,8 @@ router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
 router.post("/event-settings", auth.ensureLoggedIn, (req, res) => {
   EventSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
-      settings = req.body.newSettings;
+      settings.allowEmails = req.body.new.allowEmails;
+      settings.keywords = req.body.new.keywords;
       settings.save();
     })
     .then((settings) => res.send(settings))
@@ -316,7 +326,15 @@ router.post("/event-settings", auth.ensureLoggedIn, (req, res) => {
 router.post("/class-settings", auth.ensureLoggedIn, (req, res) => {
   ClassSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
-      settings = req.body.newSettings;
+      settings.max_finals = req.body.new.max_finals;
+      settings.max_units = req.body.new.max_units;
+      settings.electiveClasses = req.body.new.electiveClasses;
+      settings.concClasses = req.body.new.concClasses;
+      settings.HASSClasses = req.body.new.HASSClasses;
+      settings.CIClasses = req.body.new.CIClasses;
+      settings.otherClasses = req.body.new.otherClasses;
+      settings.completedClasses = req.body.new.completedClasses;
+      settings.currentClasses = req.body.new.currentClasses;
       settings.save();
     })
     .then((settings) => res.send(settings))
@@ -329,12 +347,26 @@ router.post("/class-settings", auth.ensureLoggedIn, (req, res) => {
 router.post("/dining-settings", auth.ensureLoggedIn, (req, res) => {
   DiningSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
-      settings = req.body.newSettings;
+      settings.restrictions = req.body.new.restrictions;
+      settings.rankings = req.body.new.rankings;
       settings.save();
     })
     .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to update dining settings:${err}`);
+    });
+});
+
+// update chosen mean
+router.post("/chosen-meal", auth.ensureLoggedIn, (req, res) => {
+  DiningSettings.findOne({ user_id: req.user._id })
+    .then((settings) => {
+      settings.chosen = req.body.chosen;
+      settings.save();
+    })
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to update chosen meal:${err}`);
     });
 });
 
