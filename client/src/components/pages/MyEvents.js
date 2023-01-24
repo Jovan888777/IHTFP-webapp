@@ -4,9 +4,15 @@ import "./MyEvents.css";
 
 import EventDisplay from "../modules/EventDisplay";
 
+const click = () => {
+  navigate("/add-event/")
+}
+
 const MyEvents = (props) => {
   //My events array and setting it
-  const [myEvents, setmyEvents] = useState([]);
+  const [myEvents, setmyEvents] = useState([
+    
+  ]);
 
   //Function that sets the My events array
   const loadMyEvents = () => {
@@ -27,7 +33,7 @@ const MyEvents = (props) => {
         <div>
           <EventDisplay {...element} />
           <div className="column">
-            <button> Edit </button>
+            <button onclick = {() => click()}> Edit </button>
           </div>
         </div>
       ))}

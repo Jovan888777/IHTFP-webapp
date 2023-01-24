@@ -12,6 +12,7 @@ const NavBar = (props) => {
   const logClick = () => {
     props.googleLogout();
     props.handleLogout();
+    window.location.href = "/";
   };
 
   if (props.userId) {

@@ -58,7 +58,7 @@ const App = () => {
 
   return (
     <>
-      <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
+      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} />
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path="/add-event/" userId={userId} />
