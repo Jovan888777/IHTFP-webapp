@@ -29,8 +29,8 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // database URL
-const mongoConnectionURL =
-  "mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
+const mongoConnectionURL = process.env.MONGO_SRV;
+  //"mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
 const databaseName = "MainData";
 
 // connect to mongodb
@@ -54,7 +54,7 @@ app.use(express.json());
 app.use(
   session({
     // TODO: add a SESSION_SECRET string in your .env file, and replace the secret with process.env.SESSION_SECRET
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
