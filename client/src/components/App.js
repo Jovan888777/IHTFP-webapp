@@ -3,6 +3,7 @@ import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
+import { Link, navigate } from "@reach/router";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
 // CSS Files
@@ -29,8 +30,9 @@ import NotFound from "./pages/NotFound.js";
 /**
  * Define the "App" component
  */
-const App = () => {
+const App = (props) => {
   const [userId, setUserId] = useState(undefined);
+  const [eventInfo, setEventInfo] = useState(undefined);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -56,14 +58,31 @@ const App = () => {
     post("/api/logout");
   };
 
+  const handleEditing = (element) => {
+    console.log("went inside");
+    setEventInfo({
+      userId: element.userId,
+      eventName: element.name,
+      eventGroup: element.group,
+      eventDescription: element.description,
+      eventStart: element.start,
+      eventEnd: element.end,
+      eventKeywords: element.keywords,
+      eventGuestlistNeeded: element.guestlistNeeded,
+      eventLocation: element.location,
+    });
+    navigate("/add-event/");
+
+  }
+
   return (
     <>
       <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} />
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <AddEvent path="/add-event/" userId={userId} />
+        <AddEvent path="/add-event/" {...eventInfo}/>
         <ViewEvent path="/events/" userId={userId} />
-        <MyEvents path="/my-events/" userId={userId} />
+        <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing}/>
         <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
         <SharedClasses path="/shared-classes/" userId={userId} />
         <GeneralDining path="/menus/" userId={userId} />
