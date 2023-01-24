@@ -37,7 +37,14 @@ const MyEvents = (props) => {
   return (
     <div>
       <h1>My Events</h1>
-      {myEvents.map((element, index) => (<EventDisplay {...element}/>))}
+      {myEvents.map((element) => 
+      <div>
+        <EventDisplay {...element}/>
+        <div className ="column">
+          <button> Edit </button>
+        </div>
+      </div>
+      )}
     </div>
 
   );
