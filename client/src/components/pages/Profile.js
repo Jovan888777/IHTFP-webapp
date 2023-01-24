@@ -4,107 +4,90 @@ import "./Profile.css";
 
 import ProfileDisplay from "../modules/ProfileDisplay";
 
-
 const Profile = (props) => {
   /// Use flex to make picture and data nicer
   /// Picture link apparently not working because need to load from API
 
-  const [profile, setProfile] = useState({
-    name: "String",
-    googleid: "String",
-    kerb: "String",
-    pronouns: 0,
-    year: 0,
-    pic: "String",
-    primaryMajor: 0,
-    secondaryMajor: 0,
-    minorOne: "Number",
-    minorTwo: "Number",
-    concentration: "String",
-    friends: [2, 3],
-  });
+  const [profile, setProfile] = useState(undefined);
+  const [myFriends, setmyFriends] = useState([]);
+  const [mutual, setMutual] = useState([]);
 
-  const [myFriends, setmyFriends] = useState(
-    [{name: "bla",
-    googleid: 2,
-    kerb: "bla",
-    pronouns: 0,
-    year: 0,
-    pic: "bla",
-    primaryMajor: 0,
-    secondaryMajor: 0,
-    minorOne: "bla",
-    minorTwo: "bla",
-    concentration: "bla",
-    friends: [2, 3],
-  },
-  {name: "bla",
-    googleid: 3,
-    kerb: "kakakakakak",
-    pronouns: 0,
-    year: 0,
-    pic: "bla",
-    primaryMajor: 0,
-    secondaryMajor: 0,
-    minorOne: "bla",
-    minorTwo: "bla",
-    concentration: "bla",
-    friends: [2, 3],
-  }]);
-
-
-  const [mutual, setMutual] = useState(
-    []
-  );
+  const [display, setDisplay] = useState("Mutual Friends");
 
   //Loading the profile of requested user
-  const loadProfile = (user_id) => {
-    get("api/profile", {userid : user_id}).then(
-      (user) => {setProfile(user)}
+  const loadProfile = () => {
+    get("/api/profile-by-id", { userId: props.profileId })
+      .then((user) => {
+        if (user) {
+          let newData = {
+            name: user.name,
+            kerb: user.kerb,
+            pronouns: user.pronouns,
+            year: user.year,
+            pic: user.pic,
+            primaryMajor: user.primaryMajor,
+            secondaryMajor: user.secondaryMajor,
+            minorOne: user.minorOne,
+            minorTwo: user.minorTwo,
+            concentration: user.concentration,
+            friends: user.friends,
+          };
+          setProfile(newData);
+          if (props.userId === props.profileId) setDisplay("My Friends");
+        }
+      })
+      .catch((err) => {
+        console.log(`failed to get profile:${err}`);
+      });
+  };
+
+  //Loading friends of logged in user
+  const loadMyFriends = () => {
+    if (props.userId) {
+      get("/api/user-friends", { userId: props.userId })
+        .then((friends) => setmyFriends(friends))
+        .catch((err) => {
+          console.log(`failed to get my friends:${err}`);
+        });
+    }
+  };
+
+  //Loading mutual friends
+  const loadMutual = () => {
+    setMutual(
+      myFriends.filter((element) => {
+        return profile.friends.includes(element);
+      })
+    );
+  };
+
+  useEffect(() => {
+    loadProfile();
+    loadMyFriends();
+    loadMutual();
+  }, [props.profileId]); // Must also change when friends change
+
+  let content;
+  if (!profile) {
+    content = (
+      <div className="center">
+        <h3>Sorry no such user exists!</h3>
+      </div>
+    );
+  } else {
+    content = (
+      <div>
+        <ProfileDisplay {...profile} />
+        <button>Edit</button>
+        <h2 className="u-textCenter"> {display} </h2>
+        {mutual.map((element) => (
+          <ProfileDisplay {...element} />
+        ))}
+      </div>
     );
   }
 
-  //Loading friends of logged in user
-  const loadMyFriends = (my_user_id) => {
-    get("api/friends", {userid: my_user_id}).then(
-      (friends) => {setmyFriends(friends)}
-    )
-  }
-
-  //Loading mutual friends
-  //tell Jennifer about googleid thing
-  const loadMutual = () => {
-    setMutual ( 
-      myFriends.filter(
-        (element) => { return profile.friends.includes(element.googleid) }
-    ));
-  }
-
-  /*
-  useEffect ( () => {
-    loadProfile(props.user_id);
-    loadMyFriends(props.my_user_id);
-  }, [user_id]
-  );
-  */
-
-  useEffect ( () => {
-    loadMutual();
-  }, [] 
-  );
-
-  let display = "Mutual Friends";
-  if (props.user_id === props.my_user_id)
-    display = "My Friends";
-
-  return (
-    <div>
-      <ProfileDisplay {...profile}/>
-      <button>Edit</button>
-      <h2 className = "u-textCenter"> {display} </h2>
-      {mutual.map((element) => (<ProfileDisplay {...element}/>))}
-    </div>
-  );
+  return content;
 };
 
 export default Profile;

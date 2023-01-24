@@ -68,7 +68,7 @@ const App = () => {
         <SharedClasses path="/shared-classes/" userId={userId} />
         <GeneralDining path="/menus/" userId={userId} />
         <SharedDining path="/shared-dining/" userId={userId} />
-        <Profile path="/profile/" user_id={userId} my_user_id={userId}/>
+        <Profile path="/profile/:profileId" userId={userId} />
         <Friends path="/friends/" userId={userId} />
         <Preferences path="/preferences/" userId={userId} />
         <NotFound default />

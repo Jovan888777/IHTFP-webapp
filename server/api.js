@@ -48,64 +48,110 @@ router.post("/initsocket", (req, res) => {
 // });
 
 router.get("/current-classes", (req, res) => {
-  ClassSettings.findOne({ user_id: req.query.userid }).then((settings) =>
-    res.send(settings.currentClasses)
-  );
+  ClassSettings.findOne({ user_id: req.query.userid })
+    .then((settings) => res.send(settings.currentClasses))
+    .catch((err) => {
+      console.log(`failed to get current classes:${err}`);
+    });
 });
 
 router.get("/menus", (req, res) => {
-  Menu.find({}).then((menus) => res.send(menus));
+  Menu.findOne({})
+    .then((menus) => res.send(menus))
+    .catch((err) => {
+      console.log(`failed to get menus:${err}`);
+    });
 });
 
 router.get("/event-settings", (req, res) => {
-  EventSettings.findOne({ user_id: req.user._id }).then((settings) => res.send(settings));
+  EventSettings.findOne({ user_id: req.user._id })
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to get events settings:${err}`);
+    });
 });
 
 router.get("/class-settings", (req, res) => {
-  ClassSettings.findOne({ user_id: req.user._id }).then((settings) => res.send(settings));
+  ClassSettings.findOne({ user_id: req.user._id })
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to get class settings:${err}`);
+    });
 });
 
 router.get("/dining-settings", (req, res) => {
-  DiningSettings.findOne({ user_id: req.user._id }).then((settings) => res.send(settings));
+  DiningSettings.findOne({ user_id: req.user._id })
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to get dining settings:${err}`);
+    });
 });
 
 router.get("/dining-choice", (req, res) => {
-  DiningSettings.findOne({ user_id: req.user._id }).then((settings) => res.send(settings.choice));
+  DiningSettings.findOne({ user_id: req.user._id })
+    .then((settings) => res.send(settings.choice))
+    .catch((err) => {
+      console.log(`failed to get dining choice:${err}`);
+    });
 });
 
 router.get("/events", (req, res) => {
-  Event.find({}).then((events) => res.send(events));
+  Event.find({})
+    .then((events) => res.send(events))
+    .catch((err) => {
+      console.log(`failed to get all events:${err}`);
+    });
 });
 
 router.get("/my-events", (req, res) => {
-  Event.find({ user_id: req.user._id }).then((events) => res.send(events));
+  Event.find({ user_id: req.user._id })
+    .then((events) => res.send(events))
+    .catch((err) => {
+      console.log(`failed to get my events:${err}`);
+    });
 });
 
-router.get("/profile", (req, res) => {
-  User.findById(req.query.userid).then((user) => res.send(user));
+router.get("/profile-by-id", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => res.send(user))
+    .catch((err) => {
+      console.log(`failed to get profile by id:${err}`);
+    });
 });
 
-router.get("/friends", (req, res) => {
-  User.findById(req.query.userid).then((user) => res.send(user.friends));
+router.get("/profile-by-kerb", (req, res) => {
+  User.find({ kerb: req.query.kerb })
+    .then((user) => res.send(user))
+    .catch((err) => {
+      console.log(`failed to get profile by kerb:${err}`);
+    });
+});
+
+router.get("/user-friends", (req, res) => {
+  User.findOne({ _id: req.query.userId })
+    .then((user) => res.send(user.friends))
+    .catch((err) => `failed to find user friends:${err}`);
 });
 
 //////////////////// POST METHODS ////////////////////////////
 
+//////////////////// ADDING ////////////////////////////
+
 // add user
-router.post("/add-user", (req, res) => {
+router.post("/add-user", auth.ensureLoggedIn, (req, res) => {
   const newUser = new User({
     name: req.body.name,
     googleid: req.body.googleid,
-    kerb: req.body.kerb,
-    pronouns: req.body.pronouns,
-    year: req.body.year,
-    pic: req.body.pic,
-    primaryMajor: req.body.primaryMajor,
-    secondaryMajor: req.body.secondaryMajor,
-    minorOne: req.body.minorOne,
-    minorTwo: req.body.minorTwo,
-    concentration: req.body.concentration,
-    friends: req.body.friends,
+    kerb: "",
+    pronouns: "",
+    year: "",
+    pic: "",
+    primaryMajor: "",
+    secondaryMajor: "",
+    minorOne: "",
+    minorTwo: "",
+    concentration: "",
+    friends: [],
   });
 
   const newDiningSettings = new DiningSettings({
@@ -154,7 +200,7 @@ router.post("/add-user", (req, res) => {
 });
 
 // add event
-router.post("/add-event", (req, res) => {
+router.post("/add-event", auth.ensureLoggedIn, (req, res) => {
   const newEvent = new Event({
     user_id: req.user._id,
     name: req.body.name,
@@ -168,57 +214,208 @@ router.post("/add-event", (req, res) => {
     guests: [],
   });
 
-  newEvent.save().then((event) => res.send(event));
+  newEvent
+    .save()
+    .then((event) => {
+      res.send(event);
+    })
+    .catch((err) => console.log("failed at adding event:" + err));
 });
 
+// add menus
+router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
+  const newMenus = new Menu({
+    Next: {
+      breakfast: req.body.nextb,
+      lunch: [],
+      dinner: req.body.nextd,
+      lateNight: [],
+    },
+    Maseeh: {
+      breakfast: req.body.maseehb,
+      lunch: req.body.maseehl,
+      dinner: req.body.maseehd,
+      lateNight: req.body.maseehln,
+    },
+    Simmons: {
+      breakfast: req.body.simmonsb,
+      lunch: [],
+      dinner: req.body.simmonsd,
+      lateNight: req.body.simmonsln,
+    },
+    McCormmick: {
+      breakfast: req.body.mccormmickb,
+      lunch: [],
+      dinner: req.body.mccormmickd,
+      lateNight: [],
+    },
+    NewVassar: {
+      breakfast: req.body.newvassarb,
+      lunch: req.body.newvassarl,
+      dinner: req.body.newvassard,
+      lateNight: [],
+    },
+    Baker: {
+      breakfast: req.body.bakerb,
+      lunch: [],
+      dinner: req.body.bakerd,
+      lateNight: [],
+    },
+  });
+
+  newMenus
+    .save()
+    .then((event) => {
+      res.send(event);
+    })
+    .catch((err) => console.log("failed at adding menus:" + err));
+});
+
+//////////////////// UPDATING ////////////////////////////
+
 // update event details
-router.post("/update-event", (req, res) => {
+router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
   Event.findById(req.body.eventId)
     .then((event) => {
       event = req.body.newEvent;
       event.save();
     })
-    .then((event) => res.send(event));
+    .then((event) => res.send(event))
+    .catch((err) => {
+      console.log(`failed to update event:${err}`);
+    });
 });
 
 // update user details
-router.post("/update-user", (req, res) => {
+router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
-      user = req.body.newUser;
+      user = req.body.newUser; // NEEDS TO BE CHANGED SO THAT ID AND OTHER THINGS RNT LOST
       user.save();
     })
-    .then((user) => res.send(user));
+    .then((user) => res.send(user))
+    .catch((err) => {
+      console.log(`failed to update user details:${err}`);
+    });
 });
 
 // update event settings
-router.post("/event-settings", (req, res) => {
+router.post("/event-settings", auth.ensureLoggedIn, (req, res) => {
   EventSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
       settings = req.body.newSettings;
       settings.save();
     })
-    .then((settings) => res.send(settings));
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to update event settings:${err}`);
+    });
 });
 
 // update class settings
-router.post("/class-settings", (req, res) => {
+router.post("/class-settings", auth.ensureLoggedIn, (req, res) => {
   ClassSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
       settings = req.body.newSettings;
       settings.save();
     })
-    .then((settings) => res.send(settings));
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to update class settings:${err}`);
+    });
 });
 
 // update dining settings
-router.post("/dining-settings", (req, res) => {
+router.post("/dining-settings", auth.ensureLoggedIn, (req, res) => {
   DiningSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
       settings = req.body.newSettings;
       settings.save();
     })
-    .then((settings) => res.send(settings));
+    .then((settings) => res.send(settings))
+    .catch((err) => {
+      console.log(`failed to update dining settings:${err}`);
+    });
+});
+
+//////////////////// DELETING ////////////////////////////
+
+// delete event
+router.post("/delete-event", auth.ensureLoggedIn, (req, res) => {
+  Event.deleteOne({ _id: req.body.eventId })
+    .then(() => {
+      console.log("successfully deleted event");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event:${err}`);
+      res.send(false);
+    });
+});
+
+// delete user
+router.post("/delete-user", auth.ensureLoggedIn, (req, res) => {
+  User.deleteOne({ _id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted user");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted user:${err}`);
+      res.send(false);
+    });
+});
+
+// delete all menus
+router.post("/delete-menus", auth.ensureLoggedIn, (req, res) => {
+  Event.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted menus");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted menus:${err}`);
+      res.send(false);
+    });
+});
+
+// delete dining settings
+router.post("/delete-dining-settings", auth.ensureLoggedIn, (req, res) => {
+  DiningSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted dining settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted dining settings:${err}`);
+      res.send(false);
+    });
+});
+
+// delete class settings
+router.post("/delete-class-settings", auth.ensureLoggedIn, (req, res) => {
+  ClassSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted class settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted class settings:${err}`);
+      res.send(false);
+    });
+});
+
+// delete event settings
+router.post("/delete-event-settings", auth.ensureLoggedIn, (req, res) => {
+  EventSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted event settings");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event settings:${err}`);
+      res.send(false);
+    });
 });
 
 // anything else falls to this "not found" case
