@@ -128,7 +128,7 @@ router.get("/profile-by-kerb", (req, res) => {
 });
 
 router.get("/user-friends", (req, res) => {
-  User.find({ _id: req.query.userId })
+  User.findOne({ _id: req.query.userId })
     .then((user) => res.send(user.friends))
     .catch((err) => `failed to find user friends:${err}`);
 });

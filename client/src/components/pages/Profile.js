@@ -16,31 +16,39 @@ const Profile = (props) => {
 
   //Loading the profile of requested user
   const loadProfile = () => {
-    get("/api/profile-by-id", { userId: props.profileId }).then((user) => {
-      if (user) {
-        let newData = {
-          name: user.name,
-          kerb: user.kerb,
-          pronouns: user.pronouns,
-          year: user.year,
-          pic: user.pic,
-          primaryMajor: user.primaryMajor,
-          secondaryMajor: user.secondaryMajor,
-          minorOne: user.minorOne,
-          minorTwo: user.minorTwo,
-          concentration: user.concentration,
-          friends: user.friends,
-        };
-        setProfile(newData);
-        if (props.userId === props.profileId) setDisplay("My Friends");
-      }
-    });
+    get("/api/profile-by-id", { userId: props.profileId })
+      .then((user) => {
+        if (user) {
+          let newData = {
+            name: user.name,
+            kerb: user.kerb,
+            pronouns: user.pronouns,
+            year: user.year,
+            pic: user.pic,
+            primaryMajor: user.primaryMajor,
+            secondaryMajor: user.secondaryMajor,
+            minorOne: user.minorOne,
+            minorTwo: user.minorTwo,
+            concentration: user.concentration,
+            friends: user.friends,
+          };
+          setProfile(newData);
+          if (props.userId === props.profileId) setDisplay("My Friends");
+        }
+      })
+      .catch((err) => {
+        console.log(`failed to get profile:${err}`);
+      });
   };
 
   //Loading friends of logged in user
   const loadMyFriends = () => {
     if (props.userId) {
-      get("api/user-friends", { userId: props.userId }).then((friends) => setmyFriends(friends));
+      get("/api/user-friends", { userId: props.userId })
+        .then((friends) => setmyFriends(friends))
+        .catch((err) => {
+          console.log(`failed to get my friends:${err}`);
+        });
     }
   };
 
