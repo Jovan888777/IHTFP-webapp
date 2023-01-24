@@ -65,7 +65,9 @@ router.get("/menus", (req, res) => {
 
 router.get("/event-settings", (req, res) => {
   EventSettings.findOne({ user_id: req.user._id })
-    .then((settings) => res.send(settings))
+    .then((settings) => {
+      res.send(settings);
+    })
     .catch((err) => {
       console.log(`failed to get events settings:${err}`);
     });
@@ -73,7 +75,9 @@ router.get("/event-settings", (req, res) => {
 
 router.get("/class-settings", (req, res) => {
   ClassSettings.findOne({ user_id: req.user._id })
-    .then((settings) => res.send(settings))
+    .then((settings) => {
+      res.send(settings);
+    })
     .catch((err) => {
       console.log(`failed to get class settings:${err}`);
     });
