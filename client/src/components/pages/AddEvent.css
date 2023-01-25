@@ -1,0 +1,43 @@
+.addCard {
+    background-color: #898d8d;
+    display: inline-block;
+    border-radius: 10%;
+    padding-bottom: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: 3%;
+    width: 30%;
+    height: 100%
+}
+
+.inputs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 20px;
+}
+
+.halfWidth {
+    width: 50%;
+    height: 40px;
+    text-align: center
+
+}
+
+.fullWidth {
+    width: 100%
+}
+
+.inputBox {
+    border-radius: 25%;
+    border: 0;
+    height: 20px;
+    width: 175px
+}
+
+.addBox {
+    border-radius: 25%;
+    border: 0;
+    height: 80px;
+    width: 175px
+}
