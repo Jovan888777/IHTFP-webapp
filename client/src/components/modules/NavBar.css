@@ -23,14 +23,14 @@
 .navigation {
   height: var(--nav-height);
   background: #9d2235;
-  border-image: linear-gradient(#9d2235, #c7c9c7) 50;
-  border-bottom: 10px;
+  border-bottom: 0;
   border-top: 0;
   border-left: 0;
   border-right: 0;
   border-style: solid;
 }
 /* var(--dark-purple) */
+/* border-image: linear-gradient(#9d2235, #c7c9c7) 50 */
 
 /* Navbar container */
 .navbar {
