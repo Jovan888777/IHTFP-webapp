@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 // import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
 import { get, post } from "../../utilities";
+import * as moment from 'moment';
 
 const AddEvent = (props) => {
+  const [edit, setEdit] = useState(false);
+  const [routeStrings, setRouteStrings] = useState({
+    api: "/api/add-event",
+    button: "Add",
+    console: "Your event was successfully added!",
+  });
   const [eventName, setEventName] = useState("");
   const [eventGroup, setEventGroup] = useState("");
   const [eventLocation, setEventLocation] = useState("");
@@ -14,24 +21,35 @@ const AddEvent = (props) => {
   const [eventGuestlistNeeded, setEventGuestlistNeeded] = useState(false);
   const [err, setErr] = useState("");
   const [done, setDone] = useState(null);
-  // const navigate = useNavigate();
 
   //Setting values according to props preposting
   const prepost = () => {
-    console.log("success");
-    console.log(props);
-    if (props.eventName) setEventName(props.eventName);
+    console.log("prepost");
+    console.log(props.eventName);
+    if (props.eventName) {
+      setEventName(props.eventName);
+      setRouteStrings({
+        api: "/api/update-event",
+        button: "Edit",
+        console: "Your event was successfully edited!"});
+    }
     if (props.eventGroup) setEventGroup(props.eventGroup);
     if (props.eventDescription) setEventDescription(props.eventDescription);
-    if (props.eventStart) setEventStart(props.eventStart);
-    if (props.eventEnd) setEventEnd(props.eventEnd);
+    if (props.eventStart)
+      setEventStart(moment(props.eventStart).format("YYYY-MM-DDTkk:mm"));
+    if (props.eventEnd) 
+      setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
     if (props.eventKeywords) setEventKeywords(props.eventKeywords);
     if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
     if (props.eventLocation) setEventLocation(props.eventLocation);
+
   }
 
   useEffect( () => {
-    prepost();
+    if (edit == false) {
+      prepost();
+      setEdit(true);
+    }
   });
 
   //posting the new event to database
@@ -66,23 +84,35 @@ const AddEvent = (props) => {
         guestlistNeeded: eventGuestlistNeeded,
         guests: [],
       };
-      post("/api/add-event", newEvent)
-        .then(console.log("event added successfully!"))
+      //Resetting the textbox states
+      console.log(routeStrings.api);
+      console.log(newEvent);
+      post(routeStrings.api, newEvent)
+        .then(console.log(routeStrings.console))
         .catch((err) => console.log(err));
       console.log(newEvent);
       setDone(true);
       // navigate("/my-events");
+
+      setEventName("");
+      setEventGroup("");
+      setEventLocation("");
+      setEventDescription("");
+      setEventStart(undefined);
+      setEventEnd(undefined);
+      setEventKeywords([]);
+      setEventGuestlistNeeded(false);
     }
   };
 
   return (
     <div className="center">
       <div className="center" hidden={!done}>
-        Successfully added your event!
+        {routeStrings.console}
       </div>
       <div className="addCard center" hidden={done}>
         {/* {done && <Navigate to="/my-events" replace={true} />} */}
-        <h1>Add Event</h1>
+        <h1>{routeStrings.button} Event</h1>
         <div className="inputs">
           <div className="halfWidth">
             Name:
@@ -94,7 +124,7 @@ const AddEvent = (props) => {
               type="textbox"
               placeholder="Enter some text"
               value={eventName}
-              onChange={(event) => setEventName(event.target.value)}
+              onChange={(event) => {setEventName(event.target.value)}}
               required
             />
           </div>
@@ -182,7 +212,7 @@ const AddEvent = (props) => {
             />
           </div>
           <div className="fullWidth">
-            <input className ="inputBox" value="Add" type="submit" onClick={postNewEvent} />
+            <input className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent} />
           </div>
           <div className="fullWidth">
             {err}
@@ -195,7 +225,3 @@ const AddEvent = (props) => {
 
 export default AddEvent;
 
-/*
-      
-       value="2023-01-22"
-       min="2022-01-01" max="2023-12-31"</input> */

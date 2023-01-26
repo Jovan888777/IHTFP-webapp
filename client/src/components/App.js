@@ -72,12 +72,26 @@ const App = (props) => {
       eventLocation: element.location,
     });
     navigate("/add-event/");
+  }
 
+  const handleAddEvent = () => {
+    console.log("handling");
+    setEventInfo({
+      eventName: "",
+      eventGroup: "",
+      eventDescription: "",
+      eventStart: null,
+      eventEnd: null,
+      eventKeywords: [],
+      eventGuestlistNeeded: false,
+      eventLocation: "",
+    });
+    navigate("/add-event/");
   }
 
   return (
     <>
-      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} />
+      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} handleAddEvent = {handleAddEvent}/>
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path="/add-event/" {...eventInfo}/>
