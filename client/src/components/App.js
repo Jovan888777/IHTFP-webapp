@@ -60,8 +60,10 @@ const App = (props) => {
 
   const handleEditing = (element) => {
     console.log("went inside");
+    console.log(element);
     setEventInfo({
-      userId: element.userId,
+      eventId: element._id,
+      userId: element.user_id,
       eventName: element.name,
       eventGroup: element.group,
       eventDescription: element.description,
@@ -77,6 +79,7 @@ const App = (props) => {
   const handleAddEvent = () => {
     console.log("handling");
     setEventInfo({
+      eventId: null,
       eventName: "",
       eventGroup: "",
       eventDescription: "",

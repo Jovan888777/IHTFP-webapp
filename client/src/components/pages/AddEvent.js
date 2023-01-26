@@ -21,6 +21,7 @@ const AddEvent = (props) => {
   const [eventGuestlistNeeded, setEventGuestlistNeeded] = useState(false);
   const [err, setErr] = useState("");
   const [done, setDone] = useState(null);
+  const [eventId, setEventId] = useState(null);
 
   //Setting values according to props preposting
   const prepost = () => {
@@ -42,6 +43,7 @@ const AddEvent = (props) => {
     if (props.eventKeywords) setEventKeywords(props.eventKeywords);
     if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
     if (props.eventLocation) setEventLocation(props.eventLocation);
+    if (props.eventId) setEventId(props.eventId);
 
   }
 
@@ -74,23 +76,42 @@ const AddEvent = (props) => {
     } else {
       setErr("");
       let newEvent = {
-        name: eventName,
-        group: eventGroup,
-        location: eventLocation,
-        start: eventStart,
-        end: eventEnd,
-        description: eventDescription,
-        keywords: eventKeywords,
-        guestlistNeeded: eventGuestlistNeeded,
-        guests: [],
+          name: eventName,
+          group: eventGroup,
+          location: eventLocation,
+          start: eventStart,
+          end: eventEnd,
+          description: eventDescription,
+          keywords: eventKeywords,
+          guestlistNeeded: eventGuestlistNeeded,
+          guests: [],
+      };
+      let  editedEvent = {
+          eventId: eventId,
+          userId: props.userId,
+          name: eventName,
+          group: eventGroup,
+          location: eventLocation,
+          start: eventStart,
+          end: eventEnd,
+          description: eventDescription,
+          keywords: eventKeywords,
+          guestlistNeeded: eventGuestlistNeeded,
+          guests: [],
       };
       //Resetting the textbox states
       console.log(routeStrings.api);
-      console.log(newEvent);
-      post(routeStrings.api, newEvent)
-        .then(console.log(routeStrings.console))
-        .catch((err) => console.log(err));
-      console.log(newEvent);
+      if (routeStrings.api === "/api/add-event") {
+        post(routeStrings.api, newEvent)
+          .then(console.log(routeStrings.console))
+          .catch((err) => console.log(err));
+      }
+      else if (routeStrings.api === "/api/update-event") {
+        console.log(editedEvent);
+        post(routeStrings.api, editedEvent)
+          .then(console.log(routeStrings.console))
+          .catch((err) => console.log(err));
+      }
       setDone(true);
       // navigate("/my-events");
 
@@ -102,6 +123,7 @@ const AddEvent = (props) => {
       setEventEnd(undefined);
       setEventKeywords([]);
       setEventGuestlistNeeded(false);
+      setEventId(null);
     }
   };
 
