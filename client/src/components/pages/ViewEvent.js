@@ -5,6 +5,9 @@ import { get } from "../../utilities";
 import EventDisplay from "../modules/EventDisplay";
 
 const ViewEvent = (props) => {
+  /*
+  TO DO: add some type of array sort by date
+  */
   //Checked box state, if true means we need to filter
   const [checkbox, setCheckBox] = useState(false);
   //Loaded checks if we need to filter with search bar

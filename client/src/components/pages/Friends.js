@@ -8,16 +8,12 @@ import FriendDisplay from "../modules/FriendDisplay";
 import "./Friends.css";
 
 const Friends = (props) => {
-  const [myId, setMyId] = useState(undefined);
-
   const [users, setUsers] = useState([]);
   const [filteredUsers, setfilteredUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
 
   const loadUsers = () => {
-    console.log(props.userId);
-    setMyId(props.userId);
     get("/api/users")
       .then((allUsers) => setUsers(allUsers))
       .catch((err) => console.log(`failed to get users:${err}`));
