@@ -7,14 +7,20 @@ const Accordian = (props) => {
   const [isActive, setIsActive] = useState(false);
   const [err, setErr] = useState("");
 
-  const update = (e) => props.parentFXN({ [e.target.name]: e.target.value });
+  const update = (e) => {
+    setData({ [e.target.name]: e.target.value });
+  };
 
-  const inputs = document.getElementsByTagName("input");
-  for (const input of inputs) {
-    if (input.value !== "Save Changes") {
-      input.addEventListener("change", update);
+  const setUp = () => {
+    const inputs = document.getElementsByTagName("input");
+    for (const input of inputs) {
+      if (input.value !== "Save Changes") {
+        console.log(props.data["name"]);
+        input.value = props.data[input.name];
+        input.addEventListener("input", update);
+      }
     }
-  }
+  };
 
   const updateData = () => {
     post(`/api/${props.changing}`, { new: data })
@@ -23,6 +29,10 @@ const Accordian = (props) => {
         console.log(`failed to update ${props.changing}:${err}`);
       });
   };
+
+  useEffect(() => {
+    setUp();
+  }, [data]);
 
   return (
     <div className="accordion-item">

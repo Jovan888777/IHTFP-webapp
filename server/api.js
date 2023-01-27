@@ -47,6 +47,12 @@ router.post("/initsocket", (req, res) => {
 // for MIT API
 // });
 
+router.get("/users", (req, res) => {
+  User.find({})
+    .then((users) => res.send(users))
+    .catch((err) => console.log(`failed to get current classes:${err}`));
+});
+
 router.get("/current-classes", (req, res) => {
   ClassSettings.findOne({ user_id: req.query.userid })
     .then((settings) => res.send(settings.currentClasses))
@@ -330,6 +336,7 @@ router.post("/event-settings", auth.ensureLoggedIn, (req, res) => {
 router.post("/class-settings", auth.ensureLoggedIn, (req, res) => {
   ClassSettings.findOne({ user_id: req.user._id })
     .then((settings) => {
+      console.log(settings);
       settings.max_finals = req.body.new.max_finals;
       settings.max_units = req.body.new.max_units;
       settings.electiveClasses = req.body.new.electiveClasses;
@@ -399,6 +406,52 @@ router.post("/delete-user", auth.ensureLoggedIn, (req, res) => {
     .catch((err) => {
       console.log(`failed to deleted user:${err}`);
       res.send(false);
+    });
+});
+
+// clear all the database (USE CAREFULLY)
+router.post("/delete-everything", (req, res) => {
+  User.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted users");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted users:${err}`);
+    });
+  Event.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted events");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted events:${err}`);
+    });
+  Menu.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted menu");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted menu:${err}`);
+    });
+  EventSettings.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted event settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event settings:${err}`);
+    });
+  DiningSettings.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted dining settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted dining settings:${err}`);
+    });
+  ClassSettings.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted class settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted class settings:${err}`);
     });
 });
 
