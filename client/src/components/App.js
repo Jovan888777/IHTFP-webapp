@@ -103,18 +103,18 @@ const App = (props) => {
       <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} 
       handleAddEvent = {handleAddEvent}/>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <AddEvent path="/add-event/" {...eventInfo}/>
-        <ViewEvent path="/events/" userId={userId} />
-        <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing}/>
-        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
-        <SharedClasses path="/shared-classes/" userId={userId} />
-        <GeneralDining path="/menus/" userId={userId}/>
-        <SharedDining path="/shared-dining/" userId={userId} />
-        <Profile path="/profile/:profileId" userId={userId} />
-        <Friends path="/friends/" userId={userId} handleProfile = {handleProfile}/>
-        <Preferences path="/preferences/" userId={userId} />
-        <NotFound default />
+        <Home className="bgImg" path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} isHome={true}/>
+        <AddEvent path="/add-event/" {...eventInfo} isHome={false}/>
+        <ViewEvent path="/events/" userId={userId} isHome={false}/>
+        <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing} isHome={false}/>
+        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false}/>
+        <SharedClasses path="/shared-classes/" userId={userId} isHome={false}/>
+        <GeneralDining path="/menus/" userId={userId} isHome={false}/>
+        <SharedDining path="/shared-dining/" userId={userId} isHome={false}/>
+        <Profile path="/profile/:profileId" userId={userId} isHome={false}/>
+        <Friends path="/friends/" userId={userId} handleProfile = {handleProfile} isHome={false}/>
+        <Preferences path="/preferences/" userId={userId} isHome={false}/>
+        <NotFound default/>
       </Router>
     </>
   );

@@ -7,3 +7,15 @@
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
+
+.bgImg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../public/background.jpg');
+    background-color: grey
+}
+
+.colorWhite {
+    color: white
+}
