@@ -34,25 +34,31 @@ const AddEvent = (props) => {
         button: "Edit",
         console: "Your event was successfully edited!"});
     }
+    else setEventName("");
     if (props.eventGroup) setEventGroup(props.eventGroup);
+    else setEventGroup("");
     if (props.eventDescription) setEventDescription(props.eventDescription);
+    else setEventDescription("");
     if (props.eventStart)
       setEventStart(moment(props.eventStart).format("YYYY-MM-DDTkk:mm"));
+    else setEventStart(null);
     if (props.eventEnd) 
       setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
+    else setEventEnd(null);
     if (props.eventKeywords) setEventKeywords(props.eventKeywords);
+    else setEventKeywords([]);
     if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
+    else setEventGuestlistNeeded(false);
     if (props.eventLocation) setEventLocation(props.eventLocation);
+    else setEventLocation("");
     if (props.eventId) setEventId(props.eventId);
-
   }
 
   useEffect( () => {
-    if (edit == false) {
-      prepost();
-      setEdit(true);
-    }
-  });
+    prepost();
+    setEdit(true);
+    
+  }, [props]);
 
   //posting the new event to database
   //ask how to pass arguments

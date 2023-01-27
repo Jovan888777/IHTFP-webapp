@@ -92,9 +92,16 @@ const App = (props) => {
     navigate("/add-event/");
   }
 
+  //This is for navigateing to a new friend profile and seeing mutual friends
+  const handleProfile = (profileId, userId) => {
+    let path = "/profile/" + profileId;
+    navigate(path, userId={userId});
+  }
+
   return (
     <>
-      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} handleAddEvent = {handleAddEvent}/>
+      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} 
+      handleAddEvent = {handleAddEvent}/>
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <AddEvent path="/add-event/" {...eventInfo}/>
@@ -102,10 +109,10 @@ const App = (props) => {
         <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing}/>
         <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
         <SharedClasses path="/shared-classes/" userId={userId} />
-        <GeneralDining path="/menus/" userId={userId} />
+        <GeneralDining path="/menus/" userId={userId}/>
         <SharedDining path="/shared-dining/" userId={userId} />
         <Profile path="/profile/:profileId" userId={userId} />
-        <Friends path="/friends/" userId={userId} />
+        <Friends path="/friends/" userId={userId} handleProfile = {handleProfile}/>
         <Preferences path="/preferences/" userId={userId} />
         <NotFound default />
       </Router>
