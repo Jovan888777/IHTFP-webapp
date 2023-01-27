@@ -87,8 +87,6 @@ const AddEvent = (props) => {
           guests: [],
       };
       let  editedEvent = {
-          eventId: eventId,
-          userId: props.userId,
           name: eventName,
           group: eventGroup,
           location: eventLocation,
@@ -108,12 +106,11 @@ const AddEvent = (props) => {
       }
       else if (routeStrings.api === "/api/update-event") {
         console.log(editedEvent);
-        post(routeStrings.api, editedEvent)
+        post(routeStrings.api, {eventId: eventId, newEvent: editedEvent})
           .then(console.log(routeStrings.console))
           .catch((err) => console.log(err));
       }
       setDone(true);
-      // navigate("/my-events");
 
       setEventName("");
       setEventGroup("");

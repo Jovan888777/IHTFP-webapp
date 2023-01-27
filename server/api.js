@@ -115,6 +115,14 @@ router.get("/my-events", (req, res) => {
     });
 });
 
+router.get("/users", (req, res) => {
+  User.find({})
+    .then((users) => res.send(users))
+    .catch((err) => {
+      console.log(`failed to get all users:${err}`);
+    });
+});
+
 router.get("/profile-by-id", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.query.userId)
     .then((user) => res.send(user))
@@ -281,7 +289,15 @@ router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
 router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
   Event.findById(req.body.eventId)
     .then((event) => {
-      event = req.body.newEvent;
+      event.name = req.body.newEvent.name;
+      event.group = req.body.newEvent.group;
+      event.location = req.body.newEvent.location;
+      event.start = req.body.newEvent.start;
+      event.end = req.body.newEvent.end;
+      event.description = req.body.newEvent.description;
+      event.keywords = req.body.newEvent.keywords;
+      event.guestlistNeeded = req.body.newEvent.guestlistNeeded;
+      event.guests = req.body.newEvent.guests;
       event.save();
     })
     .then((event) => res.send(event))
