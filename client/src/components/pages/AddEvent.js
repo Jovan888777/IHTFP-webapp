@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 // import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
 import { get, post } from "../../utilities";
+import * as moment from 'moment';
 
 const AddEvent = (props) => {
+  const [edit, setEdit] = useState(false);
+  const [routeStrings, setRouteStrings] = useState({
+    api: "/api/add-event",
+    button: "Add",
+    console: "Your event was successfully added!",
+  });
   const [eventName, setEventName] = useState("");
   const [eventGroup, setEventGroup] = useState("");
   const [eventLocation, setEventLocation] = useState("");
@@ -14,7 +21,44 @@ const AddEvent = (props) => {
   const [eventGuestlistNeeded, setEventGuestlistNeeded] = useState(false);
   const [err, setErr] = useState("");
   const [done, setDone] = useState(null);
-  // const navigate = useNavigate();
+  const [eventId, setEventId] = useState(null);
+
+  //Setting values according to props preposting
+  const prepost = () => {
+    console.log("prepost");
+    console.log(props.eventName);
+    if (props.eventName) {
+      setEventName(props.eventName);
+      setRouteStrings({
+        api: "/api/update-event",
+        button: "Edit",
+        console: "Your event was successfully edited!"});
+    }
+    else setEventName("");
+    if (props.eventGroup) setEventGroup(props.eventGroup);
+    else setEventGroup("");
+    if (props.eventDescription) setEventDescription(props.eventDescription);
+    else setEventDescription("");
+    if (props.eventStart)
+      setEventStart(moment(props.eventStart).format("YYYY-MM-DDTkk:mm"));
+    else setEventStart(null);
+    if (props.eventEnd) 
+      setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
+    else setEventEnd(null);
+    if (props.eventKeywords) setEventKeywords(props.eventKeywords);
+    else setEventKeywords([]);
+    if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
+    else setEventGuestlistNeeded(false);
+    if (props.eventLocation) setEventLocation(props.eventLocation);
+    else setEventLocation("");
+    if (props.eventId) setEventId(props.eventId);
+  }
+
+  useEffect( () => {
+    prepost();
+    setEdit(true);
+    
+  }, [props]);
 
   //posting the new event to database
   //ask how to pass arguments
@@ -38,104 +82,167 @@ const AddEvent = (props) => {
     } else {
       setErr("");
       let newEvent = {
-        name: eventName,
-        group: eventGroup,
-        location: eventLocation,
-        start: eventStart,
-        end: eventEnd,
-        description: eventDescription,
-        keywords: eventKeywords,
-        guestlistNeeded: eventGuestlistNeeded,
-        guests: [],
+          name: eventName,
+          group: eventGroup,
+          location: eventLocation,
+          start: eventStart,
+          end: eventEnd,
+          description: eventDescription,
+          keywords: eventKeywords,
+          guestlistNeeded: eventGuestlistNeeded,
+          guests: [],
       };
-      post("/api/add-event", newEvent)
-        .then(console.log("event added successfully!"))
-        .catch((err) => console.log(err));
-      console.log(newEvent);
+      let  editedEvent = {
+          name: eventName,
+          group: eventGroup,
+          location: eventLocation,
+          start: eventStart,
+          end: eventEnd,
+          description: eventDescription,
+          keywords: eventKeywords,
+          guestlistNeeded: eventGuestlistNeeded,
+          guests: [],
+      };
+      //Resetting the textbox states
+      console.log(routeStrings.api);
+      if (routeStrings.api === "/api/add-event") {
+        post(routeStrings.api, newEvent)
+          .then(console.log(routeStrings.console))
+          .catch((err) => console.log(err));
+      }
+      else if (routeStrings.api === "/api/update-event") {
+        console.log(editedEvent);
+        post(routeStrings.api, {eventId: eventId, newEvent: editedEvent})
+          .then(console.log(routeStrings.console))
+          .catch((err) => console.log(err));
+      }
       setDone(true);
-      // navigate("/my-events");
+
+      setEventName("");
+      setEventGroup("");
+      setEventLocation("");
+      setEventDescription("");
+      setEventStart(undefined);
+      setEventEnd(undefined);
+      setEventKeywords([]);
+      setEventGuestlistNeeded(false);
+      setEventId(null);
     }
   };
 
   return (
-    <div>
+    <div className="center">
       <div className="center" hidden={!done}>
-        Successfully added your event!
+        {routeStrings.console}
       </div>
-      <div className="center" hidden={done}>
+      <div className="addCard center" hidden={done}>
         {/* {done && <Navigate to="/my-events" replace={true} />} */}
-        <h1>Add Event</h1>
-        Name:{" "}
-        <input
-          name="eventname"
-          type="textbox"
-          placeholder="Enter some text"
-          value={eventName}
-          onChange={(event) => setEventName(event.target.value)}
-          required
-        />
-        <br></br>
-        Group:
-        <input
-          name="group"
-          type="textbox"
-          placeholder="Enter some text"
-          value={eventGroup}
-          onChange={(event) => setEventGroup(event.target.value)}
-          required
-        />
-        <br></br>
-        Location:
-        <input
-          name="location"
-          type="textbox"
-          placeholder="Enter some text"
-          value={eventLocation}
-          onChange={(event) => setEventLocation(event.target.value)}
-          required
-        />
-        <br></br>
-        Description:
-        <textarea
-          name="description"
-          placeholder="Enter some text"
-          value={eventDescription}
-          onChange={(event) => setEventDescription(event.target.value)}
-          required
-        ></textarea>
-        <br></br>
-        Start Date and Time:
-        <input
-          type="datetime-local"
-          name="start"
-          min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
-          max="2023-12-31T23:59"
-          value={eventStart}
-          onChange={(event) => setEventStart(event.target.value)}
-          required
-        />
-        <br></br>
-        End Date and Time:
-        <input
-          type="datetime-local"
-          name="start"
-          min={eventStart}
-          max="2023-12-31T23:59"
-          value={eventEnd}
-          onChange={(event) => setEventEnd(event.target.value)}
-          required
-        />
-        <br></br>
-        Guest List Needed:{" "}
-        <input
-          name="guestlistneeded"
-          type="checkbox"
-          value={eventGuestlistNeeded}
-          onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
-        />
-        <br></br>
-        <input value="Add" type="submit" onClick={postNewEvent} />
-        <div>{err}</div>
+        <h1>{routeStrings.button} Event</h1>
+        <div className="inputs">
+          <div className="halfWidth">
+            Name:
+          </div>
+          <div className="halfWidth">
+            <input
+              className="inputBox"
+              name="eventname"
+              type="textbox"
+              placeholder="Enter some text"
+              value={eventName}
+              onChange={(event) => {setEventName(event.target.value)}}
+              required
+            />
+          </div>
+          <div className="halfWidth">
+            Group:
+          </div>
+          <div className="halfWidth">
+            <input
+              className="inputBox"
+              name="group"
+              type="textbox"
+              placeholder="Enter some text"
+              value={eventGroup}
+              onChange={(event) => setEventGroup(event.target.value)}
+              required
+            />
+          </div>
+          <div className="halfWidth">
+            Location:
+          </div>
+          <div className="halfWidth">
+            <input
+              className="inputBox"
+              name="location"
+              type="textbox"
+              placeholder="Enter some text"
+              value={eventLocation}
+              onChange={(event) => setEventLocation(event.target.value)}
+              required
+            />
+          </div>
+          <div className="halfWidth">
+          Description:
+          </div>
+          <div className="halfWidth">
+            <textarea
+              className="inputBox"
+              name="description"
+              placeholder="Enter some text"
+              value={eventDescription}
+              onChange={(event) => setEventDescription(event.target.value)}
+              required
+            ></textarea>
+          </div>
+          <div className="halfWidth">
+          Start Date and Time:
+          </div>
+          <div className="halfWidth">
+          <input
+            className="inputBox"
+            type="datetime-local"
+            name="start"
+            min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
+            max="2023-12-31T23:59"
+            value={eventStart}
+            onChange={(event) => setEventStart(event.target.value)}
+            required
+          />
+          </div>
+          <div className="halfWidth">
+            End Date and Time:
+          </div>
+          <div className="halfWidth">
+            <input
+              className="inputBox"
+              type="datetime-local"
+              name="start"
+              min={eventStart}
+              max="2023-12-31T23:59"
+              value={eventEnd}
+              onChange={(event) => setEventEnd(event.target.value)}
+              required
+            />
+          </div>
+          <div className="halfWidth">
+            Guest List Needed:
+          </div>
+          <div className="halfWidth">
+            <input
+              className="inputBox"
+              name="guestlistneeded"
+              type="checkbox"
+              value={eventGuestlistNeeded}
+              onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
+            />
+          </div>
+          <div className="fullWidth">
+            <input className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent} />
+          </div>
+          <div className="fullWidth">
+            {err}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -143,7 +250,3 @@ const AddEvent = (props) => {
 
 export default AddEvent;
 
-/*
-      
-       value="2023-01-22"
-       min="2022-01-01" max="2023-12-31"</input> */

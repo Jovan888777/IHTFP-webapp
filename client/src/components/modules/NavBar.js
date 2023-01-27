@@ -36,7 +36,7 @@ const NavBar = (props) => {
           <i className="fa fa-caret-down"></i>
         </button>
         <div className="dropdown-content">
-          <Link to={"/profile/" + props.userId}>My Profile</Link>
+          <Link to={"/profile/" + props.userId} userId = {props.userId}>My Profile</Link>
           <Link to="/friends/">Friends</Link>
           <Link to="/preferences/">Preferences</Link>
           <div>{logText ? <button onClick={logClick}>{logText}</button> : <div></div>}</div>
@@ -60,7 +60,7 @@ const NavBar = (props) => {
         </button>
         <div className="dropdown-content">
           <Link to="/events/">View Event</Link>
-          <Link to="/add-event/">Add Event</Link>
+          <button onClick = {() => {props.handleAddEvent();}}>Add Event</button>
           <Link to="/my-events/">My Events</Link>
         </div>
       </div>

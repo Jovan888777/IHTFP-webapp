@@ -3,6 +3,7 @@ import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
+import { Link, navigate } from "@reach/router";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
 // CSS Files
@@ -29,8 +30,9 @@ import NotFound from "./pages/NotFound.js";
 /**
  * Define the "App" component
  */
-const App = () => {
+const App = (props) => {
   const [userId, setUserId] = useState(undefined);
+  const [eventInfo, setEventInfo] = useState(undefined);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -56,22 +58,63 @@ const App = () => {
     post("/api/logout");
   };
 
+  const handleEditing = (element) => {
+    console.log("went inside");
+    console.log(element);
+    setEventInfo({
+      eventId: element._id,
+      userId: element.user_id,
+      eventName: element.name,
+      eventGroup: element.group,
+      eventDescription: element.description,
+      eventStart: element.start,
+      eventEnd: element.end,
+      eventKeywords: element.keywords,
+      eventGuestlistNeeded: element.guestlistNeeded,
+      eventLocation: element.location,
+    });
+    navigate("/add-event/");
+  }
+
+  const handleAddEvent = () => {
+    console.log("handling");
+    setEventInfo({
+      eventId: null,
+      eventName: "",
+      eventGroup: "",
+      eventDescription: "",
+      eventStart: null,
+      eventEnd: null,
+      eventKeywords: [],
+      eventGuestlistNeeded: false,
+      eventLocation: "",
+    });
+    navigate("/add-event/");
+  }
+
+  //This is for navigateing to a new friend profile and seeing mutual friends
+  const handleProfile = (profileId, userId) => {
+    let path = "/profile/" + profileId;
+    navigate(path, userId={userId});
+  }
+
   return (
     <>
-      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} />
+      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} 
+      handleAddEvent = {handleAddEvent}/>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <AddEvent path="/add-event/" userId={userId} />
-        <ViewEvent path="/events/" userId={userId} />
-        <MyEvents path="/my-events/" userId={userId} />
-        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} />
-        <SharedClasses path="/shared-classes/" userId={userId} />
-        <GeneralDining path="/menus/" userId={userId} />
-        <SharedDining path="/shared-dining/" userId={userId} />
-        <Profile path="/profile/:profileId" userId={userId} />
-        <Friends path="/friends/" userId={userId} />
-        <Preferences path="/preferences/" userId={userId} />
-        <NotFound default />
+        <Home className="bgImg" path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} isHome={true}/>
+        <AddEvent path="/add-event/" {...eventInfo} isHome={false}/>
+        <ViewEvent path="/events/" userId={userId} isHome={false}/>
+        <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing} isHome={false}/>
+        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false}/>
+        <SharedClasses path="/shared-classes/" userId={userId} isHome={false}/>
+        <GeneralDining path="/menus/" userId={userId} isHome={false}/>
+        <SharedDining path="/shared-dining/" userId={userId} isHome={false}/>
+        <Profile path="/profile/:profileId" userId={userId} isHome={false}/>
+        <Friends path="/friends/" userId={userId} handleProfile = {handleProfile} isHome={false}/>
+        <Preferences path="/preferences/" userId={userId} isHome={false}/>
+        <NotFound default/>
       </Router>
     </>
   );

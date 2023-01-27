@@ -14,6 +14,7 @@
 */
 
 // validator runs some basic checks to make sure you've set everything up correctly
+require('dotenv').config();
 const validator = require("./validator");
 validator.checkSetup();
 
@@ -28,8 +29,8 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // database URL
-const mongoConnectionURL =
-  "mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
+const mongoConnectionURL = process.env.MONGO_SRV;
+  //"mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
 const databaseName = "MainData";
 
 // connect to mongodb
@@ -53,7 +54,7 @@ app.use(express.json());
 app.use(
   session({
     // TODO: add a SESSION_SECRET string in your .env file, and replace the secret with process.env.SESSION_SECRET
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
@@ -91,7 +92,7 @@ app.use((err, req, res, next) => {
 });
 
 // hardcode port to 3000 for now
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server = http.Server(app);
 socketManager.init(server);
 

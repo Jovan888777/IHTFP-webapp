@@ -7,7 +7,6 @@ import ProfileDisplay from "../modules/ProfileDisplay";
 const Profile = (props) => {
   /// Use flex to make picture and data nicer
   /// Picture link apparently not working because need to load from API
-
   const [profile, setProfile] = useState(undefined);
   const [myFriends, setmyFriends] = useState([]);
   const [mutual, setMutual] = useState([]);
@@ -15,7 +14,7 @@ const Profile = (props) => {
   const [display, setDisplay] = useState("Mutual Friends");
 
   //Loading the profile of requested user
-  const loadProfile = () => {
+  const loadProfile = (id) => {
     get("/api/profile-by-id", { userId: props.profileId })
       .then((user) => {
         if (user) {
@@ -62,10 +61,11 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
+    console.log(props);
     loadProfile();
     loadMyFriends();
     loadMutual();
-  }, [props.profileId]); // Must also change when friends change
+  }, [props.userId, props.profileId]); // Must also change when friends change
 
   let content;
   if (!profile) {

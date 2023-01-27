@@ -1,6 +1,6 @@
 .nav-brand {
   float: left;
-  background-color: var(--dark-purple);
+  background-color: #61111d;
 }
 
 .nav-brand .navbtn {
@@ -22,13 +22,20 @@
 /*Outer wrapper*/
 .navigation {
   height: var(--nav-height);
-  background: var(--dark-purple);
+  background: #9d2235;
+  border-bottom: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-style: solid;
 }
+/* var(--dark-purple) */
+/* border-image: linear-gradient(#9d2235, #c7c9c7) 50 */
 
 /* Navbar container */
 .navbar {
   overflow: hidden;
-  background-color: #333;
+  background-color: #9d2235;
   font-family: Arial;
 }
 
@@ -63,7 +70,7 @@
 /* Add a red background color to navbar links on hover */
 .navbar a:hover,
 .dropdown:hover .dropbtn {
-  background-color: var(--nav-hover-purple);
+  background-color: #61111d;
 }
 
 /* Dropdown content (hidden by default) */
