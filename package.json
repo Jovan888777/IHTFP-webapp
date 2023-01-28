@@ -1,5 +1,5 @@
 {
-  "name": "weblab-skeleton",
+  "name": "slay-queens",
   "version": "1.0.0",
   "description": "## Initial setup",
   "main": "server/server.js",

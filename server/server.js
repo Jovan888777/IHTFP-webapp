@@ -14,7 +14,7 @@
 */
 
 // validator runs some basic checks to make sure you've set everything up correctly
-require('dotenv').config();
+require("dotenv").config();
 const validator = require("./validator");
 validator.checkSetup();
 
@@ -30,7 +30,7 @@ const socketManager = require("./server-socket");
 
 // database URL
 const mongoConnectionURL = process.env.MONGO_SRV;
-  //"mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
+//"mongodb+srv://tkorkot:SQH0RdamMR3Pbt1R@cluster0.hp6kpth.mongodb.net/?retryWrites=true&w=majority";
 const databaseName = "MainData";
 
 // connect to mongodb
@@ -53,7 +53,6 @@ app.use(express.json());
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    // TODO: add a SESSION_SECRET string in your .env file, and replace the secret with process.env.SESSION_SECRET
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,

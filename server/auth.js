@@ -47,7 +47,7 @@ function getOrCreateUser(user) {
     const newDiningSettings = new DiningSettings({
       user_id: newUser._id,
       restrictions: [],
-      chosen: [null, null, null],
+      chosen: [null, null, null, null],
       rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
     });
 

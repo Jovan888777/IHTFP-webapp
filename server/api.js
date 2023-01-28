@@ -98,7 +98,7 @@ router.get("/dining-settings", (req, res) => {
 });
 
 router.get("/dining-choice", (req, res) => {
-  DiningSettings.findOne({ user_id: req.user._id })
+  DiningSettings.findOne({ user_id: req.query.userId })
     .then((settings) => res.send(settings.choice))
     .catch((err) => {
       console.log(`failed to get dining choice:${err}`);

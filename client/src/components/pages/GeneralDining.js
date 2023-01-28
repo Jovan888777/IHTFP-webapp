@@ -4,7 +4,7 @@ import { get, post } from "../../utilities";
 
 const GeneralDining = () => {
   const [diningSettings, setdiningSettings] = useState({
-    chosen: [null, null, null],
+    chosen: [null, null, null, null],
     rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
   });
   const [menus, setMenus] = useState({
@@ -18,7 +18,7 @@ const GeneralDining = () => {
   const [meal, setMeal] = useState("breakfast");
 
   const loadDiningSettings = () => {
-    get("/api/dining-settings")
+    get("/api/dining-settings", { userId: userId })
       .then((settings) => {
         setdiningSettings({
           chosen: settings.chosen,
@@ -88,6 +88,30 @@ const GeneralDining = () => {
     setMeal(val);
   };
 
+  const updatingChoice = (element, dining_hall) => {
+    let newChosen = [...settings.chosen];
+    let index;
+
+    if (meal === "breakfast") {
+      index = 0;
+    } else if (meal === "lunch") {
+      index = 1;
+    } else if (meal === "dinner") {
+      index = 2;
+    } else if (meal === "lateNight") {
+      index = 3;
+    }
+
+    newChosen[index] = dining_hall.replaceAll(" ", "");
+    setdiningSettings({
+      chosen: newChosen,
+    });
+
+    let allBtns = document.getElementsByClassName("select-dining");
+    allBtns.map((btn) => (btn.innerHTML = "Change to here"));
+    element.innerHTML = "Selected";
+  };
+
   useEffect(() => {
     loadDiningSettings();
     loadMenu();
@@ -117,6 +141,9 @@ const GeneralDining = () => {
                   return <p>{food.dishName}</p>;
                 })}
               </div>
+              <button onClick={updatingChoice(this, item)} className="select-dining">
+                Go here!
+              </button>
             </div>
           );
         })}

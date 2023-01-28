@@ -74,7 +74,7 @@ const App = (props) => {
       eventLocation: element.location,
     });
     navigate("/add-event/");
-  }
+  };
 
   const handleAddEvent = () => {
     console.log("handling");
@@ -90,31 +90,42 @@ const App = (props) => {
       eventLocation: "",
     });
     navigate("/add-event/");
-  }
+  };
 
   //This is for navigateing to a new friend profile and seeing mutual friends
   const handleProfile = (profileId, userId) => {
     let path = "/profile/" + profileId;
-    navigate(path, userId={userId});
-  }
+    navigate(path, (userId = { userId }));
+  };
 
   return (
     <>
-      <NavBar userId={userId} googleLogout={googleLogout} handleLogout={handleLogout} 
-      handleAddEvent = {handleAddEvent}/>
+      <NavBar
+        userId={userId}
+        googleLogout={googleLogout}
+        handleLogout={handleLogout}
+        handleAddEvent={handleAddEvent}
+      />
       <Router>
-        <Home className="bgImg" path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} isHome={true}/>
-        <AddEvent path="/add-event/" {...eventInfo} isHome={false}/>
-        <ViewEvent path="/events/" userId={userId} isHome={false}/>
-        <MyEvents path="/my-events/" userId={userId} handleEditing = {handleEditing} isHome={false}/>
-        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false}/>
-        <SharedClasses path="/shared-classes/" userId={userId} isHome={false}/>
-        <GeneralDining path="/menus/" userId={userId} isHome={false}/>
-        <SharedDining path="/shared-dining/" userId={userId} isHome={false}/>
-        <Profile path="/profile/:profileId" userId={userId} isHome={false}/>
-        <Friends path="/friends/" userId={userId} handleProfile = {handleProfile} isHome={false}/>
-        <Preferences path="/preferences/" userId={userId} isHome={false}/>
-        <NotFound default/>
+        <Home
+          className="bgImg"
+          path="/"
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          userId={userId}
+          isHome={true}
+        />
+        <AddEvent path="/add-event/" {...eventInfo} isHome={false} />
+        <ViewEvent path="/events/" userId={userId} isHome={false} />
+        <MyEvents path="/my-events/" userId={userId} handleEditing={handleEditing} isHome={false} />
+        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false} />
+        <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
+        <GeneralDining path="/menus/" userId={userId} isHome={false} />
+        <SharedDining path="/shared-dining/" userId={userId} isHome={false} />
+        <Profile path="/profile/:profileId" userId={userId} isHome={false} />
+        <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
+        <Preferences path="/preferences/" userId={userId} isHome={false} />
+        <NotFound default />
       </Router>
     </>
   );
