@@ -118,6 +118,24 @@ const GeneralDining = (props) => {
     }
   };
 
+  const settingBtns = () => {
+    let allBtns = document.getElementsByClassName("select-dining");
+    if (chosen[mealIndex]) {
+      console.log(chosen, chosen[mealIndex]);
+      for (let btn of allBtns) {
+        if (btn.className.includes(chosen[mealIndex])) {
+          btn.innerHTML = "Selected";
+        } else {
+          btn.innerHTML = "Change to here";
+        }
+      }
+    } else {
+      for (let btn of allBtns) {
+        btn.innerHTML = "Go here!";
+      }
+    }
+  };
+
   useEffect(() => {
     loadDiningSettings();
     loadMenu();
@@ -128,6 +146,10 @@ const GeneralDining = (props) => {
   useEffect(() => {
     changeMealIndex();
   }, [meal]);
+
+  useEffect(() => {
+    settingBtns();
+  }, [mealIndex, menus]);
 
   return (
     <div>
@@ -156,7 +178,7 @@ const GeneralDining = (props) => {
 
               <button
                 onClick={(e) => updatingChoice(e.target, diningHall)}
-                className="select-dining"
+                className={"select-dining " + diningHall}
               >
                 Go here!
               </button>

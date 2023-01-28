@@ -78,7 +78,7 @@ const SharedClasses = (props) => {
       <div className="wrapper">
         {classes
           ? classes.map((classNum) => <Card title={classNum} friends={friendInClasses[classNum]} />)
-          : "No Class in the System!"}
+          : "No Classes in the System!"}
       </div>
     </div>
   );
