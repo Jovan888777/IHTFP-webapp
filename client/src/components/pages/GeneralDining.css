@@ -13,3 +13,11 @@
 .center {
   text-align: center;
 }
+
+.scrollbox {
+  width: 400px;
+  height:150px;
+  line-height:3em;
+  overflow:auto;
+  padding:5px;
+}
