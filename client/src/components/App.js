@@ -27,7 +27,6 @@ import Friends from "./pages/Friends.js";
 import Preferences from "./pages/Preferences.js";
 import NotFound from "./pages/NotFound.js";
 
-
 /**
  * Define the "App" component
  */
@@ -53,7 +52,6 @@ const App = (props) => {
   const [userId, setUserId] = useState(undefined);
   const [eventInfo, setEventInfo] = useState(undefined);
   const [menu, setMenu] = useState(undefined);
-
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -127,10 +125,13 @@ const App = (props) => {
 
   //getting the menus from the webscraping
   const handleMenu = (url) => {
-    get("/api/scrape", {url: url_maseeh})
-      .then( (cont) => {cleanMenu(cont); console.log(cont);} )
-      .catch( console.log("failed"));
-  }
+    get("/api/scrape", { url: url_maseeh })
+      .then((cont) => {
+        cleanMenu(cont);
+        console.log(cont);
+      })
+      .catch(console.log("failed"));
+  };
 
   //cleaning the menus from webscraping for posting event
   const cleanMenu = (cont) => {
@@ -139,7 +140,7 @@ const App = (props) => {
       lunch: [],
       dinner: [],
       lateNight: [],
-    }
+    };
 
     if (cont.length === 2) {
       Dininghall.breakfast = cont[0];
@@ -163,23 +164,16 @@ const App = (props) => {
       newvassard: [],
       bakerb: [],
       bakerd: [],
-    }
-
+    };
 
     post("/api/add-menus", request)
       .then(console.log("mongo happy"))
       .catch((err) => console.log(err));
-  }
+  };
 
-  return (
-    <>
-      <NavBar
-        userId={userId}
-        googleLogout={googleLogout}
-        handleLogout={handleLogout}
-        handleAddEvent={handleAddEvent}
-      />
-      <Router>
+  if (!userId) {
+    return (
+      <div>
         <Home
           className="bgImg"
           path="/"
@@ -188,20 +182,46 @@ const App = (props) => {
           userId={userId}
           isHome={true}
         />
-        <AddEvent path="/add-event/" {...eventInfo} isHome={false} />
-        <ViewEvent path="/events/" userId={userId} isHome={false} />
-        <MyEvents path="/my-events/" userId={userId} handleEditing={handleEditing} isHome={false} />
-        <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false} />
-        <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
-        <GeneralDining path="/menus/" userId={userId} isHome={false} />
-        <SharedDining path="/shared-dining/" userId={userId} isHome={false} />
-        <Profile path="/profile/:profileId" userId={userId} isHome={false} />
-        <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
-        <Preferences path="/preferences/" userId={userId} isHome={false} />
-        <NotFound default />
-      </Router>
-    </>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <NavBar
+          userId={userId}
+          googleLogout={googleLogout}
+          handleLogout={handleLogout}
+          handleAddEvent={handleAddEvent}
+        />
+        <Router>
+          <Home
+            className="bgImg"
+            path="/"
+            handleLogin={handleLogin}
+            handleLogout={handleLogout}
+            userId={userId}
+            isHome={true}
+          />
+          <AddEvent path="/add-event/" userId={userId} {...eventInfo} isHome={false} />
+          <ViewEvent path="/events/" userId={userId} isHome={false} />
+          <MyEvents
+            path="/my-events/"
+            userId={userId}
+            handleEditing={handleEditing}
+            isHome={false}
+          />
+          <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false} />
+          <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
+          <GeneralDining path="/menus/" userId={userId} isHome={false} />
+          <SharedDining path="/shared-dining/" userId={userId} isHome={false} />
+          <Profile path="/profile/:profileId" userId={userId} isHome={false} />
+          <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
+          <Preferences path="/preferences/" userId={userId} isHome={false} />
+          <NotFound default />
+        </Router>
+      </>
+    );
+  }
 };
 
 export default App;

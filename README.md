@@ -55,11 +55,11 @@ Post on Piazza if you run into any issues
 - Change the Frontend CLIENT_ID (Skeleton.js) to your team's CLIENT_ID (obtain this at http://weblab.is/gauth)
 - Change the Server CLIENT_ID to the same CLIENT_ID (auth.js)
 - Change the Database SRV (mongoConnectionURL) for Atlas (server.js). You got this in the MongoDB setup. remember to replace <password> and <dbname> (should be no < or > in your SRV)
-- Change the Database Name for MongoDB to whatever you put in the SRV to replace <dbname> (server.js)
-- (Optional) Add a favicon to your website at the path client/dist/favicon.ico
-- (Optional) Update website title in client/dist/index.html
+- Change the Database Name for MongoDB to whatever you put in the SRV to replace <dbname> (server.js) (DONE)
+- (Optional) Add a favicon to your website at the path client/dist/favicon.ico (DONE)
+- (Optional) Update website title in client/dist/index.html (DONE)
 - (Optional) Update this README file ;)
-- (Optional) Update the package.json file with your app name :) (line 2)
+- (Optional) Update the package.json file with your app name :) (line 2) (DONE)
 
 ## How to run this skeleton
 

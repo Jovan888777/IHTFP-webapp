@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./GeneralDining.css";
 import { get, post } from "../../utilities";
 
-const GeneralDining = () => {
-  const [diningSettings, setdiningSettings] = useState({
-    chosen: [null, null, null, null],
-    rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
-  });
+const GeneralDining = (props) => {
+  const [chosen, setChosen] = useState(["", "", "", ""]);
+  const [rankings, setRankings] = useState([
+    "Next",
+    "Simmons",
+    "Maseeh",
+    "McCormmick",
+    "New Vassar",
+    "Baker",
+  ]);
   const [menus, setMenus] = useState({
     Next: { breakfast: [], lunch: [], dinner: [], lateNight: [] },
     Simmons: { breakfast: [], lunch: [], dinner: [], lateNight: [] },
@@ -18,12 +23,10 @@ const GeneralDining = () => {
   const [meal, setMeal] = useState("breakfast");
 
   const loadDiningSettings = () => {
-    get("/api/dining-settings", { userId: userId })
+    get("/api/dining-settings", { userId: props.userId })
       .then((settings) => {
-        setdiningSettings({
-          chosen: settings.chosen,
-          rankings: settings.rankings,
-        });
+        setChosen(settings.chosen);
+        setRankings(settings.rankings);
       })
       .catch((err) => {
         console.log(`failed to get dining settings:${err}`);
@@ -89,7 +92,7 @@ const GeneralDining = () => {
   };
 
   const updatingChoice = (element, dining_hall) => {
-    let newChosen = [...settings.chosen];
+    let newChosen = [...chosen];
     let index;
 
     if (meal === "breakfast") {
@@ -103,13 +106,18 @@ const GeneralDining = () => {
     }
 
     newChosen[index] = dining_hall.replaceAll(" ", "");
-    setdiningSettings({
-      chosen: newChosen,
-    });
+    setChosen(newChosen);
+    post("/api/chosen-meal", { chosen: newChosen })
+      .then(() => console.log("success"))
+      .catch((err) => console.log(err));
 
     let allBtns = document.getElementsByClassName("select-dining");
-    allBtns.map((btn) => (btn.innerHTML = "Change to here"));
-    element.innerHTML = "Selected";
+    for (let btn of allBtns) {
+      btn.innerHTML = "Change to here";
+    }
+    if (element) {
+      element.innerHTML = "Selected";
+    }
   };
 
   useEffect(() => {
@@ -132,18 +140,18 @@ const GeneralDining = () => {
       </div>
       <br></br>
       <div className="wrapper">
-        {diningSettings.rankings.map((item) => {
+        {rankings.map((item) => {
           return (
             <div className="dining-container">
               <h1>{item}</h1>
               <div className="menu">
-              <div className="scrollbox">
-                {menus[item.replaceAll(" ", "")][meal].map((food) => {
+                <div className="scrollbox">
+                  {menus[item.replaceAll(" ", "")][meal].map((food) => {
                     return <p>{food.dishName}</p>;
                   })}
+                </div>
               </div>
-              </div>
-              <button onClick={updatingChoice(this, item)} className="select-dining">
+              <button onClick={(e) => updatingChoice(e.target, item)} className="select-dining">
                 Go here!
               </button>
             </div>

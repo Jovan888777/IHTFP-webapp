@@ -4,7 +4,6 @@
 |--------------------------------------------------------------------------
 */
 
-
 const express = require("express");
 
 // import models
@@ -52,7 +51,25 @@ router.post("/initsocket", (req, res) => {
 router.get("/users", (req, res) => {
   User.find({})
     .then((users) => res.send(users))
-    .catch((err) => console.log(`failed to get current classes:${err}`));
+    .catch((err) => console.log(`failed to get users:${err}`));
+});
+
+router.get("/all-dining-settings", (req, res) => {
+  DiningSettings.find({})
+    .then((settings) => res.send(settings))
+    .catch((err) => console.log(`failed to get dining settings:${err}`));
+});
+
+router.get("/all-class-settings", (req, res) => {
+  ClassSettings.find({})
+    .then((settings) => res.send(settings))
+    .catch((err) => console.log(`failed to get class settings:${err}`));
+});
+
+router.get("/all-event-settings", (req, res) => {
+  EventSettings.find({})
+    .then((settings) => res.send(settings))
+    .catch((err) => console.log(`failed to get event settings:${err}`));
 });
 
 router.get("/current-classes", (req, res) => {
@@ -92,7 +109,7 @@ router.get("/class-settings", (req, res) => {
 });
 
 router.get("/dining-settings", (req, res) => {
-  DiningSettings.findOne({ user_id: req.user._id })
+  DiningSettings.findOne({ user_id: req.userId })
     .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to get dining settings:${err}`);
@@ -379,8 +396,8 @@ router.post("/dining-settings", auth.ensureLoggedIn, (req, res) => {
       settings.restrictions = req.body.new.restrictions;
       settings.rankings = req.body.new.rankings;
       settings.save();
+      res.send(settings);
     })
-    .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to update dining settings:${err}`);
     });
@@ -392,8 +409,8 @@ router.post("/chosen-meal", auth.ensureLoggedIn, (req, res) => {
     .then((settings) => {
       settings.chosen = req.body.chosen;
       settings.save();
+      res.send(settings);
     })
-    .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to update chosen meal:${err}`);
     });
@@ -527,15 +544,17 @@ router.post("/delete-event-settings", auth.ensureLoggedIn, (req, res) => {
 
 //scraping api
 router.get("/scrape", (req, res) => {
-  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/"; 
-  scrape.scrapeProduct(req.query.url).then((cont) => {
-    console.log("successfully scraped menu");
-    res.send(cont);
-  })
-  .catch((err) => {
-    console.log(`failed to scrape menu:${err}`);
-    res.send(false);
-  });
+  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/";
+  scrape
+    .scrapeProduct(req.query.url)
+    .then((cont) => {
+      console.log("successfully scraped menu");
+      res.send(cont);
+    })
+    .catch((err) => {
+      console.log(`failed to scrape menu:${err}`);
+      res.send(false);
+    });
 });
 
 // anything else falls to this "not found" case

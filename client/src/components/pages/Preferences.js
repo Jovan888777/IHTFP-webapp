@@ -48,7 +48,7 @@ const Preferences = (props) => {
   };
 
   const loadDiningSettings = () => {
-    get("/api/dining-settings")
+    get("/api/dining-settings", { userId: props.userId })
       .then((settings) => {
         if (settings) {
           setDiningSettings({

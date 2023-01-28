@@ -26,7 +26,7 @@ const SharedDining = (props) => {
   };
 
   const loadDiningSettings = () => {
-    get("/api/dining-settings", { userId: userId })
+    get("/api/dining-settings", { userId: props.userId })
       .then((settings) => {
         setdiningSettings({
           chosen: settings.chosen,
