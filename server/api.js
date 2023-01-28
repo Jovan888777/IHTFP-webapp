@@ -109,7 +109,7 @@ router.get("/class-settings", (req, res) => {
 });
 
 router.get("/dining-settings", (req, res) => {
-  DiningSettings.findOne({ user_id: req.userId })
+  DiningSettings.findOne({ user_id: req.query.userId })
     .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to get dining settings:${err}`);

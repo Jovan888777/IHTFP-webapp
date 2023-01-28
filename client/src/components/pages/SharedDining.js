@@ -4,11 +4,17 @@ import { get } from "../../utilities";
 import Card from "../modules/Card.js";
 
 const SharedDining = (props) => {
-  const [diningSettings, setdiningSettings] = useState({
-    chosen: [null, null, null, null],
-    rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
-  });
+  const [chosen, setChosen] = useState(["", "", "", ""]);
+  const [rankings, setRankings] = useState([
+    "Next",
+    "Simmons",
+    "Maseeh",
+    "McCormmick",
+    "New Vassar",
+    "Baker",
+  ]);
   const [meal, setMeal] = useState("breakfast");
+  const [mealIndex, setMealIndex] = useState(0);
   const [friends, setFriends] = useState([]);
   const [friendChoices, setFriendChoices] = useState({
     Next: [],
@@ -28,18 +34,16 @@ const SharedDining = (props) => {
   const loadDiningSettings = () => {
     get("/api/dining-settings", { userId: props.userId })
       .then((settings) => {
-        setdiningSettings({
-          chosen: settings.chosen,
-          rankings: settings.rankings,
-        });
+        setChosen(settings.chosen);
+        setRankings(settings.rankings);
       })
       .catch((err) => {
         console.log(`failed to get dining settings:${err}`);
       });
   };
 
-  const loadFriendChoices = (meal) => {
-    let index, name, settings, choice;
+  const loadFriendChoices = () => {
+    let name;
     let newFriendChoices = {
       Next: [],
       Simmons: [],
@@ -48,33 +52,30 @@ const SharedDining = (props) => {
       NewVassar: [],
       Baker: [],
     };
-    if (meal === "breakfast") {
-      index = 0;
-    } else if (meal === "lunch") {
-      index = 1;
-    } else if (meal === "dinner") {
-      index = 2;
-    } else if (meal === "lateNight") {
-      index = 3;
+
+    if (chosen[mealIndex]) {
+      newFriendChoices[chosen[mealIndex]].push(props.userName);
     }
 
-    for (let friendId of friends) {
-      name = get("/api/profile-by-id", { userId: friendId })
-        .then((user) => {
-          return user;
-        })
-        .catch((err) => console.log(`failed to get profile by id:${err}`));
+    if (friends) {
+      for (let friendId of friends) {
+        name = get("/api/profile-by-id", { userId: friendId })
+          .then((user) => {
+            return user.name;
+          })
+          .catch((err) => console.log(`failed to get profile by id:${err}`));
 
-      get("/dining-choice", { userId: friendId })
-        .then((choices) => {
-          if (choices) {
-            choice = settings.choices[index];
-            if (choice) {
-              newFriendChoices[choice].push(name);
+        get("/dining-choice", { userId: friendId })
+          .then((choices) => {
+            if (choices) {
+              let choice = choices[mealIndex];
+              if (choice) {
+                newFriendChoices[choice].push(name);
+              }
             }
-          }
-        })
-        .catch((err) => console.log(`failed to get dining choice:${err}`));
+          })
+          .catch((err) => console.log(`failed to get dining choice:${err}`));
+      }
     }
 
     setFriendChoices({
@@ -101,8 +102,16 @@ const SharedDining = (props) => {
     }
   };
 
-  const changeMeal = (val) => {
-    setMeal(val);
+  const changeMealIndex = () => {
+    if (meal === "breakfast") {
+      setMealIndex(0);
+    } else if (meal === "lunch") {
+      setMealIndex(1);
+    } else if (meal === "dinner") {
+      setMealIndex(2);
+    } else if (meal === "lateNight") {
+      setMealIndex(3);
+    }
   };
 
   useEffect(() => {
@@ -112,14 +121,18 @@ const SharedDining = (props) => {
   }, []);
 
   useEffect(() => {
-    loadFriendChoices(meal);
+    changeMealIndex();
   }, [meal]);
+
+  useEffect(() => {
+    loadFriendChoices(meal);
+  }, [chosen, mealIndex]);
 
   return (
     <div>
       <div className="center">
         <h1>Select the meal to view the meal</h1>
-        <select value={meal} onChange={(event) => changeMeal(event.target.value)}>
+        <select value={meal} onChange={(event) => setMeal(event.target.value)}>
           <option value="breakfast">breakfast</option>
           <option value="lunch">lunch</option>
           <option value="dinner">dinner</option>
@@ -128,8 +141,8 @@ const SharedDining = (props) => {
       </div>
       <br></br>
       <div className="wrapper">
-        {diningSettings.rankings.map((diningHall) => (
-          <Card title={diningHall} friendsGoing={friendChoices[diningHall.replace(" ", "")]} />
+        {rankings.map((diningHall) => (
+          <Card title={diningHall} friends={friendChoices[diningHall.replace(" ", "")]} />
         ))}
       </div>
     </div>

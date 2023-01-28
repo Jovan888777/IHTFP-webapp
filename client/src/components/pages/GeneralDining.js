@@ -21,6 +21,7 @@ const GeneralDining = (props) => {
     Baker: { breakfast: [], lunch: [], dinner: [], lateNight: [] },
   });
   const [meal, setMeal] = useState("breakfast");
+  const [mealIndex, setMealIndex] = useState(0);
 
   const loadDiningSettings = () => {
     get("/api/dining-settings", { userId: props.userId })
@@ -87,25 +88,22 @@ const GeneralDining = (props) => {
     }
   };
 
-  const changeMeal = (val) => {
-    setMeal(val);
+  const changeMealIndex = () => {
+    if (meal === "breakfast") {
+      setMealIndex(0);
+    } else if (meal === "lunch") {
+      setMealIndex(1);
+    } else if (meal === "dinner") {
+      setMealIndex(2);
+    } else if (meal === "lateNight") {
+      setMealIndex(3);
+    }
   };
 
   const updatingChoice = (element, dining_hall) => {
     let newChosen = [...chosen];
-    let index;
 
-    if (meal === "breakfast") {
-      index = 0;
-    } else if (meal === "lunch") {
-      index = 1;
-    } else if (meal === "dinner") {
-      index = 2;
-    } else if (meal === "lateNight") {
-      index = 3;
-    }
-
-    newChosen[index] = dining_hall.replaceAll(" ", "");
+    newChosen[mealIndex] = dining_hall.replaceAll(" ", "");
     setChosen(newChosen);
     post("/api/chosen-meal", { chosen: newChosen })
       .then(() => console.log("success"))
@@ -127,11 +125,15 @@ const GeneralDining = (props) => {
     loadMeal();
   }, []);
 
+  useEffect(() => {
+    changeMealIndex();
+  }, [meal]);
+
   return (
     <div>
       <div className="center">
         <h1>Select the meal to view the meal</h1>
-        <select value={meal} onChange={(event) => changeMeal(event.target.value)}>
+        <select value={meal} onChange={(event) => setMeal(event.target.value)}>
           <option value="breakfast">breakfast</option>
           <option value="lunch">lunch</option>
           <option value="dinner">dinner</option>
@@ -140,18 +142,22 @@ const GeneralDining = (props) => {
       </div>
       <br></br>
       <div className="wrapper">
-        {rankings.map((item) => {
+        {rankings.map((diningHall) => {
           return (
             <div className="dining-container">
-              <h1>{item}</h1>
+              <h1>{diningHall}</h1>
               <div className="menu">
                 <div className="scrollbox">
-                  {menus[item.replaceAll(" ", "")][meal].map((food) => {
+                  {menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
                     return <p>{food.dishName}</p>;
                   })}
                 </div>
               </div>
-              <button onClick={(e) => updatingChoice(e.target, item)} className="select-dining">
+
+              <button
+                onClick={(e) => updatingChoice(e.target, diningHall)}
+                className="select-dining"
+              >
                 Go here!
               </button>
             </div>

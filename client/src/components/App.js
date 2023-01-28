@@ -50,6 +50,7 @@ const App = (props) => {
   const url_baker = "https://mit.cafebonappetit.com/cafe/baker/";
 
   const [userId, setUserId] = useState(undefined);
+  const [userName, setUserName] = useState(undefined);
   const [eventInfo, setEventInfo] = useState(undefined);
   const [menu, setMenu] = useState(undefined);
 
@@ -58,6 +59,7 @@ const App = (props) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
+        setUserName(user.name);
       }
     });
   }, []);
@@ -74,12 +76,14 @@ const App = (props) => {
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
+      setUserName(user.name);
       post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   const handleLogout = () => {
     setUserId(undefined);
+    setUserName(undefined);
     post("/api/logout");
   };
 
@@ -213,7 +217,7 @@ const App = (props) => {
           <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false} />
           <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
           <GeneralDining path="/menus/" userId={userId} isHome={false} />
-          <SharedDining path="/shared-dining/" userId={userId} isHome={false} />
+          <SharedDining path="/shared-dining/" userId={userId} userName={userName} isHome={false} />
           <Profile path="/profile/:profileId" userId={userId} isHome={false} />
           <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
           <Preferences path="/preferences/" userId={userId} isHome={false} />
