@@ -29,7 +29,7 @@ async function scrapeProduct(url) {
     let elements = await containers[i].$$(".site-panel__daypart-item");
     //actual elements in there
     let allobj = [];
-    for (let j = 0; j < 20; j++) {
+    for (let j = 0; j < elements.length; j++) {
       let title = ""; let titleText = "";
       let description = ""; let descriptionText = "";
       let tags = [];
@@ -67,27 +67,20 @@ async function scrapeProduct(url) {
       if (titleText) {
         allobj.push(
           {
-            title: titleText,
-            description: descriptionText,
-            keywords: keywordsArray,
+            dishName: titleText,
+            dishDesc: descriptionText,
+            restrictions: keywordsArray,
           }
         );
       }
     }
     finalContent.push(allobj);
   }
-  console.log(finalContent);
   browser.close();
+
+  return finalContent;
 }
 
-  scrapeProduct(url_maseeh);
-
-  
-/*
-
-<span class="site-panel__daypart-item-cor-icons">
-<img src="https://legacy.cafebonappetit.com/assets/cor_icons/menu-item-type-ce9d00.png?v=1622190094" 
-alt="Made without Gluten-Containing Ingredients: does not contain ingredients that are sources of gluten, but is prepared in an open kitchen where gluten is present." 
-title="Made without Gluten-Containing Ingredients: does not contain ingredients that are sources of gluten, but is prepared in an open kitchen where gluten is present."></span>
-
-*/
+module.exports = {
+  scrapeProduct
+};
