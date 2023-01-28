@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const DishSchema = new mongoose.Schema({
   dishName: String,
+  dishDesc: String,
   restrictions: [String],
 });
 

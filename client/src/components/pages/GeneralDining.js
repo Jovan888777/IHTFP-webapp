@@ -30,7 +30,7 @@ const GeneralDining = () => {
       });
   };
 
-  const addMenuDB = () => {
+  /*const addMenuDB = () => {
     post("/api/delete-menus")
       .then((success) => console.log(success))
       .catch((err) => {
@@ -57,8 +57,8 @@ const GeneralDining = () => {
       .then((menu) => console.log(menu))
       .catch((err) => {
         console.log(`failed to post menus:${err}`);
-      });
-  };
+      }); 
+  }; */
 
   const loadMenu = () => {
     get("/api/menus")
@@ -137,9 +137,11 @@ const GeneralDining = () => {
             <div className="dining-container">
               <h1>{item}</h1>
               <div className="menu">
+              <div className="scrollbox">
                 {menus[item.replaceAll(" ", "")][meal].map((food) => {
-                  return <p>{food.dishName}</p>;
-                })}
+                    return <p>{food.dishName}</p>;
+                  })}
+              </div>
               </div>
               <button onClick={updatingChoice(this, item)} className="select-dining">
                 Go here!

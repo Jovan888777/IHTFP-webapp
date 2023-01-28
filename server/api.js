@@ -4,6 +4,7 @@
 |--------------------------------------------------------------------------
 */
 
+
 const express = require("express");
 
 // import models
@@ -13,6 +14,7 @@ const Menu = require("./models/dining");
 const EventSettings = require("./models/eventsSettings");
 const ClassSettings = require("./models/classSettings");
 const DiningSettings = require("./models/diningSettings");
+const scrape = require("./Scraper");
 
 // import authentication library
 const auth = require("./auth");
@@ -521,6 +523,19 @@ router.post("/delete-event-settings", auth.ensureLoggedIn, (req, res) => {
       console.log(`failed to deleted event settings:${err}`);
       res.send(false);
     });
+});
+
+//scraping api
+router.get("/scrape", (req, res) => {
+  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/"; 
+  scrape.scrapeProduct(req.query.url).then((cont) => {
+    console.log("successfully scraped menu");
+    res.send(cont);
+  })
+  .catch((err) => {
+    console.log(`failed to scrape menu:${err}`);
+    res.send(false);
+  });
 });
 
 // anything else falls to this "not found" case
