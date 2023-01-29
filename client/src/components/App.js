@@ -197,9 +197,8 @@ const App = (props) => {
           handleLogout={handleLogout}
           handleAddEvent={handleAddEvent}
         />
-        <Router>
+        <Router className="bg">
           <Home
-            className="bgImg"
             path="/"
             handleLogin={handleLogin}
             handleLogout={handleLogout}

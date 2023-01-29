@@ -8,9 +8,17 @@ import "./Home.css";
 const GOOGLE_CLIENT_ID = "700977180342-jgd43s318l777h9r9p17dpttm4rcgvv4.apps.googleusercontent.com";
 
 const Home = ({ userId, handleLogin, handleLogout }) => {
+  if (userId) {
+    var bgHome = "bgHome";
+  } else {
+    var bgHome = "unloggedBgHome";
+  }
+
+  console.log(bgHome)
+
   return (
-    <div class="bgImg container">
-      <div className="vertical-center">
+    <div class={bgHome}>
+      <div>
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <h1 className="u-bold u-textCenter">Welcome to WEBSITE NAME!</h1>
           <div className="horizontal-center">
