@@ -451,7 +451,7 @@ router.post("/delete-event", auth.ensureLoggedIn, (req, res) => {
     });
 });
 
-// delete user
+// delete user (and their settings)
 router.post("/delete-user", auth.ensureLoggedIn, (req, res) => {
   User.deleteOne({ _id: req.user._id })
     .then(() => {
@@ -461,6 +461,27 @@ router.post("/delete-user", auth.ensureLoggedIn, (req, res) => {
     .catch((err) => {
       console.log(`failed to deleted user:${err}`);
       res.send(false);
+    });
+  EventSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted event settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted event settings:${err}`);
+    });
+  DiningSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted dining settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted dining settings:${err}`);
+    });
+  ClassSettings.deleteOne({ user_id: req.user._id })
+    .then(() => {
+      console.log("successfully deleted class settings");
+    })
+    .catch((err) => {
+      console.log(`failed to deleted class settings:${err}`);
     });
 });
 
@@ -510,9 +531,22 @@ router.post("/delete-everything", (req, res) => {
     });
 });
 
+// delete all events
+router.post("/delete-events", auth.ensureLoggedIn, (req, res) => {
+  Event.deleteMany({})
+    .then(() => {
+      console.log("successfully deleted events");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log(`failed to deleted events:${err}`);
+      res.send(false);
+    });
+});
+
 // delete all menus
 router.post("/delete-menus", auth.ensureLoggedIn, (req, res) => {
-  Event.deleteMany({})
+  Menu.deleteMany({})
     .then(() => {
       console.log("successfully deleted menus");
       res.send(true);
