@@ -41,9 +41,9 @@ var scheduledActivities = schedule.scheduleJob("45 23 * * *", function () {
       settings.map((setting) => {
         User.findById(setting.user_id)
           .then((user) => {
-            if (user.name === "Jennifer D") {
-              // emailSender(user.kerb + "@mit.edu", []);
-              email.emailSender("jennydf@mit.edu", []);
+            if (user.kerb !== "") {
+              ///////////// MUST IMPLEMENT EVENT FILTERING BY KEYWORD HERE
+              emailSender(user.kerb + "@mit.edu", []);
             }
           })
           .catch((err) => {
@@ -312,7 +312,11 @@ router.post("/add-event", auth.ensureLoggedIn, (req, res) => {
 });
 
 // add menus
-router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
+router.post("/add-menus", (req, res) => {
+  Menu.deleteOne({})
+    .then(console.log("deleted menu successfully"))
+    .catch((err) => console.log("failed at deleting menu: " + err));
+
   const newMenus = new Menu({
     Next: {
       breakfast: req.body.nextb,
@@ -355,6 +359,7 @@ router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
   newMenus
     .save()
     .then((event) => {
+      console.log("successfully added menus!");
       res.send(event);
     })
     .catch((err) => console.log("failed at adding menus:" + err));
@@ -656,7 +661,6 @@ router.post("/delete-event-settings", auth.ensureLoggedIn, (req, res) => {
 
 //scraping api
 router.get("/scrape", (req, res) => {
-  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/";
   scrape
     .scrapeProduct(req.query.url)
     .then((cont) => {
