@@ -29,7 +29,7 @@ const NavBar = (props) => {
           </Link>
         </button>
       </div>
-
+      
       <div className="dropdown">
         <button className="dropbtn">
           Profile

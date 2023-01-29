@@ -8,11 +8,18 @@
   transform: translateY(-50%);
 }
 
-.bgImg {
+.bgHome {
   position: absolute;
   width: 100%;
-  height: 100%;
-  background-color: grey;
+  height: 90vh;
+  background-image: url("../../public/bgHome.jpg");
+}
+
+.unloggedBgHome {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-image: url("../../public/bgHome.jpg");
 }
 
 .colorWhite {
@@ -21,11 +28,18 @@
 
 .container {
   position: relative;
-  height: 100vh;
 }
 
 .horizontal-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.centerCard {
+  background-color: rgb(72, 72, 72);
+  position: absolute;
+  height: 100%;
+  width: 80%;
+  align-items: center
 }
