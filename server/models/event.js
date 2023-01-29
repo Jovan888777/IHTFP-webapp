@@ -10,7 +10,7 @@ const EventSchema = new mongoose.Schema({
   description: String,
   keywords: [String],
   guestlistNeeded: Boolean,
-  guests: [Number],
+  guests: [String],
 });
 
 // compile model from schema

@@ -9,8 +9,7 @@ import AddEvent from "./AddEvent";
 
 const MyEvents = (props) => {
   //My events array and setting it
-  const [myEvents, setmyEvents] = useState([
-  ]);
+  const [myEvents, setmyEvents] = useState([]);
 
   //Function that sets the My events array
   const loadMyEvents = () => {
@@ -29,11 +28,17 @@ const MyEvents = (props) => {
       <h1>My Events</h1>
       {myEvents.map((element) => (
         <div>
-          <EventDisplay {...element} />
+          <EventDisplay {...element} userId={props.userId} />
+
           <div className="column">
-            <button onClick={() => {
-              props.handleEditing(element);
-            }}> Edit </button>
+            <button
+              onClick={() => {
+                props.handleEditing(element);
+              }}
+            >
+              {" "}
+              Edit{" "}
+            </button>
           </div>
         </div>
       ))}

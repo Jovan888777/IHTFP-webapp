@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ViewEvent.css";
 import { get } from "../../utilities";
-
 import EventDisplay from "../modules/EventDisplay";
 
 const ViewEvent = (props) => {
@@ -55,15 +54,21 @@ const ViewEvent = (props) => {
   //loading events when searched by the checkbox
   const searching = (checkbox, text) => {
     if (text !== "" && checkbox === false) {
-      setSearchedEvents(events.filter((element) => {return element.name.toLowerCase().includes(text)}));
+      setSearchedEvents(
+        events.filter((element) => {
+          return element.name.toLowerCase().includes(text);
+        })
+      );
       setLoaded(true);
-    }
-    else if (text !== "" && checkbox === true) {
-      setSearchedEvents(preferedEvents.filter((element) => {return element.name.toLowerCase().includes(text)}));
+    } else if (text !== "" && checkbox === true) {
+      setSearchedEvents(
+        preferedEvents.filter((element) => {
+          return element.name.toLowerCase().includes(text);
+        })
+      );
       setLoaded(true);
-    }
-    else setLoaded(false);
-  }
+    } else setLoaded(false);
+  };
 
   //When user has searched in the search bar, and then the preferences get clicked
   //this was added to prevent that
@@ -76,20 +81,26 @@ const ViewEvent = (props) => {
         })
       );
     }
-  }
+  };
 
   useEffect(() => {
     loadPreferences();
     loadEvents();
     loadPreferedEvents();
-  }, [events]);
+  }, []);
 
   return (
     <div>
       <h1> Upcoming Events </h1>
       <div className="search-wrapper">
         <label for="search">Search Events</label>
-        <input type="search" id = "search" onChange={(text)=>{searching(checkbox, text.target.value);}}></input>
+        <input
+          type="search"
+          id="search"
+          onChange={(text) => {
+            searching(checkbox, text.target.value);
+          }}
+        ></input>
       </div>
       <label className="container">
         Filtered
@@ -101,10 +112,10 @@ const ViewEvent = (props) => {
         />
       </label>
       {loaded
-      ? searchedEvents.map((element) => <EventDisplay {...element} />)
-      : (checkbox
-        ? preferedEvents.map((element) => <EventDisplay {...element} />)
-        : events.map((element) => <EventDisplay {...element} />) ) }
+        ? searchedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+        : checkbox
+        ? preferedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+        : events.map((element) => <EventDisplay {...element} userId={props.userId} />)}
     </div>
   );
 };

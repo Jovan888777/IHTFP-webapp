@@ -132,6 +132,14 @@ router.get("/events", (req, res) => {
     });
 });
 
+router.get("/event-guestlist", (req, res) => {
+  Event.findById(req.query.eventId)
+    .then((event) => res.send(event.guests))
+    .catch((err) => {
+      console.log(`failed to get all event guestlist:${err}`);
+    });
+});
+
 router.get("/my-events", (req, res) => {
   Event.find({ user_id: req.user._id })
     .then((events) => res.send(events))
@@ -322,12 +330,24 @@ router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
       event.description = req.body.newEvent.description;
       event.keywords = req.body.newEvent.keywords;
       event.guestlistNeeded = req.body.newEvent.guestlistNeeded;
-      event.guests = req.body.newEvent.guests;
       event.save();
+      res.send(event);
     })
-    .then((event) => res.send(event))
     .catch((err) => {
       console.log(`failed to update event:${err}`);
+    });
+});
+
+// update event guestlist
+router.post("/update-event-guestlist", auth.ensureLoggedIn, (req, res) => {
+  Event.findById(req.body.eventId)
+    .then((event) => {
+      event.guests = req.body.guestlist;
+      event.save();
+      res.send(event);
+    })
+    .catch((err) => {
+      console.log(`failed to update guestlist:${err}`);
     });
 });
 
@@ -346,8 +366,8 @@ router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
       user.minorTwo = req.body.new.minorTwo;
       user.concentration = req.body.new.concentration;
       user.save();
+      res.send(user);
     })
-    .then((user) => res.send(user))
     .catch((err) => {
       console.log(`failed to update user details:${err}`);
     });
@@ -360,8 +380,8 @@ router.post("/event-settings", auth.ensureLoggedIn, (req, res) => {
       settings.allowEmails = req.body.new.allowEmails;
       settings.keywords = req.body.new.keywords;
       settings.save();
+      res.send(settings);
     })
-    .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to update event settings:${err}`);
     });
@@ -382,8 +402,8 @@ router.post("/class-settings", auth.ensureLoggedIn, (req, res) => {
       settings.completedClasses = req.body.new.completedClasses;
       settings.currentClasses = req.body.new.currentClasses;
       settings.save();
+      res.send(settings);
     })
-    .then((settings) => res.send(settings))
     .catch((err) => {
       console.log(`failed to update class settings:${err}`);
     });
