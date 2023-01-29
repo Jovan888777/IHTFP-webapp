@@ -14,15 +14,45 @@ const EventSettings = require("./models/eventsSettings");
 const ClassSettings = require("./models/classSettings");
 const DiningSettings = require("./models/diningSettings");
 const scrape = require("./Scraper");
+const schedule = require("node-schedule");
 
-// import authentication library
 const auth = require("./auth");
-
-// api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
-
-//initialize socket
 const socketManager = require("./server-socket");
+const email = require("./Email");
+
+// scheduled task. Once a day at midnight
+var scheduledActivities = schedule.scheduleJob("45 23 * * *", function () {
+  // Reset chosen dining
+  DiningSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        setting.chosen = [];
+        setting.save();
+      });
+    })
+    .catch((err) => {
+      console.log(`failed to update chosen meal:${err}`);
+    });
+
+  // send emails depeding on keyword preferences
+  EventSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        User.findById(setting.user_id)
+          .then((user) => {
+            if (user.name === "Jennifer D") {
+              // emailSender(user.kerb + "@mit.edu", []);
+              email.emailSender("jennydf@mit.edu", []);
+            }
+          })
+          .catch((err) => {
+            console.log(`failed to get profile by id:${err}`);
+          });
+      });
+    })
+    .catch((err) => console.log(`failed to get event settings:${err}`));
+});
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -444,6 +474,20 @@ router.post("/chosen-meal", auth.ensureLoggedIn, (req, res) => {
       settings.chosen = req.body.chosen;
       settings.save();
       res.send(settings);
+    })
+    .catch((err) => {
+      console.log(`failed to update chosen meal:${err}`);
+    });
+});
+
+// reset chosen dining
+router.post("/reset-chosen", auth.ensureLoggedIn, (req, res) => {
+  DiningSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        setting.chosen = [];
+        setting.save();
+      });
     })
     .catch((err) => {
       console.log(`failed to update chosen meal:${err}`);
