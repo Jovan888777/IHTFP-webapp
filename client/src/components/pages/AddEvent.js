@@ -182,19 +182,6 @@ const AddEvent = (props) => {
             />
           </div>
           <div className="halfWidth">
-          Description:
-          </div>
-          <div className="halfWidth">
-            <textarea
-              className="inputBox"
-              name="description"
-              placeholder="Enter some text"
-              value={eventDescription}
-              onChange={(event) => setEventDescription(event.target.value)}
-              required
-            ></textarea>
-          </div>
-          <div className="halfWidth">
           Start Date and Time:
           </div>
           <div className="halfWidth">
@@ -236,8 +223,23 @@ const AddEvent = (props) => {
               onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
             />
           </div>
+          <div className="halfWidth">
+          Description:
+          </div>
+          <div className="halfWidth">
+            <textarea
+              className="inputBox"
+              name="description"
+              placeholder="Enter some text"
+              value={eventDescription}
+              onChange={(event) => setEventDescription(event.target.value)}
+              required
+            ></textarea>
+          </div>
           <div className="fullWidth">
-            <input className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent} />
+            <button className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent}>
+              Add
+            </button>
           </div>
           <div className="fullWidth">
             {err}

@@ -22,13 +22,12 @@
 /*Outer wrapper*/
 .navigation {
   height: var(--nav-height);
-  background: #9d2235;
+  background: #700000;
   border-bottom: 0;
   border-top: 0;
   border-left: 0;
   border-right: 0;
   border-style: solid;
-  height: 10vh
 }
 /* var(--dark-purple) */
 /* border-image: linear-gradient(#9d2235, #c7c9c7) 50 */
@@ -36,7 +35,7 @@
 /* Navbar container */
 .navbar {
   overflow: hidden;
-  background-color: #9d2235;
+  background-color: #700000;
   font-family: Arial;
 }
 

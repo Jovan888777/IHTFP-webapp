@@ -22,24 +22,36 @@
   background-image: url("../../public/bgHome.jpg");
 }
 
-.colorWhite {
-  color: white;
-}
-
-.container {
-  position: relative;
-}
-
 .horizontal-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.centerCard {
-  background-color: rgb(72, 72, 72);
-  position: absolute;
-  height: 100%;
-  width: 80%;
-  align-items: center
+.homeCard {
+  background-color: #c7c9c7;
+  border-radius: 5%;
+  position: relative;
+  display: inline-block;
+  justify-content: center;
+  padding: 3%;
+  margin-top: 0;
+  margin-bottom: 5vh;
+  margin-left: 5vh;
+  margin-right: 5vh;
+  width: 30%;
+  height: 50%
+}
+
+.selectionBox {
+  display: flex;
+  display: row
+}
+
+.titleBox {
+  border-radius: 10%;
+  background-color:#c7c9c7;
+  display: inline-block;
+  margin: 5vh;
+  padding: 3vh
 }
