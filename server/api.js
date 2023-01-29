@@ -72,6 +72,12 @@ router.get("/all-event-settings", (req, res) => {
     .catch((err) => console.log(`failed to get event settings:${err}`));
 });
 
+router.get("/keyword-preferences", (req, res) => {
+  EventSettings.findOne({ user_id: req.query.itemId })
+    .then((settings) => res.send(settings.keywords))
+    .catch((err) => console.log(`failed to get keyword preferences:${err}`));
+});
+
 router.get("/current-classes", (req, res) => {
   ClassSettings.findOne({ user_id: req.query.userid })
     .then((settings) => res.send(settings.currentClasses))
@@ -137,6 +143,14 @@ router.get("/event-guestlist", (req, res) => {
     .then((event) => res.send(event.guests))
     .catch((err) => {
       console.log(`failed to get all event guestlist:${err}`);
+    });
+});
+
+router.get("/event-keywords", (req, res) => {
+  Event.findById(req.query.itemId)
+    .then((event) => res.send(event.keywords))
+    .catch((err) => {
+      console.log(`failed to get all event keywords:${err}`);
     });
 });
 
