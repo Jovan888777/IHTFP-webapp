@@ -80,6 +80,14 @@ router.get("/current-classes", (req, res) => {
     });
 });
 
+router.get("/friend-requests", (req, res) => {
+  User.findOne({user_id: req.query.userId})
+    .then((user) => res.send(user.requests))
+    .catch((err) => {
+      console.log(`failed to get friend requests:${err}`);
+    });
+});
+
 router.get("/menus", (req, res) => {
   Menu.findOne({})
     .then((menus) => res.send(menus))
@@ -335,6 +343,46 @@ router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
     })
     .catch((err) => {
       console.log(`failed to update event:${err}`);
+    });
+});
+
+//send a friend request
+router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.profileId)
+    .then((user) => {
+      user.requests.push(req.query.userId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to send request:${err}`);
+    });
+});
+
+//accept a friends request
+router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => {
+      user.requests.filter((request) => request !== req.query.profileId);
+      user.friends.push(req.query.profileId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to accept request:${err}`);
+    });
+});
+
+//delete a friend request
+router.post("/delete-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => {
+      user.requests.filter((request) => request !== req.query.profileId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to delete request:${err}`);
     });
 });
 
