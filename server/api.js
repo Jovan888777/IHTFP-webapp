@@ -133,7 +133,7 @@ router.get("/current-classes", (req, res) => {
 });
 
 router.get("/friend-requests", (req, res) => {
-  User.findOne({user_id: req.query.userId})
+  User.findOne({ user_id: req.query.userId })
     .then((user) => res.send(user.requests))
     .catch((err) => {
       console.log(`failed to get friend requests:${err}`);
@@ -213,14 +213,6 @@ router.get("/my-events", (req, res) => {
     .then((events) => res.send(events))
     .catch((err) => {
       console.log(`failed to get my events:${err}`);
-    });
-});
-
-router.get("/users", (req, res) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => {
-      console.log(`failed to get all users:${err}`);
     });
 });
 

@@ -18,16 +18,30 @@ const MyEvents = (props) => {
     });
   };
 
-  const downloadGuestlist = (eventId) => {
+  const getNames = async (guests) => {
+    return Promise.all(
+      guests.map((uid) =>
+        get("/api/profile-by-id", { userId: uid })
+          .then((user) => user.name)
+          .catch((err) => console.log(err))
+      )
+    );
+  };
+
+  const downloadGuestlist = async (eventId) => {
     get("/api/event-guestlist", { eventId: eventId })
       .then((guests) => {
-        if (guests) {
-          const file = new Blob([guests.join("\n")], { type: "text/plain" });
-          const element = document.createElement("a");
-          element.href = URL.createObjectURL(file);
-          element.download = "guestlist_" + eventId + ".txt";
-          document.body.appendChild(element); // Required for this to work in FireFox
-          element.click();
+        if (guests.length !== 0) {
+          getNames(guests)
+            .then((guestNames) => {
+              const file = new Blob([guestNames.join("\n")], { type: "text/plain" });
+              const element = document.createElement("a");
+              element.href = URL.createObjectURL(file);
+              element.download = "guestlist_" + eventId + ".txt";
+              document.body.appendChild(element); // Required for this to work in FireFox
+              element.click();
+            })
+            .catch((err) => console.log(err));
         } else {
           alert("There is no one on the guestlist yet!");
         }
