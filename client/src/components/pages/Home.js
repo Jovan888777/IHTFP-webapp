@@ -17,13 +17,21 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
   console.log(bgHome)
 
   return (
-    <div class={bgHome}>
-      <div>
+    <div className={bgHome}>
+      <div className="center">
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-          <h1 className="u-bold u-textCenter">Welcome to WEBSITE NAME!</h1>
-          <div className="horizontal-center">
+          <div className="titleBox center">
+            <h1>Welcome to IHTFP!</h1>
+          </div>
+          <br></br>
+          <div className="homeCard center">
             {userId ? (
               <div>
+                <h2>You are logged in!</h2>
+                <p>
+                  You may now browse posted student events and add your own,
+                  browse dining selections for today, and edit your class planner.
+                </p>
                 <button
                   onClick={() => {
                     googleLogout();
@@ -34,7 +42,10 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
                 </button>
               </div>
             ) : (
-              <div>
+              <div className="center">
+                <p>
+                  Log in using google with the button below.
+                </p>
                 <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
               </div>
             )}
