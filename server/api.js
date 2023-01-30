@@ -22,7 +22,7 @@ const socketManager = require("./server-socket");
 const email = require("./Email");
 
 // scheduled task. Once a day at midnight
-var scheduledActivities = schedule.scheduleJob("45 23 * * *", function () {
+var dailyActivities = schedule.scheduleJob("45 23 * * *", function () {
   // Reset chosen dining
   DiningSettings.find({})
     .then((settings) => {
@@ -52,6 +52,22 @@ var scheduledActivities = schedule.scheduleJob("45 23 * * *", function () {
       });
     })
     .catch((err) => console.log(`failed to get event settings:${err}`));
+});
+
+// scheduled task. On the first of Jan, Feb and June (to reset for a new semester)
+const semesterlyActivities = schedule.scheduleJob("0 0 1 1,2,6 *", function () {
+  // Reset classes and move current classes to completed classes
+  ClassSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        setting.completedClasses = [...setting.completedClasses] + [...setting.currentClasses];
+        setting.currentClasses = [];
+        setting.save();
+      });
+    })
+    .catch((err) => {
+      console.log(`failed to reset classes for semester:${err}`);
+    });
 });
 
 router.post("/login", auth.login);
@@ -113,6 +129,14 @@ router.get("/current-classes", (req, res) => {
     .then((settings) => res.send(settings.currentClasses))
     .catch((err) => {
       console.log(`failed to get current classes:${err}`);
+    });
+});
+
+router.get("/friend-requests", (req, res) => {
+  User.findOne({user_id: req.query.userId})
+    .then((user) => res.send(user.requests))
+    .catch((err) => {
+      console.log(`failed to get friend requests:${err}`);
     });
 });
 
@@ -384,6 +408,46 @@ router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
     })
     .catch((err) => {
       console.log(`failed to update event:${err}`);
+    });
+});
+
+//send a friend request
+router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.profileId)
+    .then((user) => {
+      user.requests.push(req.query.userId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to send request:${err}`);
+    });
+});
+
+//accept a friends request
+router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => {
+      user.requests.filter((request) => request !== req.query.profileId);
+      user.friends.push(req.query.profileId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to accept request:${err}`);
+    });
+});
+
+//delete a friend request
+router.post("/delete-request", auth.ensureLoggedIn, (req, res) => {
+  User.findById(req.query.userId)
+    .then((user) => {
+      user.requests.filter((request) => request !== req.query.profileId);
+      user.save();
+      res.send(user);
+    })
+    .catch((err) => {
+      console.log(`failed to delete request:${err}`);
     });
 });
 

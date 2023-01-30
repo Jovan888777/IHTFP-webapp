@@ -6,7 +6,7 @@ const KeywordInput = (props) => {
   const [keywords, setKeywords] = useState([]);
 
   const loadKeywords = () => {
-    if (props.type !== "add") {
+    if (props.path !== "") {
       get("/api/" + props.path, { itemId: props.itemtId })
         .then((keywords) => setKeywords(keywords))
         .catch((err) => {

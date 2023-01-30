@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Preferences.css";
 import { get, post } from "../../utilities";
 import Accordian from "../modules/Accordian.js";
+import KeywordInput from "../modules/KeywordInput.js";
 
 const Preferences = (props) => {
   const [profile, setProfile] = useState({
@@ -100,53 +101,90 @@ const Preferences = (props) => {
 
   let profileContent = (
     <div>
-      Name: <input name="name" type="textbox" placeholder="Name" required />
+      Name:{" "}
+      <input name="name" type="textbox" placeholder="Name" className="profileInput" required />
       <br></br>
-      Kerb: <input name="kerb" type="textbox" placeholder="Kerb" required />
+      Kerb:{" "}
+      <input name="kerb" type="textbox" placeholder="Kerb" className="profileInput" required />
       <br></br>
-      Pronouns: <input name="pronouns" type="textbox" placeholder="Pronouns" required />
+      Pronouns:{" "}
+      <input
+        name="pronouns"
+        type="textbox"
+        placeholder="Pronouns"
+        className="profileInput"
+        required
+      />
       <br></br>
-      Year: <input name="year" type="number" placeholder="year" required />
+      Year: <input name="year" type="number" placeholder="year" className="profileInput" required />
       <br></br>
-      Profile Picture: <input name="pic" type="textbox" placeholder="Picture" required />
+      Profile Picture:{" "}
+      <input name="pic" type="textbox" placeholder="Picture" className="profileInput" required />
       <br></br>
       Primary Major:{" "}
-      <input name="primaryMajor" type="textbox" placeholder="Primary Major" required />
+      <input
+        name="primaryMajor"
+        type="textbox"
+        placeholder="Primary Major"
+        className="profileInput"
+        required
+      />
       <br></br>
       Secondary Major (optional):{" "}
-      <input name="secondaryMajor" type="textbox" placeholder="Secondary Major" />
+      <input
+        name="secondaryMajor"
+        type="textbox"
+        placeholder="Secondary Major"
+        className="profileInput"
+      />
       <br></br>
-      Minor 1: <input name="minorOne" type="textbox" placeholder="Minor 1" />
+      Minor 1:{" "}
+      <input name="minorOne" type="textbox" placeholder="Minor 1" className="profileInput" />
       <br></br>
-      Minor 2: <input name="minorTwo" type="textbox" placeholder="Minor 2" />
+      Minor 2:{" "}
+      <input name="minorTwo" type="textbox" placeholder="Minor 2" className="profileInput" />
       <br></br>
       Concentration:{" "}
-      <input name="concentration" type="textbox" placeholder="Concentration" required />
+      <input
+        name="concentration"
+        type="textbox"
+        placeholder="Concentration"
+        className="profileInput"
+        required
+      />
       <br></br>
     </div>
   );
   let diningContent = (
     <div>
-      Dietary Restrictions: <input name="restrictions" type="text" placeholder="Restrictions" />
+      Dietary Restrictions:
+      <input name="restrictions" type="checkbox" value="vegetarian" className="diningInput" />{" "}
+      Vegetarian
+      <input name="restrictions" type="checkbox" value="vegan" className="diningInput" /> Vegan
+      <input name="restrictions" type="checkbox" value="kosher" className="diningInput" /> Kosher
+      <input name="restrictions" type="checkbox" value="halal" className="diningInput" /> Halal
+      <input name="restrictions" type="checkbox" value="glutenFree" className="diningInput" />{" "}
+      Gluten Free
       <br></br>
     </div>
   );
 
   let classContent = (
     <div>
+      Current Classes: <KeywordInput path="current-classes" itemId={props.userId} />
       Max Number of Finals per Semester:{" "}
-      <input name="max_finals" type="number" placeholder="Max Finals" />
+      <input name="max_finals" type="number" placeholder="Max Finals" className="classInput" />
       <br></br>
       Max Number of Units per Semester:{" "}
-      <input name="max_units" type="number" placeholder="Max Units" />
+      <input name="max_units" type="number" placeholder="Max Units" className="classInput" />
     </div>
   );
 
   let eventContent = (
     <div>
-      Favorite Keywords: <input name="keywords" type="text" placeholder="Keywords" />
+      Favorite Keywords: <KeywordInput path="keyword-preferences" itemId={props.userId} />
       <br></br>
-      Allow Summary Emails: <input name="allEmails" type="checkbox" />
+      Allow Summary Emails: <input name="allEmails" type="checkbox" className="eventInput" />
       <br></br>
     </div>
   );
@@ -159,13 +197,15 @@ const Preferences = (props) => {
         title="Profile Details"
         content={profileContent}
         parentFXN={setProfile}
+        classNameUsed="profileInput"
       />
-      {/* <Accordian
+      <Accordian
         data={diningSettings}
         changing="dining-settings"
         title="Dining Settings"
         content={diningContent}
         parentFXN={setDiningSettings}
+        classNameUsed="diningInput"
       />
       <Accordian
         data={eventSettings}
@@ -173,6 +213,7 @@ const Preferences = (props) => {
         title="Event Settings"
         content={eventContent}
         parentFXN={setEventSettings}
+        classNameUsed="eventInput"
       />
       <Accordian
         data={classSettings}
@@ -180,7 +221,8 @@ const Preferences = (props) => {
         title="Class Settings"
         content={classContent}
         parentFXN={setClassSettings}
-      /> */}
+        classNameUsed="classInput"
+      />
     </div>
   );
 };
