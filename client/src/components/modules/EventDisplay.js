@@ -62,7 +62,7 @@ const EventDisplay = (props) => {
             <li>End time: {props.end}</li>
             <li>Location: {props.location}</li>
             <li>Description: {props.description}</li>
-            <li>Keywords: {JSON.stringify(props.keywords)}</li>
+            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(" ,")}</li>
           </ul>
           {props.guestlistNeeded ? (
             <button className={props._id} onClick={(e) => addToGuestList(e.target)}>
