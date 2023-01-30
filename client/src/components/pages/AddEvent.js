@@ -174,10 +174,6 @@ const AddEvent = (props) => {
               required
             />
           </div>
-<<<<<<< HEAD
-          <div className="halfWidth">
-          Start Date and Time:
-=======
           <div className="halfWidth">Description:</div>
           <div className="halfWidth">
             <textarea
@@ -192,7 +188,6 @@ const AddEvent = (props) => {
           <div className="halfWidth">Keywords:</div>
           <div className="fullWidth">
             <KeywordInput type="add" path="" itemId="" />
->>>>>>> 541e5831f0a5aec364a9449ab1ed261df29e745d
           </div>
           <div className="halfWidth">Start Date and Time:</div>
           <div className="halfWidth">
@@ -230,35 +225,13 @@ const AddEvent = (props) => {
               onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
             />
           </div>
-          <div className="halfWidth">
-          Description:
-          </div>
-          <div className="halfWidth">
-            <textarea
-              className="inputBox"
-              name="description"
-              placeholder="Enter some text"
-              value={eventDescription}
-              onChange={(event) => setEventDescription(event.target.value)}
-              required
-            ></textarea>
-          </div>
           <div className="fullWidth">
-<<<<<<< HEAD
-            <button className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent}>
-              Add
-            </button>
-          </div>
-          <div className="fullWidth">
-            {err}
-=======
             <input
               className="inputBox"
               value={routeStrings.button}
               type="submit"
               onClick={postNewEvent}
             />
->>>>>>> 541e5831f0a5aec364a9449ab1ed261df29e745d
           </div>
           <div className="fullWidth">{err}</div>
         </div>
