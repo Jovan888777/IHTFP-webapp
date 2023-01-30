@@ -7,6 +7,7 @@ const FriendRequests = (props) => {
 
     //getting requests of the user
     const getRequests = () => {
+        console.log(props.userId);
         get("/api/friend-requests", {userId: props.userId})
             .then((reqs) => setRequests(reqs))
             .catch((err) => {
@@ -56,8 +57,8 @@ const FriendRequests = (props) => {
             
             <div>
                 {element.name}
-                <button onClick = {(e) => acceptRequest(element.profileId, e.target, e.target.nextSibling)} > Accept Request </button>
-                <button onClick = {(e) => deleteRequest(element.profileId, e.target.previousSibling, e.target)}> Delete Request </button>
+                <button onClick = {(e) => acceptRequest(element._id, e.target, e.target.nextSibling)} > Accept Request </button>
+                <button onClick = {(e) => deleteRequest(element._id, e.target.previousSibling, e.target)}> Delete Request </button>
             </div>
 
             ))}

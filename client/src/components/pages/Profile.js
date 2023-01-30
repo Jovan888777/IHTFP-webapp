@@ -84,7 +84,7 @@ const Profile = (props) => {
       <div>
         <ProfileDisplay {...profile} />
         <button>Edit</button>
-        <FriendRequests {...profile} />
+        <FriendRequests  userId = {props.userId}/>
         <h2 className="u-textCenter"> {display} </h2>
         {mutual.map((element) => (
           <ProfileDisplay {...element} />
