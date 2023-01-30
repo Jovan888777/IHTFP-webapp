@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
   minorOne: Number,
   minorTwo: Number,
   concentration: String,
-  friends: [Number],
+  friends: [String],
+  requests: [String],
 });
 
 // compile model from schema
