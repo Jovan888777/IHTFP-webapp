@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 // import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
 import { get, post } from "../../utilities";
-import * as moment from 'moment';
+import * as moment from "moment";
+import KeywordInput from "../modules/KeywordInput.js";
 
 const AddEvent = (props) => {
   const [edit, setEdit] = useState(false);
@@ -32,18 +33,16 @@ const AddEvent = (props) => {
       setRouteStrings({
         api: "/api/update-event",
         button: "Edit",
-        console: "Your event was successfully edited!"});
-    }
-    else setEventName("");
+        console: "Your event was successfully edited!",
+      });
+    } else setEventName("");
     if (props.eventGroup) setEventGroup(props.eventGroup);
     else setEventGroup("");
     if (props.eventDescription) setEventDescription(props.eventDescription);
     else setEventDescription("");
-    if (props.eventStart)
-      setEventStart(moment(props.eventStart).format("YYYY-MM-DDTkk:mm"));
+    if (props.eventStart) setEventStart(moment(props.eventStart).format("YYYY-MM-DDTkk:mm"));
     else setEventStart(null);
-    if (props.eventEnd) 
-      setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
+    if (props.eventEnd) setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
     else setEventEnd(null);
     if (props.eventKeywords) setEventKeywords(props.eventKeywords);
     else setEventKeywords([]);
@@ -52,12 +51,11 @@ const AddEvent = (props) => {
     if (props.eventLocation) setEventLocation(props.eventLocation);
     else setEventLocation("");
     if (props.eventId) setEventId(props.eventId);
-  }
+  };
 
-  useEffect( () => {
+  useEffect(() => {
     prepost();
     setEdit(true);
-    
   }, [props]);
 
   //posting the new event to database
@@ -82,26 +80,26 @@ const AddEvent = (props) => {
     } else {
       setErr("");
       let newEvent = {
-          name: eventName,
-          group: eventGroup,
-          location: eventLocation,
-          start: eventStart,
-          end: eventEnd,
-          description: eventDescription,
-          keywords: eventKeywords,
-          guestlistNeeded: eventGuestlistNeeded,
-          guests: [],
+        name: eventName,
+        group: eventGroup,
+        location: eventLocation,
+        start: eventStart,
+        end: eventEnd,
+        description: eventDescription,
+        keywords: eventKeywords,
+        guestlistNeeded: eventGuestlistNeeded,
+        guests: [],
       };
-      let  editedEvent = {
-          name: eventName,
-          group: eventGroup,
-          location: eventLocation,
-          start: eventStart,
-          end: eventEnd,
-          description: eventDescription,
-          keywords: eventKeywords,
-          guestlistNeeded: eventGuestlistNeeded,
-          guests: [],
+      let editedEvent = {
+        name: eventName,
+        group: eventGroup,
+        location: eventLocation,
+        start: eventStart,
+        end: eventEnd,
+        description: eventDescription,
+        keywords: eventKeywords,
+        guestlistNeeded: eventGuestlistNeeded,
+        guests: [],
       };
       //Resetting the textbox states
       console.log(routeStrings.api);
@@ -109,10 +107,9 @@ const AddEvent = (props) => {
         post(routeStrings.api, newEvent)
           .then(console.log(routeStrings.console))
           .catch((err) => console.log(err));
-      }
-      else if (routeStrings.api === "/api/update-event") {
+      } else if (routeStrings.api === "/api/update-event") {
         console.log(editedEvent);
-        post(routeStrings.api, {eventId: eventId, newEvent: editedEvent})
+        post(routeStrings.api, { eventId: eventId, newEvent: editedEvent })
           .then(console.log(routeStrings.console))
           .catch((err) => console.log(err));
       }
@@ -139,9 +136,7 @@ const AddEvent = (props) => {
         {/* {done && <Navigate to="/my-events" replace={true} />} */}
         <h1>{routeStrings.button} Event</h1>
         <div className="inputs">
-          <div className="halfWidth">
-            Name:
-          </div>
+          <div className="halfWidth">Name:</div>
           <div className="halfWidth">
             <input
               className="inputBox"
@@ -149,13 +144,13 @@ const AddEvent = (props) => {
               type="textbox"
               placeholder="Enter some text"
               value={eventName}
-              onChange={(event) => {setEventName(event.target.value)}}
+              onChange={(event) => {
+                setEventName(event.target.value);
+              }}
               required
             />
           </div>
-          <div className="halfWidth">
-            Group:
-          </div>
+          <div className="halfWidth">Group:</div>
           <div className="halfWidth">
             <input
               className="inputBox"
@@ -167,9 +162,7 @@ const AddEvent = (props) => {
               required
             />
           </div>
-          <div className="halfWidth">
-            Location:
-          </div>
+          <div className="halfWidth">Location:</div>
           <div className="halfWidth">
             <input
               className="inputBox"
@@ -181,24 +174,40 @@ const AddEvent = (props) => {
               required
             />
           </div>
+<<<<<<< HEAD
           <div className="halfWidth">
           Start Date and Time:
-          </div>
+=======
+          <div className="halfWidth">Description:</div>
           <div className="halfWidth">
-          <input
-            className="inputBox"
-            type="datetime-local"
-            name="start"
-            min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
-            max="2023-12-31T23:59"
-            value={eventStart}
-            onChange={(event) => setEventStart(event.target.value)}
-            required
-          />
+            <textarea
+              className="inputBox"
+              name="description"
+              placeholder="Enter some text"
+              value={eventDescription}
+              onChange={(event) => setEventDescription(event.target.value)}
+              required
+            ></textarea>
           </div>
+          <div className="halfWidth">Keywords:</div>
+          <div className="fullWidth">
+            <KeywordInput type="add" path="" itemId="" />
+>>>>>>> 541e5831f0a5aec364a9449ab1ed261df29e745d
+          </div>
+          <div className="halfWidth">Start Date and Time:</div>
           <div className="halfWidth">
-            End Date and Time:
+            <input
+              className="inputBox"
+              type="datetime-local"
+              name="start"
+              min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
+              max="2023-12-31T23:59"
+              value={eventStart}
+              onChange={(event) => setEventStart(event.target.value)}
+              required
+            />
           </div>
+          <div className="halfWidth">End Date and Time:</div>
           <div className="halfWidth">
             <input
               className="inputBox"
@@ -211,9 +220,7 @@ const AddEvent = (props) => {
               required
             />
           </div>
-          <div className="halfWidth">
-            Guest List Needed:
-          </div>
+          <div className="halfWidth">Guest List Needed:</div>
           <div className="halfWidth">
             <input
               className="inputBox"
@@ -237,13 +244,23 @@ const AddEvent = (props) => {
             ></textarea>
           </div>
           <div className="fullWidth">
+<<<<<<< HEAD
             <button className ="inputBox" value={routeStrings.button} type="submit" onClick={postNewEvent}>
               Add
             </button>
           </div>
           <div className="fullWidth">
             {err}
+=======
+            <input
+              className="inputBox"
+              value={routeStrings.button}
+              type="submit"
+              onClick={postNewEvent}
+            />
+>>>>>>> 541e5831f0a5aec364a9449ab1ed261df29e745d
           </div>
+          <div className="fullWidth">{err}</div>
         </div>
       </div>
     </div>
@@ -251,4 +268,3 @@ const AddEvent = (props) => {
 };
 
 export default AddEvent;
-

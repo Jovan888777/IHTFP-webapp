@@ -14,15 +14,45 @@ const EventSettings = require("./models/eventsSettings");
 const ClassSettings = require("./models/classSettings");
 const DiningSettings = require("./models/diningSettings");
 const scrape = require("./Scraper");
+const schedule = require("node-schedule");
 
-// import authentication library
 const auth = require("./auth");
-
-// api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
-
-//initialize socket
 const socketManager = require("./server-socket");
+const email = require("./Email");
+
+// scheduled task. Once a day at midnight
+var scheduledActivities = schedule.scheduleJob("45 23 * * *", function () {
+  // Reset chosen dining
+  DiningSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        setting.chosen = [];
+        setting.save();
+      });
+    })
+    .catch((err) => {
+      console.log(`failed to update chosen meal:${err}`);
+    });
+
+  // send emails depeding on keyword preferences
+  EventSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        User.findById(setting.user_id)
+          .then((user) => {
+            if (user.kerb !== "") {
+              ///////////// MUST IMPLEMENT EVENT FILTERING BY KEYWORD HERE
+              emailSender(user.kerb + "@mit.edu", []);
+            }
+          })
+          .catch((err) => {
+            console.log(`failed to get profile by id:${err}`);
+          });
+      });
+    })
+    .catch((err) => console.log(`failed to get event settings:${err}`));
+});
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -70,6 +100,12 @@ router.get("/all-event-settings", (req, res) => {
   EventSettings.find({})
     .then((settings) => res.send(settings))
     .catch((err) => console.log(`failed to get event settings:${err}`));
+});
+
+router.get("/keyword-preferences", (req, res) => {
+  EventSettings.findOne({ user_id: req.query.itemId })
+    .then((settings) => res.send(settings.keywords))
+    .catch((err) => console.log(`failed to get keyword preferences:${err}`));
 });
 
 router.get("/current-classes", (req, res) => {
@@ -137,6 +173,14 @@ router.get("/event-guestlist", (req, res) => {
     .then((event) => res.send(event.guests))
     .catch((err) => {
       console.log(`failed to get all event guestlist:${err}`);
+    });
+});
+
+router.get("/event-keywords", (req, res) => {
+  Event.findById(req.query.itemId)
+    .then((event) => res.send(event.keywords))
+    .catch((err) => {
+      console.log(`failed to get all event keywords:${err}`);
     });
 });
 
@@ -268,7 +312,11 @@ router.post("/add-event", auth.ensureLoggedIn, (req, res) => {
 });
 
 // add menus
-router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
+router.post("/add-menus", (req, res) => {
+  Menu.deleteOne({})
+    .then(console.log("deleted menu successfully"))
+    .catch((err) => console.log("failed at deleting menu: " + err));
+
   const newMenus = new Menu({
     Next: {
       breakfast: req.body.nextb,
@@ -311,6 +359,7 @@ router.post("/add-menus", auth.ensureLoggedIn, (req, res) => {
   newMenus
     .save()
     .then((event) => {
+      console.log("successfully added menus!");
       res.send(event);
     })
     .catch((err) => console.log("failed at adding menus:" + err));
@@ -430,6 +479,20 @@ router.post("/chosen-meal", auth.ensureLoggedIn, (req, res) => {
       settings.chosen = req.body.chosen;
       settings.save();
       res.send(settings);
+    })
+    .catch((err) => {
+      console.log(`failed to update chosen meal:${err}`);
+    });
+});
+
+// reset chosen dining
+router.post("/reset-chosen", auth.ensureLoggedIn, (req, res) => {
+  DiningSettings.find({})
+    .then((settings) => {
+      settings.map((setting) => {
+        setting.chosen = [];
+        setting.save();
+      });
     })
     .catch((err) => {
       console.log(`failed to update chosen meal:${err}`);
@@ -598,7 +661,6 @@ router.post("/delete-event-settings", auth.ensureLoggedIn, (req, res) => {
 
 //scraping api
 router.get("/scrape", (req, res) => {
-  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/";
   scrape
     .scrapeProduct(req.query.url)
     .then((cont) => {

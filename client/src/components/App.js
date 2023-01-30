@@ -5,6 +5,7 @@ import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 import { Link, navigate } from "@reach/router";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
+import Schedule from "react-schedule-job";
 
 // CSS Files
 import "../utilities.css";
@@ -42,13 +43,6 @@ import NotFound from "./pages/NotFound.js";
 }, 600000); // Repeat every 60000 milliseconds (1 minute)*/
 
 const App = (props) => {
-  const url_maseeh = "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/";
-  const url_simmons = "https://mit.cafebonappetit.com/cafe/simmons/";
-  const url_next = "https://mit.cafebonappetit.com/cafe/next/";
-  const url_new_vassar = "https://mit.cafebonappetit.com/cafe/new-vassar/";
-  const url_mccormick = "https://mit.cafebonappetit.com/cafe/mccormick/";
-  const url_baker = "https://mit.cafebonappetit.com/cafe/baker/";
-
   const [userId, setUserId] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
   const [eventInfo, setEventInfo] = useState(undefined);
@@ -63,12 +57,6 @@ const App = (props) => {
       }
     });
   }, []);
-
-  //commented this out so I can figure out how to update with time
-  //and add deleting menus to the thing
-  /*useEffect( () => {
-    handleMenu();
-  }, []);*/
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
@@ -127,14 +115,23 @@ const App = (props) => {
     navigate(path, (userId = { userId }));
   };
 
+  const menuURLs = [
+    "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/",
+    "https://mit.cafebonappetit.com/cafe/simmons/",
+    "https://mit.cafebonappetit.com/cafe/next/",
+    "https://mit.cafebonappetit.com/cafe/new-vassar/",
+    "https://mit.cafebonappetit.com/cafe/mccormick/",
+    "https://mit.cafebonappetit.com/cafe/baker/",
+  ];
+
   //getting the menus from the webscraping
   const handleMenu = (url) => {
-    get("/api/scrape", { url: url_maseeh })
+    get("/api/scrape", { url: url })
       .then((cont) => {
         cleanMenu(cont);
-        console.log(cont);
+        console.log("successfully scraped menu");
       })
-      .catch(console.log("failed"));
+      .catch((err) => console.log("failed at scraping " + url + ": " + err));
   };
 
   //cleaning the menus from webscraping for posting event
@@ -169,15 +166,40 @@ const App = (props) => {
       bakerb: [],
       bakerd: [],
     };
-
+    console.log(request);
     post("/api/add-menus", request)
-      .then(console.log("mongo happy"))
-      .catch((err) => console.log(err));
+      .then(console.log("menu added successfully"))
+      .catch((err) => console.log("failed to add the menu: " + err));
   };
+
+  const allMenus = () => {
+    handleMenu("https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/");
+    ///// UNCOMMENT BELOW WHEN ALL LINK SCRAPPING IS READY
+    // for (let url of menuURLs) {
+    //   handleMenu(url);
+    // }
+  };
+
+  // scheduled updating of the menu once a day at midnight UTC time
+  ///////////////// FIGURE OUT WHAT TIME THEY UPDATE THEIR MENUS!
+  const jobs = [
+    {
+      fn: allMenus,
+      id: "1",
+      schedule: "0 0 * * *",
+    },
+  ];
 
   if (!userId) {
     return (
       <div>
+        <Schedule
+          jobs={jobs}
+          timeZone="UTC"
+          dashboard={{
+            hidden: true, // dashboard is hidden
+          }}
+        />
         <Home
           className="bgImg"
           path="/"
@@ -191,6 +213,13 @@ const App = (props) => {
   } else {
     return (
       <>
+        <Schedule
+          jobs={jobs}
+          timeZone="UTC"
+          dashboard={{
+            hidden: true, // dashboard is hidden
+          }}
+        />
         <NavBar
           userId={userId}
           googleLogout={googleLogout}
