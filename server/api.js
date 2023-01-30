@@ -413,9 +413,10 @@ router.post("/update-event", auth.ensureLoggedIn, (req, res) => {
 
 //send a friend request
 router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
-  User.findById(req.query.profileId)
+  User.findById(req.body.profileId)
     .then((user) => {
-      user.requests.push(req.query.userId);
+      console.log(user.name);
+      user.requests.push(req.body.userId);
       user.save();
       res.send(user);
     })

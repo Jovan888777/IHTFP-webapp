@@ -3,6 +3,7 @@ import { get } from "../../utilities";
 import "./Profile.css";
 
 import ProfileDisplay from "../modules/ProfileDisplay";
+import FriendRequests from "../modules/FriendRequests";
 
 const Profile = (props) => {
   /// Use flex to make picture and data nicer
@@ -12,6 +13,7 @@ const Profile = (props) => {
   const [mutual, setMutual] = useState([]);
 
   const [display, setDisplay] = useState("Mutual Friends");
+  const [requests, setRequests] = useState("");
 
   //Loading the profile of requested user
   const loadProfile = (id) => {
@@ -32,7 +34,10 @@ const Profile = (props) => {
             friends: user.friends,
           };
           setProfile(newData);
-          if (props.userId === props.profileId) setDisplay("My Friends");
+          if (props.userId === props.profileId) {
+            setDisplay("My Friends");
+            setRequests("Friend Requests");
+          }
         }
       })
       .catch((err) => {
@@ -79,6 +84,7 @@ const Profile = (props) => {
       <div>
         <ProfileDisplay {...profile} />
         <button>Edit</button>
+        <FriendRequests {...profile} />
         <h2 className="u-textCenter"> {display} </h2>
         {mutual.map((element) => (
           <ProfileDisplay {...element} />

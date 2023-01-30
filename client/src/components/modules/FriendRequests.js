@@ -1,33 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { get, post } from "../../utilities";
 import "./FriendRequests.css";
 
 const FriendRequests = (props) => {
     const [requests, setRequests] = useState([]);
 
+    //getting requests of the user
     const getRequests = () => {
         get("/api/friend-requests", {userId: props.userId})
             .then((reqs) => setRequests(reqs))
             .catch((err) => {
                 console.log("failed to get requests");
         });
+        console.log(requests);
     }
 
-    const acceptRequest = () => {
-        post("/api/accept-request", {userId: props.userId, profileId: props.profileId})
+
+    const acceptRequest = (profileId, btnA, btnD) => {
+        if (btnA && btnD) {
+            console.log("accepted", {profileId});
+            btnA.innerHTML = "Accepted";
+            btnA.disabled = true;
+            btnD.remove();
+        post("/api/accept-request", {userId: props.userId, profileId: profileId})
             .then( () => {})
             .catch((err) => {
                 console.log(`failed to accept request:${err}`);
             });
+        }
     }
 
-    const declineRequest = () => {
+    const deleteRequest = (profileId, btnA, btnD) => {
+        if (btnA && btnD) {
+            console.log("deleted", {profileId});
+            btnD.innerHTML = "Deleted";
+            btnD.disabled = true;
+            btnA.remove();
 
+        post("/api/accept-request", {userId: props.userId, profileId: profileId})
+            .then( () => {})
+            .catch((err) => {
+                console.log(`failed to accept request:${err}`);
+        });
+        }
     }
-    return (
+
+    useEffect(() => {
+        getRequests();
+    }, [props]); // Must also change when friends change*/
+    
+      return (
         <div>
             <h1>Friend Requests</h1>
-            <div className="row">
+            {requests.map((element) => (
+            
+            <div>
+                {element.name}
+                <button onClick = {(e) => acceptRequest(element.profileId, e.target, e.target.nextSibling)} > Accept Request </button>
+                <button onClick = {(e) => deleteRequest(element.profileId, e.target.previousSibling, e.target)}> Delete Request </button>
             </div>
+
+            ))}
         </div>
       );
 };
