@@ -8,23 +8,14 @@ const Accordian = (props) => {
   const [err, setErr] = useState("");
 
   const update = (e) => {
-    setData({ [e.target.name]: e.target.value });
+    data[e.target.name] = e.target.value;
   };
 
   const setUp = (data) => {
     const inputs = document.getElementsByClassName(props.classNameUsed);
-    console.log(data);
     for (const input of inputs) {
-      console.log(
-        data[input.name],
-        data,
-        input.name,
-        input.name in data,
-        Object.keys(data),
-        data["name"]
-      );
       input.value = props.data[input.name];
-      // input.addEventListener("input", update);
+      input.addEventListener("input", update);
     }
   };
 
@@ -38,7 +29,7 @@ const Accordian = (props) => {
 
   useEffect(() => {
     setUp(props.data);
-  }, [props.data]);
+  }, [props]);
 
   return (
     <div className="accordion-item">
