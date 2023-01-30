@@ -133,7 +133,7 @@ router.get("/current-classes", (req, res) => {
 });
 
 router.get("/friend-requests", (req, res) => {
-  User.findOne({ user_id: req.query.userId })
+  User.findById(req.query.userId)
     .then((user) => res.send(user.requests))
     .catch((err) => {
       console.log(`failed to get friend requests:${err}`);
@@ -219,6 +219,14 @@ router.get("/my-events", (req, res) => {
 router.get("/profile-by-id", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.query.userId)
     .then((user) => res.send(user))
+    .catch((err) => {
+      console.log(`failed to get profile by id:${err}`);
+    });
+});
+
+router.get("/profile-name", auth.ensureLoggedIn, (req, res) => {
+  User.findOne({_id: req.query.userId})
+    .then((user) => res.send(user.name))
     .catch((err) => {
       console.log(`failed to get profile by id:${err}`);
     });
@@ -419,10 +427,11 @@ router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
 
 //accept a friends request
 router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
-  User.findById(req.query.userId)
+  User.findById(req.body.userId)
     .then((user) => {
-      user.requests.filter((request) => request !== req.query.profileId);
-      user.friends.push(req.query.profileId);
+      console.log("inside");
+      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
+      user.friends.push(req.body.profileId);
       user.save();
       res.send(user);
     })
@@ -433,9 +442,9 @@ router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
 
 //delete a friend request
 router.post("/delete-request", auth.ensureLoggedIn, (req, res) => {
-  User.findById(req.query.userId)
+  User.findById(req.body.userId)
     .then((user) => {
-      user.requests.filter((request) => request !== req.query.profileId);
+      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
       user.save();
       res.send(user);
     })

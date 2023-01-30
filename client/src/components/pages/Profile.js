@@ -66,11 +66,14 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
-    console.log(props);
     loadProfile();
     loadMyFriends();
     loadMutual();
   }, [props.userId, props.profileId]); // Must also change when friends change
+
+  useEffect( () => {
+    loadMutual();
+  }, [myFriends]); //load mutual anytime my friends change
 
   let content;
   if (!profile) {

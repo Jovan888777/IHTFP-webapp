@@ -7,15 +7,14 @@ const FriendRequests = (props) => {
 
     //getting requests of the user
     const getRequests = () => {
-        console.log(props.userId);
         get("/api/friend-requests", {userId: props.userId})
-            .then((reqs) => setRequests(reqs))
+            .then((reqs) => {
+                setRequests(reqs);
+            })
             .catch((err) => {
                 console.log("failed to get requests");
         });
-        console.log(requests);
     }
-
 
     const acceptRequest = (profileId, btnA, btnD) => {
         if (btnA && btnD) {
@@ -23,10 +22,20 @@ const FriendRequests = (props) => {
             btnA.innerHTML = "Accepted";
             btnA.disabled = true;
             btnD.remove();
-        post("/api/accept-request", {userId: props.userId, profileId: profileId})
-            .then( () => {})
-            .catch((err) => {
-                console.log(`failed to accept request:${err}`);
+            console.log(props.userId, profileId);
+
+            //accept request on one side
+            post("/api/accept-request", {userId: props.userId, profileId: profileId})
+                .then( () => {console.log("post request");})
+                .catch((err) => {
+                    console.log(`failed to accept request:${err}`);
+            });
+
+            //accept request on the other side
+            post("/api/accept-request", {userId: profileId, profileId: props.userId})
+                .then( () => {console.log("post request");})
+                .catch((err) => {
+                    console.log(`failed to accept request:${err}`);
             });
         }
     }
@@ -56,9 +65,9 @@ const FriendRequests = (props) => {
             {requests.map((element) => (
             
             <div>
-                {element.name}
-                <button onClick = {(e) => acceptRequest(element._id, e.target, e.target.nextSibling)} > Accept Request </button>
-                <button onClick = {(e) => deleteRequest(element._id, e.target.previousSibling, e.target)}> Delete Request </button>
+                Name {element}
+                <button onClick = {(e) => acceptRequest(element, e.target, e.target.nextSibling)} > Accept Request </button>
+                <button onClick = {(e) => deleteRequest(element, e.target.previousSibling, e.target)}> Delete Request </button>
             </div>
 
             ))}
