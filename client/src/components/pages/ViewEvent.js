@@ -88,7 +88,7 @@ const ViewEvent = (props) => {
   useEffect(() => {
     loadPreferences();
     loadEvents();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     loadPreferedEvents();
