@@ -27,7 +27,7 @@ var dailyActivities = schedule.scheduleJob("45 23 * * *", function () {
   DiningSettings.find({})
     .then((settings) => {
       settings.map((setting) => {
-        setting.chosen = [];
+        setting.chosen = [null, null, null, null];
         setting.save();
       });
     })
@@ -73,6 +73,7 @@ const semesterlyActivities = schedule.scheduleJob("0 0 1 1,2,6 *", function () {
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
+
   if (!req.user) {
     // not logged in
     return res.send({});
@@ -270,7 +271,7 @@ router.post("/add-user", auth.ensureLoggedIn, (req, res) => {
   const newDiningSettings = new DiningSettings({
     user_id: newUser._id,
     restrictions: [],
-    chosen: [null, null, null],
+    chosen: [null, null, null, null],
     rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
   });
 
