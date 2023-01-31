@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { get, post } from "../../utilities";
-import { Link, navigate } from "@reach/router";
-
 import "./MyEvents.css";
-
 import EventDisplay from "../modules/EventDisplay";
-import AddEvent from "./AddEvent";
 
 const MyEvents = (props) => {
-  //My events array and setting it
   const [myEvents, setmyEvents] = useState([]);
 
-  //Function that sets the My events array
+  //Sets the My events array
   const loadMyEvents = () => {
-    get("/api/my-events").then((events) => {
-      setmyEvents(events);
-    });
+    get("/api/my-events")
+      .then((events) => {
+        setmyEvents(events);
+      })
+      .catch((err) => console.log(`failed to load my events:${err}`));
   };
 
-  const getNames = async (guests) => {
+  //Async function that gets the names of the guests on the guestlist
+  //from the id list
+  const getNames = async (guestsId) => {
     return Promise.all(
-      guests.map((uid) =>
+      guestsId.map((uid) =>
         get("/api/profile-by-id", { userId: uid })
           .then((user) => user.name)
-          .catch((err) => console.log(err))
+          .catch((err) => err)
       )
     );
   };
 
+  //If there are guests on the guestlit, it downloads a .txt
+  //file when the appropriate button is clicked
   const downloadGuestlist = async (eventId) => {
     get("/api/event-guestlist", { eventId: eventId })
       .then((guests) => {
@@ -41,27 +42,34 @@ const MyEvents = (props) => {
               document.body.appendChild(element); // Required for this to work in FireFox
               element.click();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.log(`failed to download guestlist:${err}`);
+              alert("Failed to download the guestlist. Try again later.");
+            });
         } else {
           alert("There is no one on the guestlist yet!");
         }
       })
       .catch((err) => {
         console.log(`failed to get all event guestlist:${err}`);
+        alert("Failed to download the guestlist. Try again later.");
       });
   };
 
-  const deleteEvent = (eventIdPlus) => {
+  //Allows creator to delete their event (also has confirmation)
+  const deleteEvent = (eventId) => {
     let confirmation = confirm("Are you sure you want to delete your event?");
     if (confirmation) {
-      let eventId = eventIdPlus.split("_")[0];
-      post("/api/delete-event", { eventId: eventId }).catch((err) => {
-        console.log(`failed to deleted event:${err}`);
-        res.send(false);
-      });
-      let newEvents = myEvents.filter((event) => event._id !== eventId);
-      setmyEvents(newEvents);
-      alert("Your event was deleted successfully!");
+      post("/api/delete-event", { eventId: eventId })
+        .then(() => {
+          let newEvents = myEvents.filter((event) => event._id !== eventId);
+          setmyEvents(newEvents);
+          alert("Your event was deleted successfully!");
+        })
+        .catch((err) => {
+          console.log(`failed to delete event:${err}`);
+          alert("Failed to delete your event.");
+        });
     }
   };
 
@@ -69,7 +77,6 @@ const MyEvents = (props) => {
     loadMyEvents();
   }, []);
 
-  //Missing printing the events
   return (
     <div>
       <h1>My Events</h1>
@@ -80,29 +87,12 @@ const MyEvents = (props) => {
 
             <div className="column">
               {element.guestlistNeeded ? (
-                <button
-                  onClick={(e) => downloadGuestlist(e.target.className)}
-                  className={element._id}
-                >
-                  Download Guestlist
-                </button>
+                <button onClick={(e) => downloadGuestlist(element._id)}>Download Guestlist</button>
               ) : (
                 ""
               )}
-              <button
-                onClick={() => {
-                  props.handleEditing(element);
-                }}
-              >
-                {" "}
-                Edit{" "}
-              </button>
-              <button
-                onClick={(e) => deleteEvent(e.target.className)}
-                className={element._id + "_delete"}
-              >
-                Delete this event
-              </button>
+              <button onClick={() => props.handleEditing(element)}>Edit</button>
+              <button onClick={(e) => deleteEvent(element._id)}>Delete this event</button>
             </div>
           </div>
         ))

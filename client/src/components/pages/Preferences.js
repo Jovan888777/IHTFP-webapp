@@ -21,6 +21,147 @@ const Preferences = (props) => {
   const [classSettings, setClassSettings] = useState({});
   const [eventSettings, setEventSettings] = useState({});
 
+  let majors = [
+    "1-ENG",
+    "2",
+    "2-A",
+    "2-OE",
+    "3",
+    "3-A",
+    "3-C",
+    "4",
+    "4-B",
+    "5",
+    "5-7",
+    "6-1",
+    "6-2",
+    "6-3 (NEW)",
+    "6-3 (OLD)",
+    "6-4",
+    "6-7",
+    "6-9",
+    "6-14",
+    "7",
+    "8",
+    "9",
+    "10",
+    "10-B",
+    "10-C",
+    "10-ENG",
+    "11",
+    "11-6",
+    "12",
+    "14",
+    "14-2",
+    "15-1",
+    "15-2",
+    "15-3",
+    "16",
+    "16-ENG",
+    "17",
+    "18",
+    "18-C",
+    "20",
+    "21",
+    "21A",
+    "21E",
+    "21G",
+    "21H",
+    "21L",
+    "21M-1",
+    "21M-2",
+    "21S",
+    "21W",
+    "22",
+    "22-ENG",
+    "24-1",
+    "24-2",
+    "CMS",
+    "STS",
+  ];
+  let minors = [
+    "1",
+    "2",
+    "2-A",
+    "3",
+    "3-A",
+    "3-C",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "8",
+    "9",
+    "11",
+    "12",
+    "14",
+    "15-1",
+    "15-2",
+    "15-3",
+    "17",
+    "18",
+    "20",
+    "21",
+    "21",
+    "21A",
+    "21G",
+    "21H",
+    "21L",
+    "21M",
+    "21W",
+    "24-1",
+    "24-2",
+    "CMS",
+    "E&I",
+    "IDSS",
+    "STS",
+  ];
+  let concentrations = [
+    "African and African Diaspora Studies",
+    "American Studies",
+    "Ancient and Medieval Studies",
+    "Anthropology",
+    "Archaeology and Archaeological Science",
+    "Art, Culture, and Technology",
+    "Asian and Asian Diaspora Studies",
+    "Comparative Media Studies",
+    "Computing and Society",
+    "Development Economics",
+    "Economics",
+    "Education",
+    "English Language Studies (ELS)",
+    "Ethics",
+    "Chinese",
+    "French",
+    "German",
+    "Japanese",
+    "Korean ",
+    "Portuguese",
+    "Russian",
+    "Spanish",
+    "Other Languages",
+    "Studies in International Literatures and Cultures (SILC)",
+    "Theory of Languages",
+    "History",
+    "History of Architecture, Art, and Design",
+    "Latin American and Latino/a Studies",
+    "Legal Studies",
+    "Linguistics",
+    "Literature",
+    "Middle Eastern Studies",
+    "Music",
+    "Philosophy",
+    "Political Science",
+    "Religious Studies",
+    "Russian and Eurasian Studies",
+    "Science, Technology, and Society (STS)",
+    "Theater Arts",
+    "Urban Studies",
+    "Women's and Gender Studies",
+    "Writing",
+  ];
+
   // const deleteME = () => {
   //   post("/api/delete-everything")
   //     .then(() => console.log("done"))
@@ -69,6 +210,7 @@ const Preferences = (props) => {
         if (settings) {
           classSettings.max_finals = settings.max_finals;
           classSettings.max_units = settings.max_units;
+          classSettings.currentClasses = settings.currentClasses;
         }
       })
       .catch((err) => {
@@ -89,6 +231,22 @@ const Preferences = (props) => {
       .catch((err) => {
         console.log(`failed to get event settings:${err}`);
       });
+  };
+
+  const changeEventSettings = (newKeywords) => {
+    eventSettings[key] = newData;
+  };
+
+  const changeClassSettings = (newClasses) => {
+    classSettings[key] = newData;
+  };
+
+  const changeProfile = (key, newData) => {
+    profile[key] = newData;
+  };
+
+  const changeDiningSettings = (key, newData) => {
+    diningSettings[key] = newData;
   };
 
   useEffect(() => {
@@ -122,36 +280,51 @@ const Preferences = (props) => {
       <input name="pic" type="textbox" placeholder="Picture" className="profileInput" required />
       <br></br>
       Primary Major:{" "}
-      <input
-        name="primaryMajor"
-        type="textbox"
-        placeholder="Primary Major"
-        className="profileInput"
-        required
-      />
+      <select name="primaryMajor" className="profileInput" required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {majors.map((major) => (
+          <option value={major}>{major}</option>
+        ))}
+      </select>
       <br></br>
       Secondary Major (optional):{" "}
-      <input
-        name="secondaryMajor"
-        type="textbox"
-        placeholder="Secondary Major"
-        className="profileInput"
-      />
+      <select name="secondaryMajor" className="profileInput" required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {majors.map((major) => (
+          <option value={major}>{major}</option>
+        ))}
+      </select>
       <br></br>
-      Minor 1:{" "}
-      <input name="minorOne" type="textbox" placeholder="Minor 1" className="profileInput" />
+      Minor 1:
+      <select name="minorOne" className="profileInput" required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {minors.map((minor) => (
+          <option value={minor}>{minor}</option>
+        ))}
+      </select>
       <br></br>
-      Minor 2:{" "}
-      <input name="minorTwo" type="textbox" placeholder="Minor 2" className="profileInput" />
+      Minor 2:
+      <select name="minorTwo" className="profileInput" required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {minors.map((minor) => (
+          <option value={minor}>{minor}</option>
+        ))}
+      </select>
       <br></br>
-      Concentration:{" "}
-      <input
-        name="concentration"
-        type="textbox"
-        placeholder="Concentration"
-        className="profileInput"
-        required
-      />
+      Concentration:
+      <select name="concentration" className="profileInput" required>
+        {concentrations.map((concentration) => (
+          <option value={concentration}>{concentration}</option>
+        ))}
+      </select>
       <br></br>
     </div>
   );
@@ -171,7 +344,12 @@ const Preferences = (props) => {
 
   let classContent = (
     <div>
-      Current Classes: <KeywordInput path="current-classes" itemId={props.userId} />
+      Current Classes:{" "}
+      <KeywordInput
+        data={classSettings.currentClasses}
+        parentFXN={changeClassSettings}
+        key="currentClasses"
+      />
       Max Number of Finals per Semester:{" "}
       <input name="max_finals" type="number" placeholder="Max Finals" className="classInput" />
       <br></br>
@@ -182,9 +360,10 @@ const Preferences = (props) => {
 
   let eventContent = (
     <div>
-      Favorite Keywords: <KeywordInput path="keyword-preferences" itemId={props.userId} />
+      Favorite Keywords:{" "}
+      <KeywordInput data={eventSettings.keywords} parentFXN={changeEventSettings} key="keywords" />
       <br></br>
-      Allow Summary Emails: <input name="allEmails" type="checkbox" className="eventInput" />
+      Allow Summary Emails: <input name="allowEmails" type="checkbox" className="eventInput" />
       <br></br>
     </div>
   );
@@ -196,7 +375,7 @@ const Preferences = (props) => {
         changing="update-user"
         title="Profile Details"
         content={profileContent}
-        parentFXN={setProfile}
+        parentFXN={changeProfile}
         classNameUsed="profileInput"
       />
       <Accordian
@@ -204,7 +383,7 @@ const Preferences = (props) => {
         changing="dining-settings"
         title="Dining Settings"
         content={diningContent}
-        parentFXN={setDiningSettings}
+        parentFXN={changeDiningSettings}
         classNameUsed="diningInput"
       />
       <Accordian
@@ -212,7 +391,7 @@ const Preferences = (props) => {
         changing="event-settings"
         title="Event Settings"
         content={eventContent}
-        parentFXN={setEventSettings}
+        parentFXN={changeEventSettings}
         classNameUsed="eventInput"
       />
       <Accordian
@@ -220,7 +399,7 @@ const Preferences = (props) => {
         changing="class-settings"
         title="Class Settings"
         content={classContent}
-        parentFXN={setClassSettings}
+        parentFXN={changeClassSettings}
         classNameUsed="classInput"
       />
     </div>

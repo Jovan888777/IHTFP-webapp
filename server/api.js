@@ -225,7 +225,7 @@ router.get("/profile-by-id", auth.ensureLoggedIn, (req, res) => {
 });
 
 router.get("/profile-name", auth.ensureLoggedIn, (req, res) => {
-  User.findOne({_id: req.query.userId})
+  User.findOne({ _id: req.query.userId })
     .then((user) => res.send(user.name))
     .catch((err) => {
       console.log(`failed to get profile by id:${err}`);
@@ -430,7 +430,9 @@ router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.body.userId)
     .then((user) => {
       console.log("inside");
-      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
+      user.requests = user.requests.filter((request) => {
+        return request !== req.body.profileId;
+      });
       user.friends.push(req.body.profileId);
       user.save();
       res.send(user);
@@ -444,7 +446,9 @@ router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
 router.post("/delete-request", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.body.userId)
     .then((user) => {
-      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
+      user.requests = user.requests.filter((request) => {
+        return request !== req.body.profileId;
+      });
       user.save();
       res.send(user);
     })
@@ -470,6 +474,7 @@ router.post("/update-event-guestlist", auth.ensureLoggedIn, (req, res) => {
 router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
+      console.log(req.body.new);
       user.name = req.body.new.name;
       user.kerb = req.body.new.kerb;
       user.pronouns = req.body.new.pronouns;

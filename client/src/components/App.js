@@ -173,11 +173,10 @@ const App = (props) => {
   };
 
   const allMenus = () => {
-    handleMenu("https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/");
     ///// UNCOMMENT BELOW WHEN ALL LINK SCRAPPING IS READY
-    // for (let url of menuURLs) {
-    //   handleMenu(url);
-    // }
+    for (let url of menuURLs) {
+      handleMenu(url);
+    }
   };
 
   // scheduled updating of the menu once a day at midnight UTC time

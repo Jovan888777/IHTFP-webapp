@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "./KeywordInput.css";
-import { get, post } from "../../utilities";
 
 const KeywordInput = (props) => {
   const [keywords, setKeywords] = useState([]);
 
   const loadKeywords = () => {
-    if (props.path !== "") {
-      get("/api/" + props.path, { itemId: props.itemtId })
-        .then((keywords) => setKeywords(keywords))
-        .catch((err) => {
-          console.log(`failed to get all keywords:${err}`);
-        });
+    setKeywords(props.data);
+    for (let keyword in props.data) {
+      let inputField = document.getElementsByClassName("multi-search-filter");
+      inputField.parentNode.insertBefore(createFilterItem(keyword), inputField);
+      inputField.value = "";
     }
   };
 
   const removeKeyword = (event) => {
     let newKeywords = keywords.filter((keyword) => keyword !== event.target.value);
     setKeywords(newKeywords);
+    props.parentFXN(props.key, newKeywords);
     event.target.parentNode.remove();
   };
 
@@ -40,16 +39,22 @@ const KeywordInput = (props) => {
   const multiSearchKeyup = (event) => {
     if (event.keyCode === 13) {
       event.target.parentNode.insertBefore(createFilterItem(event.target.value), event.target);
-      let newKeywords = [...keywords];
+      let newKeywords;
+      if (Array.isArray(keywords)) {
+        newKeywords = [...keywords];
+      } else {
+        newKeywords = [];
+      }
       newKeywords.push(event.target.value);
       setKeywords(newKeywords);
+      props.parentFXN(props.key, newKeywords);
       event.target.value = "";
     }
   };
 
   useEffect(() => {
     loadKeywords();
-  }, []);
+  }, [props]);
 
   return (
     <div>

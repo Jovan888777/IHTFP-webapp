@@ -24,10 +24,12 @@ const AddEvent = (props) => {
   const [done, setDone] = useState(null);
   const [eventId, setEventId] = useState(null);
 
+  const handleKeywordChange = (newData) => {
+    setEventKeywords(newData);
+  };
+
   //Setting values according to props preposting
   const prepost = () => {
-    console.log("prepost");
-    console.log(props.eventName);
     if (props.eventName) {
       setEventName(props.eventName);
       setRouteStrings({
@@ -187,7 +189,7 @@ const AddEvent = (props) => {
           </div>
           <div className="halfWidth">Keywords:</div>
           <div className="fullWidth">
-            <KeywordInput type="add" path="" itemId="" />
+            <KeywordInput data={props.eventKeywords} parentFXN={handleKeywordChange} />
           </div>
           <div className="halfWidth">Start Date and Time:</div>
           <div className="halfWidth">
