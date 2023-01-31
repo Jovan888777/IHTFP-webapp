@@ -6,15 +6,28 @@ const FriendRequests = (props) => {
     const [requests, setRequests] = useState([]);
     const [requestsOther, setRequestsOther] = useState([]);
     const [friends, setFriends] = useState([]);
+    const [names, setNames] = useState([]);
 
     
     //could not get getNames to work
+    const getNames = async (requests) => {
+        return Promise.all(
+          requests.map((uid) =>
+            get("/api/profile-by-id", { userId: uid })
+              .then((user) => {return {name: user.name, 
+                               user_id: uid};}
+              )
+              .catch((err) => console.log(err))
+          )
+        );
+      };
 
     //getting requests of the userId
     const getRequests = () => {
         get("/api/friend-requests", {userId: props.userId})
             .then((reqs) => {
-                setRequests(reqs);
+                getNames(reqs)
+                .then((names) => setRequests(names));
             })
             .catch((err) => {
                 console.log("failed to get requests");
@@ -128,9 +141,9 @@ const FriendRequests = (props) => {
             {requests.map((element) => (
             
             <div>
-                {element}
-                <button onClick = {(e) => acceptRequest(element, e.target, e.target.nextSibling)} > Accept Request </button>
-                <button onClick = {(e) => deleteRequest(element, e.target.previousSibling, e.target)}> Delete Request </button>
+                {element.name}
+                <button onClick = {(e) => acceptRequest(element.user_id, e.target, e.target.nextSibling)} > Accept Request </button>
+                <button onClick = {(e) => deleteRequest(element.user_id, e.target.previousSibling, e.target)}> Delete Request </button>
             </div>
 
             ))}
@@ -141,7 +154,7 @@ const FriendRequests = (props) => {
                 <button onClick = {(e) => deleteFriend(props.profileId, e.target)}> Delete Friend </button>
                 : requestsOther.includes(props.userId) ?
                 <button> Friend Request Sent </button>
-                : requests.includes(props.profileId) ? 
+                : (requests.filter( (element) => (element.user_id === props.profileId))).length ?
                     <div>
                         <button onClick = {(e) => acceptRequest(props.profileId, e.target, e.target.nextSibling)} > Accept Request </button>
                         <button onClick = {(e) => deleteRequest(props.profileId, e.target.previousSibling, e.target)}> Delete Request </button>
