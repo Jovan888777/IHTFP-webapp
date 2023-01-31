@@ -166,6 +166,7 @@ const App = (props) => {
       bakerb: [],
       bakerd: [],
     };
+    
     console.log(request);
     post("/api/add-menus", request)
       .then(console.log("menu added successfully"))
