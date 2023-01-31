@@ -20,12 +20,29 @@ async function scrapeProduct(url) {
   //launching new page
   await page.goto(url);
 
-  let finalContent = [];
+  let meals = [];
+  const names = await page.$$(".site-panel__daypart-panel-title-wrapper");
 
-  //containers = main wrappers around the meals
-  //breakfast dinner or lunch
+  let finalContent = [{}];
+  let final = {
+    Breakfast: [],
+    Brunch: [],
+    Lunch: [],
+    Dinner: [],
+    LateNight: [],
+  };
+  //each container
   const containers = await page.$$(".site-panel__daypart-wrapper");
   for (let i = 0; i < containers.length; i++) {
+    //Meal name
+    mealName = await(await names[i].getProperty('textContent')).jsonValue();
+    mealName = mealName.trim();
+    mealName = mealName.slice(0, 10);
+    mealName = mealName.trim();
+    
+    console.log(mealName);
+
+
     let elements = await containers[i].$$(".site-panel__daypart-item");
     //actual elements in there
     let allobj = [];
@@ -74,12 +91,15 @@ async function scrapeProduct(url) {
         );
       }
     }
+    final[mealName] = allobj;
     finalContent.push(allobj);
   }
+  console.log(final);
   browser.close();
-
   return finalContent;
 }
+
+scrapeProduct(url_maseeh);
 
 module.exports = {
   scrapeProduct
