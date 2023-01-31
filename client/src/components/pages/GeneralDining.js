@@ -22,17 +22,33 @@ const GeneralDining = (props) => {
   });
   const [meal, setMeal] = useState("breakfast");
   const [mealIndex, setMealIndex] = useState(0);
+  const [restrictions, setRestrictions] = useState([]);
 
   const loadDiningSettings = () => {
     get("/api/dining-settings", { userId: props.userId })
       .then((settings) => {
         setChosen(settings.chosen);
         setRankings(settings.rankings);
+        setRestrictions(settings.restrictions);
       })
       .catch((err) => {
         console.log(`failed to get dining settings:${err}`);
       });
   };
+
+  //filter menus based on preferences
+  const filterMenu = () => {
+    //load preferences and then filter menus based on that
+
+    /* should be something like this didnt have time to test
+
+    explanation:
+      every element in user restriction is in element.restriction 
+
+    menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
+    */
+
+  }
 
   /*const addMenuDB = () => {
     post("/api/delete-menus")
@@ -150,6 +166,10 @@ const GeneralDining = (props) => {
   useEffect(() => {
     settingBtns();
   }, [mealIndex, menus]);
+
+  /*useEffect(() => {
+    filterMenu();
+  }, []);*/
 
   return (
     <div>

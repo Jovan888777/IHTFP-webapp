@@ -32,7 +32,7 @@ const Friends = (props) => {
 
   useEffect(() => {
     loadUsers();
-  }, []);
+  }, [props]);
 
   return (
     <div>
@@ -41,7 +41,7 @@ const Friends = (props) => {
         <label for="search">Search Users</label>
         <input type="search" id = "search" onChange={(text)=>{searching(text.target.value);}}></input>
           {loaded ? filteredUsers.map((element) => (
-            <FriendDisplay name = {element.name} kerb = {element.kerb} my_id = {element._id} user_id = {props.userId} handleProfile = {props.handleProfile} reqs = {element.requests}/>
+            <FriendDisplay name = {element.name} kerb = {element.kerb} my_id = {element._id} user_id = {props.userId} handleProfile = {props.handleProfile} reqs = {element.requests} friends = {element.friends}/>
           )) : users.map((element) => (
             <FriendDisplay name = {element.name} kerb = {element.kerb} my_id = {element._id} user_id = {props.userId} handleProfile = {props.handleProfile} reqs = {element.requests} friends = {element.friends}/> ))}        
       </div>
