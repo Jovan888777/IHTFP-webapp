@@ -429,7 +429,6 @@ router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
 router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.body.userId)
     .then((user) => {
-      console.log("inside");
       user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
       user.friends.push(req.body.profileId);
       user.save();
@@ -566,6 +565,21 @@ router.post("/reset-chosen", auth.ensureLoggedIn, (req, res) => {
 });
 
 //////////////////// DELETING ////////////////////////////
+
+//delete friend
+router.post("/delete-friend", auth.ensureLoggedIn, (req, res) => {
+  console.log("delete");
+  User.findById(req.body.userId)
+    .then( (user) => {
+      console.log(req.body.userId, req.body.profileId);
+      user.friends = user.friends.filter((request) => {return request !== req.body.profileId});
+      user.save();
+    })
+    .catch((err) => {
+      console.log(`failed to deleted friend:${err}`);
+      res.send(false);
+    });
+});
 
 // delete event
 router.post("/delete-event", auth.ensureLoggedIn, (req, res) => {

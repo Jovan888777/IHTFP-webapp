@@ -8,6 +8,8 @@ import FriendDisplay from "../modules/FriendDisplay";
 import "./Friends.css";
 
 const Friends = (props) => {
+  /*
+  */
   const [users, setUsers] = useState([]);
   const [filteredUsers, setfilteredUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
