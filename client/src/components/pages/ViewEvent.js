@@ -28,6 +28,7 @@ const ViewEvent = (props) => {
 
   //Getting preferences from the server
   const loadPreferences = () => {
+    console.log("inside preferences");
     get("/api/event-settings")
       .then((settings) => {
         if (settings) seteventsSettings({ keywords: settings.keywords });
@@ -44,6 +45,7 @@ const ViewEvent = (props) => {
 
   //Loading preferred events based on preferences
   const loadPreferedEvents = () => {
+    console.log(eventSettings.keywords);
     setPreferedEvents(
       events.filter((element) => {
         return element.keywords.some((el) => eventSettings.keywords.includes(el));
@@ -86,8 +88,11 @@ const ViewEvent = (props) => {
   useEffect(() => {
     loadPreferences();
     loadEvents();
-    loadPreferedEvents();
   }, []);
+
+  useEffect(() => {
+    loadPreferedEvents();
+  }, [eventSettings]);
 
   return (
     <div>
