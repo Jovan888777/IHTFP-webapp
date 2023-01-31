@@ -59,7 +59,7 @@ const EventDisplay = (props) => {
             <li>End time: {props.end}</li>
             <li>Location: {props.location}</li>
             <li>Description: {props.description}</li>
-            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(" ,")}</li>
+            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
           </ul>
           {props.userId === props.user_id ? (
             ""

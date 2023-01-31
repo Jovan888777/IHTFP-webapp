@@ -4,13 +4,13 @@ const ClassSettingsSchema = new mongoose.Schema({
   user_id: String,
   max_finals: Number,
   max_units: Number,
-  electiveClasses: [Number],
-  concClasses: [Number],
-  HASSClasses: [Number],
-  CIClasses: [Number],
-  otherClasses: [Number],
-  completedClasses: [Number],
-  currentClasses: [Number],
+  electiveClasses: [String],
+  concClasses: [String],
+  HASSClasses: [String],
+  CIClasses: [String],
+  otherClasses: [String],
+  completedClasses: [String],
+  currentClasses: [String],
 });
 
 // compile model from schema

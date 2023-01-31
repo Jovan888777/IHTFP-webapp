@@ -189,7 +189,11 @@ const AddEvent = (props) => {
           </div>
           <div className="halfWidth">Keywords:</div>
           <div className="fullWidth">
-            <KeywordInput data={props.eventKeywords} parentFXN={handleKeywordChange} />
+            <KeywordInput
+              data={props.eventKeywords}
+              parentFXN={handleKeywordChange}
+              classNameUsed="event-keywords"
+            />
           </div>
           <div className="halfWidth">Start Date and Time:</div>
           <div className="halfWidth">

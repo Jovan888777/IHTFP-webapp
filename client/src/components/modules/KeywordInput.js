@@ -6,9 +6,9 @@ const KeywordInput = (props) => {
 
   const loadKeywords = () => {
     setKeywords(props.data);
-    for (let keyword in props.data) {
-      let inputField = document.getElementsByClassName("multi-search-filter");
-      inputField.parentNode.insertBefore(createFilterItem(keyword), inputField);
+    let inputField = document.getElementsByClassName(props.classNameUsed)[0];
+    for (let index in props.data) {
+      inputField.parentNode.insertBefore(createFilterItem(props.data[index]), inputField);
       inputField.value = "";
     }
   };
@@ -16,7 +16,7 @@ const KeywordInput = (props) => {
   const removeKeyword = (event) => {
     let newKeywords = keywords.filter((keyword) => keyword !== event.target.value);
     setKeywords(newKeywords);
-    props.parentFXN(props.key, newKeywords);
+    props.parentFXN(newKeywords);
     event.target.parentNode.remove();
   };
 
@@ -47,14 +47,14 @@ const KeywordInput = (props) => {
       }
       newKeywords.push(event.target.value);
       setKeywords(newKeywords);
-      props.parentFXN(props.key, newKeywords);
+      props.parentFXN(newKeywords);
       event.target.value = "";
     }
   };
 
   useEffect(() => {
     loadKeywords();
-  }, [props]);
+  }, [props.data]);
 
   return (
     <div>
@@ -75,7 +75,7 @@ const KeywordInput = (props) => {
           }
         }}
       >
-        <input type="text" onKeyUp={(e) => multiSearchKeyup(e)} />
+        <input type="text" className={props.classNameUsed} onKeyUp={(e) => multiSearchKeyup(e)} />
       </div>
     </div>
   );

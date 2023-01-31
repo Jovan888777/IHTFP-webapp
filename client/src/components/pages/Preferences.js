@@ -233,20 +233,57 @@ const Preferences = (props) => {
       });
   };
 
-  const changeEventSettings = (newKeywords) => {
-    eventSettings[key] = newData;
+  const changeEventSettings = (e) => {
+    if (e.target.tagName.toLowerCase() === "input") {
+      if (e.target.type === "checkbox") {
+        eventSettings[e.target.name] = !eventSettings[e.target.name];
+      } else {
+        eventSettings[e.target.name] = e.target.value;
+      }
+    }
   };
 
-  const changeClassSettings = (newClasses) => {
-    classSettings[key] = newData;
+  const changeClassSettings = (e) => {
+    classSettings[e.target.name] = e.target.value;
   };
 
-  const changeProfile = (key, newData) => {
-    profile[key] = newData;
+  const changeProfile = (e) => {
+    profile[e.target.name] = e.target.value;
   };
 
-  const changeDiningSettings = (key, newData) => {
-    diningSettings[key] = newData;
+  const changeDiningSettings = (e) => {
+    if (e.target.type === "checkbox") {
+      if (Array.isArray(diningSettings[e.target.name])) {
+        let currentVal = [...diningSettings[e.target.name]];
+        if (diningSettings[e.target.name].includes(e.target.value)) {
+          currentVal = currentVal.filter((item) => item !== e.target.value);
+        } else {
+          currentVal.push(e.target.value);
+        }
+        diningSettings[e.target.name] = currentVal;
+      }
+    } else {
+      diningSettings[e.target.name] = e.target.value;
+    }
+  };
+
+  const changeEventKeywords = (newKeywords) => {
+    eventSettings.keywords = newKeywords;
+  };
+
+  const changeClasses = (newClasses) => {
+    classSettings.currentClasses = newClasses;
+  };
+
+  const updateData = (changing, data) => {
+    console.log(data);
+    post(`/api/${changing}`, { new: data })
+      .then(() => {
+        console.log(`succesfully updated ${changing}`);
+      })
+      .catch((err) => {
+        console.log(`failed to update ${changing}:${err}`);
+      });
   };
 
   useEffect(() => {
@@ -260,10 +297,24 @@ const Preferences = (props) => {
   let profileContent = (
     <div>
       Name:{" "}
-      <input name="name" type="textbox" placeholder="Name" className="profileInput" required />
+      <input
+        name="name"
+        type="textbox"
+        placeholder="Name"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Kerb:{" "}
-      <input name="kerb" type="textbox" placeholder="Kerb" className="profileInput" required />
+      <input
+        name="kerb"
+        type="textbox"
+        placeholder="Kerb"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Pronouns:{" "}
       <input
@@ -271,16 +322,37 @@ const Preferences = (props) => {
         type="textbox"
         placeholder="Pronouns"
         className="profileInput"
+        onChange={(e) => changeProfile(e)}
         required
       />
       <br></br>
-      Year: <input name="year" type="number" placeholder="year" className="profileInput" required />
+      Year:{" "}
+      <input
+        name="year"
+        type="number"
+        placeholder="year"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Profile Picture:{" "}
-      <input name="pic" type="textbox" placeholder="Picture" className="profileInput" required />
+      <input
+        name="pic"
+        type="textbox"
+        placeholder="Picture"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Primary Major:{" "}
-      <select name="primaryMajor" className="profileInput" required>
+      <select
+        name="primaryMajor"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      >
         <option value="" defaultChecked>
           --select--
         </option>
@@ -290,7 +362,12 @@ const Preferences = (props) => {
       </select>
       <br></br>
       Secondary Major (optional):{" "}
-      <select name="secondaryMajor" className="profileInput" required>
+      <select
+        name="secondaryMajor"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      >
         <option value="" defaultChecked>
           --select--
         </option>
@@ -300,7 +377,7 @@ const Preferences = (props) => {
       </select>
       <br></br>
       Minor 1:
-      <select name="minorOne" className="profileInput" required>
+      <select name="minorOne" className="profileInput" onChange={(e) => changeProfile(e)} required>
         <option value="" defaultChecked>
           --select--
         </option>
@@ -310,7 +387,7 @@ const Preferences = (props) => {
       </select>
       <br></br>
       Minor 2:
-      <select name="minorTwo" className="profileInput" required>
+      <select name="minorTwo" className="profileInput" onChange={(e) => changeProfile(e)} required>
         <option value="" defaultChecked>
           --select--
         </option>
@@ -320,25 +397,74 @@ const Preferences = (props) => {
       </select>
       <br></br>
       Concentration:
-      <select name="concentration" className="profileInput" required>
+      <select
+        name="concentration"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      >
         {concentrations.map((concentration) => (
           <option value={concentration}>{concentration}</option>
         ))}
       </select>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("update-user", profile)}
+      />
       <br></br>
     </div>
   );
+
   let diningContent = (
     <div>
       Dietary Restrictions:
-      <input name="restrictions" type="checkbox" value="vegetarian" className="diningInput" />{" "}
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="vegetarian"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
       Vegetarian
-      <input name="restrictions" type="checkbox" value="vegan" className="diningInput" /> Vegan
-      <input name="restrictions" type="checkbox" value="kosher" className="diningInput" /> Kosher
-      <input name="restrictions" type="checkbox" value="halal" className="diningInput" /> Halal
-      <input name="restrictions" type="checkbox" value="glutenFree" className="diningInput" />{" "}
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="vegan"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Vegan
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="kosher"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Kosher
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="halal"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Halal
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="glutenFree"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
       Gluten Free
       <br></br>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("dining-settings", diningSettings)}
+      />
     </div>
   );
 
@@ -347,24 +473,56 @@ const Preferences = (props) => {
       Current Classes:{" "}
       <KeywordInput
         data={classSettings.currentClasses}
-        parentFXN={changeClassSettings}
-        key="currentClasses"
+        parentFXN={changeClasses}
+        classNameUsed="classes-keywords"
       />
       Max Number of Finals per Semester:{" "}
-      <input name="max_finals" type="number" placeholder="Max Finals" className="classInput" />
+      <input
+        name="max_finals"
+        type="number"
+        placeholder="Max Finals"
+        className="classInput"
+        onInput={changeClassSettings}
+      />
       <br></br>
       Max Number of Units per Semester:{" "}
-      <input name="max_units" type="number" placeholder="Max Units" className="classInput" />
+      <input
+        name="max_units"
+        type="number"
+        placeholder="Max Units"
+        className="classInput"
+        onInput={changeClassSettings}
+      />
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("class-settings", classSettings)}
+      />
     </div>
   );
 
   let eventContent = (
     <div>
       Favorite Keywords:{" "}
-      <KeywordInput data={eventSettings.keywords} parentFXN={changeEventSettings} key="keywords" />
+      <KeywordInput
+        data={eventSettings.keywords}
+        parentFXN={changeEventKeywords}
+        classNameUsed="event-keywords"
+      />
       <br></br>
-      Allow Summary Emails: <input name="allowEmails" type="checkbox" className="eventInput" />
+      Allow Summary Emails:{" "}
+      <input
+        name="allowEmails"
+        type="checkbox"
+        className="eventInput"
+        onChange={changeEventSettings}
+      />
       <br></br>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("event-settings", eventSettings)}
+      />
     </div>
   );
 
@@ -372,34 +530,26 @@ const Preferences = (props) => {
     <div className="accordion">
       <Accordian
         data={profile}
-        changing="update-user"
         title="Profile Details"
         content={profileContent}
-        parentFXN={changeProfile}
         classNameUsed="profileInput"
       />
       <Accordian
         data={diningSettings}
-        changing="dining-settings"
         title="Dining Settings"
         content={diningContent}
-        parentFXN={changeDiningSettings}
         classNameUsed="diningInput"
       />
       <Accordian
         data={eventSettings}
-        changing="event-settings"
         title="Event Settings"
         content={eventContent}
-        parentFXN={changeEventSettings}
         classNameUsed="eventInput"
       />
       <Accordian
         data={classSettings}
-        changing="class-settings"
         title="Class Settings"
         content={classContent}
-        parentFXN={changeClassSettings}
         classNameUsed="classInput"
       />
     </div>
