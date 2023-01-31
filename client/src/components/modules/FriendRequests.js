@@ -103,7 +103,7 @@ const FriendRequests = (props) => {
             btnD.disabled = true;
             btnA.remove();
 
-        post("/api/accept-request", {userId: props.userId, profileId: profileId})
+        post("/api/delete-request", {userId: props.userId, profileId: profileId})
             .then( () => {})
             .catch((err) => {
                 console.log(`failed to accept request:${err}`);
