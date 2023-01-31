@@ -5,17 +5,20 @@ const KeywordInput = (props) => {
   const [keywords, setKeywords] = useState([]);
 
   const loadKeywords = () => {
-    setKeywords(props.data);
-    let inputField = document.getElementsByClassName(props.classNameUsed)[0];
-    for (let index in props.data) {
-      inputField.parentNode.insertBefore(createFilterItem(props.data[index]), inputField);
-      inputField.value = "";
+    if (Array.isArray(props.data)) {
+      keywords.push(...props.data);
+      let inputField = document.getElementsByClassName(props.classNameUsed)[0];
+      for (let index in props.data) {
+        inputField.parentNode.insertBefore(createFilterItem(props.data[index]), inputField);
+        inputField.value = "";
+      }
     }
   };
 
   const removeKeyword = (event) => {
     let newKeywords = keywords.filter((keyword) => keyword !== event.target.value);
-    setKeywords(newKeywords);
+    keywords.splice(0, keywords.length);
+    keywords.push(...newKeywords);
     props.parentFXN(newKeywords);
     event.target.parentNode.remove();
   };
@@ -29,6 +32,7 @@ const KeywordInput = (props) => {
 
     const close = document.createElement("div");
     close.className = "fa fa-close";
+    close.value = text;
     close.addEventListener("click", (e) => removeKeyword(e));
 
     item.appendChild(span);

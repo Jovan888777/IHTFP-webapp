@@ -76,8 +76,6 @@ const App = (props) => {
   };
 
   const handleEditing = (element) => {
-    console.log("went inside");
-    console.log(element);
     setEventInfo({
       eventId: element._id,
       userId: element.user_id,
