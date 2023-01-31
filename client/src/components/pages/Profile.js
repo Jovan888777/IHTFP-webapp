@@ -13,10 +13,10 @@ const Profile = (props) => {
   const [mutual, setMutual] = useState([]);
 
   const [display, setDisplay] = useState("Mutual Friends");
-  const [requests, setRequests] = useState("");
+  const [requests, setRequests] = useState([]);
 
   //Loading the profile of requested user
-  const loadProfile = (id) => {
+  const loadProfile = () => {
     get("/api/profile-by-id", { userId: props.profileId })
       .then((user) => {
         if (user) {
@@ -74,31 +74,41 @@ const Profile = (props) => {
   };
 
   //deleting your friends, when you are in your profile
-  const deleteFriend = (tmp, btn) => {
+  const deleteFriend = (profileId, btn) => {
     btn.innerHTML = "Deleted";
     btn.disabled = true;
-    console.log(props.userId, tmp);
-    post("/api/delete-friend", {userId: props.userId, profileId: tmp})
+
+    //delete friend from userIds side
+    post("/api/delete-friend", {userId: props.userId, profileId: profileId})
+      .then( () => console.log("deleted friends") )
+      .catch( (err) => console.log(err));
+
+    //delete friend from tmp's side
+    post("/api/delete-friend", {userId: profileId, profileId: props.userId})
       .then( () => console.log("deleted friends") )
       .catch( (err) => console.log(err));
   }
 
   useEffect(() => {
-    loadProfile();
+    if (props.userId && props.profileId)
+      loadProfile();
     //loadMyFriends();
     //loadMutual();
-  }, [props.profileId]); // Must also change when friends change
+  }, [props.profileId]); // For profile change
 
   useEffect( () => {
-    loadDisplay();
-  }, [props.userId, props.profileId]);
+    if (props.userId && props.profileId)
+      loadDisplay();
+  }, [props.userId, props.profileId]); //for setting display anytime props change
 
   useEffect( () => {
-    loadMyFriends();
-  }, [props.userId, profile]);
+    if (profile)
+      loadMyFriends();
+  }, [props.profileId, profile]); //for changing
 
   useEffect( () => {
-    loadMutual();
+    if (myFriends)
+      loadMutual();
   }, [myFriends]); //load mutual anytime my friends change
 
   let content;
@@ -111,20 +121,23 @@ const Profile = (props) => {
   } else {
     content = (
       <div>
-        <ProfileDisplay {...profile} />
-        <button>Edit</button>
-        <FriendRequests  userId = {props.userId}/>
+        <ProfileDisplay profile = {profile} userId = {props.userId} profileId = {props.profileId} />
+        {(props.userId === props.profileId) ?
+            <button onClick = {() => console.log("Need to edit")}>Edit</button>
+            : <div></div>
+        }
+        <FriendRequests  userId = {props.userId} profileId = {props.profileId}/>
         <h2 className="u-textCenter"> {display} </h2>
         {props.userId === props.profileId ?
           mutual.map((element) => (
             <div>
-              <ProfileDisplay {...element} />
+              <ProfileDisplay userId = {props.userId} profileId = {element} />
               <button onClick = {(e) => deleteFriend(element, e.target)}>Delete Friend</button>
             </div>
           ))
           : 
             mutual.map((element) => (
-              <ProfileDisplay {...element} />
+              <ProfileDisplay userId = {props.userId} profileId = {element} />
             ))
         }
         
