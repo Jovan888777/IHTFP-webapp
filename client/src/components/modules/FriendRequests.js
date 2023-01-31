@@ -5,6 +5,15 @@ import "./FriendRequests.css";
 const FriendRequests = (props) => {
     const [requests, setRequests] = useState([]);
 
+    const getNames = async (requests) => {
+        return Promise.all(
+          requests.map((uid) =>
+            get("/api/profile-by-id", { userId: uid })
+              .then((user) => user.name)
+              .catch((err) => console.log(err))
+          )
+        );
+      };
     //getting requests of the user
     const getRequests = () => {
         get("/api/friend-requests", {userId: props.userId})

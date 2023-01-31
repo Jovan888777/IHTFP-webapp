@@ -7,12 +7,6 @@ import "../../utilities.css";
 import { Link, navigate } from "@reach/router";
 
 const FriendDisplay = (props) => {
-    /*
-    {props.reqs.includes(props.user_id) ? 
-                    <button onClick = {(e) => AddFriend()}>Add Friend</button>
-                    : <button onClick = {(e) => AddFriend()}>Friend Request Sent</button>
-                }
-    */
 
     const AddFriend = (btn) => {
         console.log("adding friends");
