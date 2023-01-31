@@ -63,7 +63,7 @@ const SharedClasses = (props) => {
   useEffect(() => {
     loadFriends();
     loadClasses();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     loadFriendsInClasses();
