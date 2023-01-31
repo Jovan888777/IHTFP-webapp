@@ -39,9 +39,6 @@ async function scrapeProduct(url) {
     mealName = mealName.trim();
     mealName = mealName.slice(0, 10);
     mealName = mealName.trim();
-    
-    console.log(mealName);
-
 
     let elements = await containers[i].$$(".site-panel__daypart-item");
     //actual elements in there
@@ -94,7 +91,6 @@ async function scrapeProduct(url) {
     final[mealName] = allobj;
     finalContent.push(allobj);
   }
-  console.log(final);
   browser.close();
   return finalContent;
 }
