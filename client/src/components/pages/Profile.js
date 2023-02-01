@@ -38,10 +38,6 @@ const Profile = (props) => {
             friends: user.friends,
           };
           setProfile(newData);
-          /*if (props.userId === props.profileId) {
-            setDisplay("My Friends");
-            setRequests("Friend Requests");
-          }*/
         }
       })
       .catch((err) => {
@@ -55,16 +51,14 @@ const Profile = (props) => {
       setDisplay("My Friends");
       setRequests("Friend Requests");
     }
-  }
+  };
 
   //Loading friends of logged in user
   const loadMyFriends = () => {
     if (props.userId) {
       get("/api/user-friends", { userId: props.userId })
         .then((friends) => setmyFriends(friends))
-        .catch((err) => {
-          console.log(`failed to get my friends:${err}`);
-        });
+        .catch((err) => console.log(`failed to get my friends:${err}`));
     }
   };
 
@@ -83,36 +77,32 @@ const Profile = (props) => {
     btn.disabled = true;
 
     //delete friend from userIds side
-    post("/api/delete-friend", {userId: props.userId, profileId: profileId})
-      .then( () => console.log("deleted friends") )
-      .catch( (err) => console.log(err));
+    post("/api/delete-friend", { userId: props.userId, profileId: profileId }).catch((err) =>
+      console.log(err)
+    );
 
     //delete friend from tmp's side
-    post("/api/delete-friend", {userId: profileId, profileId: props.userId})
-      .then( () => console.log("deleted friends") )
-      .catch( (err) => console.log(err));
-  }
+    post("/api/delete-friend", { userId: profileId, profileId: props.userId }).catch((err) =>
+      console.log(err)
+    );
+  };
 
   useEffect(() => {
-    if (props.userId && props.profileId)
-      loadProfile();
+    if (props.userId && props.profileId) loadProfile();
     //loadMyFriends();
     //loadMutual();
   }, [props.profileId]); // For profile change
 
-  useEffect( () => {
-    if (props.userId && props.profileId)
-      loadDisplay();
+  useEffect(() => {
+    if (props.userId && props.profileId) loadDisplay();
   }, [props.userId, props.profileId]); //for setting display anytime props change
 
-  useEffect( () => {
-    if (profile)
-      loadMyFriends();
+  useEffect(() => {
+    if (profile) loadMyFriends();
   }, [props.profileId, profile]); //for changing
 
-  useEffect( () => {
-    if (myFriends)
-      loadMutual();
+  useEffect(() => {
+    if (myFriends) loadMutual();
   }, [myFriends]); //load mutual anytime my friends change
 
   let content;
@@ -125,31 +115,35 @@ const Profile = (props) => {
   } else {
     content = (
       <div>
-        <ProfileDisplay profile = {profile} userId = {props.userId} profileId = {props.profileId} />
-        <div className="row" style={{paddingTop : 100}}>
-          <div className="column"> 
-          <h2 className="u-textCenter"> {display} </h2>
-          {props.userId === props.profileId ?
-            mutual.map((element) => (
-              <div >
-                <div className="row">
-                  <UserCard userId = {props.userId} profileId = {element}/>
-                  <div className="profile-userbuttons">
-                  <button className="btn" style={{marginTop : 20}}onClick = {(e) => deleteFriend(element, e.target)}>Delete Friend</button>
+        <ProfileDisplay profile={profile} userId={props.userId} profileId={props.profileId} />
+        <div className="row" style={{ paddingTop: 100 }}>
+          <div className="column">
+            <h2 className="u-textCenter"> {display} </h2>
+            {props.userId === props.profileId
+              ? mutual.map((element) => (
+                  <div>
+                    <div className="row">
+                      <UserCard userId={props.userId} profileId={element} />
+                      <div className="profile-userbuttons">
+                        <button
+                          className="btn"
+                          style={{ marginTop: 20 }}
+                          onClick={(e) => deleteFriend(element, e.target)}
+                        >
+                          Delete Friend
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))
-            : 
-              mutual.map((element) => (
-                <div className="row">
-                  <UserCard userId = {props.userId} profileId = {element}/>
-                </div>
-              ))
-          }
+                ))
+              : mutual.map((element) => (
+                  <div className="row">
+                    <UserCard userId={props.userId} profileId={element} />
+                  </div>
+                ))}
           </div>
-          <div className="column"> 
-            <FriendRequests  userId = {props.userId} profileId = {props.profileId}/>
+          <div className="column">
+            <FriendRequests userId={props.userId} profileId={props.profileId} />
           </div>
         </div>
       </div>

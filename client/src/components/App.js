@@ -32,16 +32,6 @@ import NotFound from "./pages/NotFound.js";
  * Define the "App" component
  */
 
-//web scraping
-
-//For posting the dining menus 1am every day
-/*window.setInterval(function() {
-  let date = new Date(); // Date Now
-  if(date.getHours() === 8 && date.getMinutes() === 0) {
-    console.log("posting dining menus");
-  }
-}, 600000); // Repeat every 60000 milliseconds (1 minute)*/
-
 const App = (props) => {
   const [userId, setUserId] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
@@ -76,18 +66,10 @@ const App = (props) => {
     });
   }, []);
 
-  /*useEffect(() => {
-    updateMenu();
-  }, [menu]); */
-
-  /*useEffect(() => {
-    allMenus();
-  }, []); */
-
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
-    console.log(`Logged in as ${decodedCredential.name}`);
+    // console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
       setUserName(user.name);
@@ -118,7 +100,6 @@ const App = (props) => {
   };
 
   const handleAddEvent = () => {
-    console.log("handling");
     setEventInfo({
       eventId: null,
       eventName: "",
@@ -162,11 +143,7 @@ const App = (props) => {
 
   //posting the menus
   const updateMenu = () => {
-    //console.log("menu");
-    console.log(menu);
-    post("/api/add-menus", menu)
-      .then(console.log("menu added successfully"))
-      .catch((err) => console.log("failed to add the menu: " + err));
+    post("/api/add-menus", menu).catch((err) => console.log("failed to add the menu: " + err));
   };
 
   //cleaning the menus from webscraping for posting event

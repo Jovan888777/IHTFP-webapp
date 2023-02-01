@@ -52,7 +52,6 @@ const SharedClasses = (props) => {
     let friendChoices = {};
 
     if (classes) {
-      console.log(classes, friendClasses);
       for (let className of classes) {
         friendChoices[className] = [];
       }

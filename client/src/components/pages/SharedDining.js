@@ -33,7 +33,6 @@ const SharedDining = (props) => {
         setFriends(friends);
       })
       .catch((err) => `failed to find user friends:${err}`);
-    console.log(friends);
   };
 
   const loadDiningSettings = () => {
