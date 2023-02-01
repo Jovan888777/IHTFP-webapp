@@ -13,8 +13,8 @@ const FoodDisplay = (props) => {
             <div className="food">
                 {props.dishName} {" "}  
                 {props.restrictions.map( (res) => { 
-                    return (res === "Vegan") ? <img src="../../public/vegan.jpeg"/>
-                    : (res === "Gluten-Free") ? <img src="../../public/glutenFree.jpeg"/>
+                    return (res === "Vegan") ? <div className="vegan"/>
+                    : (res === "Gluten-Free") ? <img src={require("../../public/glutenFree.png")}/>
                     : (res === "Halal") ? <img src="../../public/halal.jpeg"/>
                     : (res === "In Balance") ? <div>Ib</div>
                     : (res === "Vegetarian") ? <img src="../../public/vegetarian.jpeg"/>

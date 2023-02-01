@@ -1,6 +1,11 @@
 .food {
+    font-weight: bold;
     text-align: left;
     padding-left: 50px;
     padding-right: 50px;
   }
+
+.vegan {
+    background-image: url("../../public/pic.jpg");
+}
   
