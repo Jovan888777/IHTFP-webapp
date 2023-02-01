@@ -44,7 +44,7 @@ const EventDisplay = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="eventDisplayCard">
       <div className="row">
         <div className="column">
           <div className="event-container">

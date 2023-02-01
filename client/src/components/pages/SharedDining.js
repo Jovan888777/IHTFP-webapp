@@ -131,8 +131,8 @@ const SharedDining = (props) => {
   return (
     <div>
       <div className="center">
-        <h1>Select the meal to view the meal</h1>
-        <select value={meal} onChange={(event) => setMeal(event.target.value)}>
+        <h1>Select a meal and dining hall</h1>
+        <select className="mealSelector "value={meal} onChange={(event) => setMeal(event.target.value)}>
           <option value="breakfast">breakfast</option>
           <option value="lunch">lunch</option>
           <option value="dinner">dinner</option>
@@ -140,7 +140,7 @@ const SharedDining = (props) => {
         </select>
       </div>
       <br></br>
-      <div className="wrapper">
+      <div className="wrapper center">
         {rankings.map((diningHall) => (
           <Card title={diningHall} friends={friendChoices[diningHall.replace(" ", "")]} />
         ))}

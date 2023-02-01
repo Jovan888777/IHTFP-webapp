@@ -91,7 +91,7 @@ const ViewEvent = (props) => {
 
   return (
     <div>
-      <h1> Upcoming Events </h1>
+      <h1 className="center"> Upcoming Events </h1>
       <div className="search-wrapper">
         <label for="search">Search Events</label>
         <input
@@ -111,11 +111,13 @@ const ViewEvent = (props) => {
           onChange={(event) => loadChecked(loaded, event.target.checked)}
         />
       </label>
-      {loaded
-        ? searchedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
-        : checkbox
-        ? preferedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
-        : events.map((element) => <EventDisplay {...element} userId={props.userId} />)}
+      <div className="viewContainer">
+        {loaded
+          ? searchedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+          : checkbox
+          ? preferedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+          : events.map((element) => <EventDisplay {...element} userId={props.userId} />)}
+      </div>
     </div>
   );
 };
