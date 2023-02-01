@@ -17,6 +17,7 @@ const SharedDining = (props) => {
   const [mealIndex, setMealIndex] = useState(0);
   const [friends, setFriends] = useState([]);
   const [names, setNames] = useState([]);
+  const [tmpFriendChoices, setTmpFriendChoices] = useState([]);
   const [friendChoices, setFriendChoices] = useState({
     Next: [],
     Simmons: [],
@@ -28,7 +29,9 @@ const SharedDining = (props) => {
 
   const loadFriends = () => {
     get("/api/user-friends", { userId: props.userId })
-      .then((friends) => {setFriends(friends)})
+      .then((friends) => {
+        setFriends(friends);
+      })
       .catch((err) => `failed to find user friends:${err}`);
     console.log(friends);
   };
@@ -48,9 +51,9 @@ const SharedDining = (props) => {
     return Promise.all(
       friends.map((uid) =>
         get("/api/profile-by-id", { userId: uid })
-          .then((user) => {return {name: user.name, 
-                           user_id: uid};}
-          )
+          .then((user) => {
+            return { name: user.name, user_id: uid };
+          })
           .catch((err) => console.log(err))
       )
     );
@@ -58,20 +61,24 @@ const SharedDining = (props) => {
 
   const getFriendChoices = async (friends) => {
     return Promise.all(
-      friends.map((uid) =>
-        get("/api/dining-choices", { userId: uid })
-          .then((user) => {return {choices: user.choices, 
-                           user_id: uid};}
-          )
-          .catch((err) => console.log(err))
-      )
+      friends.map((person) => {
+        get("/api/dining-choice", { userId: person.user_id })
+          .then((choices) => {
+            if (!tmpFriendChoices.filter((element) => element.user_id === person.user_id).length) {
+              tmpFriendChoices.push({
+                diningChoices: [...choices],
+                name: person.name,
+                user_id: person.user_id,
+              });
+            }
+          })
+          .catch((err) => console.log(err));
+      })
     );
   };
 
-
-
   const loadFriendChoices = () => {
-    let name;
+    console.log("upper:", tmpFriendChoices.length);
     let newFriendChoices = {
       Next: [],
       Simmons: [],
@@ -85,19 +92,12 @@ const SharedDining = (props) => {
       newFriendChoices[chosen[mealIndex]].push(props.userName);
     }
 
-    if (names) {
-      for (let friend of names) {
-
-        /*get("/api/dining-choice", { userId: friend.user_id })
-          .then( (choices) => {
-            if (choices !== [null, null, null, null]) {
-              let choice = choices[mealIndex];
-              if (choice) {
-                newFriendChoices[choice].push("bla");
-              }
-            }
-          })
-          .catch((err) => console.log(`failed to get dining choice:${err}`));*/
+    if (tmpFriendChoices.length) {
+      console.log("hi");
+      for (let friendInfo of tmpFriendChoices) {
+        if (friendInfo.diningChoices[mealIndex]) {
+          newFriendChoices[friendInfo.diningChoices[mealIndex]].push(friendInfo.name);
+        }
       }
     }
 
@@ -141,15 +141,12 @@ const SharedDining = (props) => {
     loadFriends();
     loadDiningSettings();
     loadMeal();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
-    getNames(friends).then(
-      (names) => setNames(names)
-    );
-    getFriendChoices(friends).then(
-      (choices) => setFriendChoices(choices)
-    );
+    getNames(friends).then((info) => {
+      getFriendChoices(info).then(loadFriendChoices());
+    });
   }, [friends]);
 
   useEffect(() => {
@@ -157,10 +154,8 @@ const SharedDining = (props) => {
   }, [meal]);
 
   useEffect(() => {
-    loadFriendChoices(meal);
-  }, [names, chosen, meal, mealIndex]);
-
-
+    loadFriendChoices();
+  }, [tmpFriendChoices, chosen, mealIndex]);
 
   return (
     <div>

@@ -338,12 +338,11 @@ const Preferences = (props) => {
       <br></br>
       Profile Picture:{" "}
       <input
+        type="file"
         name="pic"
-        type="textbox"
-        placeholder="Picture"
         className="profileInput"
         onChange={(e) => changeProfile(e)}
-        required
+        accept="image/*"
       />
       <br></br>
       Primary Major:{" "}

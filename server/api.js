@@ -73,7 +73,6 @@ const semesterlyActivities = schedule.scheduleJob("0 0 1 1,2,6 *", function () {
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
-
   if (!req.user) {
     // not logged in
     return res.send({});
@@ -179,7 +178,9 @@ router.get("/dining-settings", (req, res) => {
 
 router.get("/dining-choice", (req, res) => {
   DiningSettings.findOne({ user_id: req.query.userId })
-    .then((settings) => res.send(settings.choice))
+    .then((settings) => {
+      res.send(settings.chosen);
+    })
     .catch((err) => {
       console.log(`failed to get dining choice:${err}`);
     });
