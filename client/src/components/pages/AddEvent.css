@@ -9,18 +9,13 @@
   margin: 2%;
   width: 40%;
   height: 100%;
-  overflow: auto;
 }
 
 .inputs {
-  display: block;
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   font-size: 20px;
-}
-
-input {
-  position: absolute;
 }
 
 .halfWidth {
@@ -31,7 +26,6 @@ input {
 
 .fullWidth {
   width: 100%;
-  position: relative;
 }
 
 .inputBox {
@@ -39,7 +33,6 @@ input {
   border: 0;
   height: 20px;
   width: 175px;
-  position: relative;
 }
 
 .addBox {
