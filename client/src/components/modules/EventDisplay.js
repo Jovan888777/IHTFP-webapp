@@ -42,13 +42,8 @@ const EventDisplay = (props) => {
     setGoing(!going);
   };
 
-  const checking = () => {
-    console.log(props.start, props.end);
-  }
-
   useEffect(() => {
     loadGuests();
-    checking();
   }, []);
 
   return (
@@ -63,8 +58,8 @@ const EventDisplay = (props) => {
           <ul>
             <li>Name: {props.name}</li>
             <li>Group/Club: {props.group}</li>
-            <li>Start time: {props.start}</li>
-            <li>End time: {props.end}</li>
+            <li>Start time: {moment(props.start).format("MM-DD-YYYY kk:mm")}</li>
+            <li>End time: {moment(props.end).format("MM-DD-YYYY kk:mm")}</li>
             <li>Location: {props.location}</li>
             <li>Description: {props.description}</li>
             <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
@@ -85,3 +80,7 @@ const EventDisplay = (props) => {
 };
 
 export default EventDisplay;
+/*
+            <input type="date" value = {props.start.split('-')[1]+'/'+props.start.split('-')[2].split('T')[0]+'/'+
+            props.start.split('-')[0] + ' ' +  props.start.split('-')[2].split('T')[1].split('')
+            }></input> */

@@ -26,7 +26,6 @@ const FoodDisplay = (props) => {
                     : (res === "Halal") ? <img className = "img" src = {halal} alt width={25} height={25}/>
                     : (res === "In Balance") ? <img className = "img" src = {inbalance} alt width={25} height={25}/>
                     : (res === "Vegetarian") ? <img className = "img" src = {vegetarian} alt width={25} height={25}/>
-                    : (res === "Seafood Watch") ? <div>Sw</div>
                     : (res === "Humane") ? <img className = "img" src = {humane} alt width={25} height={25}/>
                     : <div></div>
                 })}

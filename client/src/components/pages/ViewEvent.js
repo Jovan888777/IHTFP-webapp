@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./ViewEvent.css";
 import { get } from "../../utilities";
 import EventDisplay from "../modules/EventDisplay";
-import parse from 'date-fns/parse'
+import * as moment from "moment";
+
 
 const ViewEvent = (props) => {
   /*
@@ -26,9 +27,6 @@ const ViewEvent = (props) => {
   const [eventSettings, seteventsSettings] = useState({
   });
 
-  const format = 'd/M/y @ H:m:s';
-  const parseDate = d => parse(d, format, new Date());
-
 
   //Getting preferences from the server
   const loadPreferences = () => {
@@ -42,7 +40,7 @@ const ViewEvent = (props) => {
   //Getting Events from the server
   const loadEvents = () => {
     get("/api/events")
-      .then((allEvents) => setEvents(allEvents))
+      .then((allEvents) => sortEvents(allEvents, setEvents))
       .catch((err) => console.log(`failed to get events:${err}`));
   };
 
@@ -89,30 +87,31 @@ const ViewEvent = (props) => {
 
   //Does not work
   
-  /*const sortEvents = () => {
-    let newEvents = events;
-    let newPreferedEvents = preferedEvents;
-
-    newEvents.sort((a, b) => parseDate(a.start) - parseDate(b.start));
-    setEvents(newEvents);
-
-    newPreferedEvents.sort( (a, b) => a.start - b.start);
-    setPreferedEvents(newPreferedEvents);
-  }*/
+  const sortEvents = (content, setter) => {
+    let newEvents;
+    newEvents = content.slice().sort( (a, b) => {
+      return (a.start > b.start ? 1 
+              : a.start < b.start ? -1 
+              : 0)
+    });
+    setter(newEvents);
+  }
 
   useEffect(() => {
-    loadPreferences();
     loadEvents();
   }, []);
 
+  useEffect( () => {
+    loadPreferences();
+  }, [props.userId])
+
   /*useEffect( () => {
     sortEvents();
-  }, [preferedEvents]); */
+  }, [events]); */
 
   useEffect(() => {
-    if (eventSettings && events)
-      loadPreferedEvents();
-  }, [eventSettings, events]);
+    loadPreferedEvents();
+  }, [eventSettings]);
 
   return (
     <div>
