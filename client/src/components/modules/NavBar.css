@@ -1,6 +1,6 @@
 .nav-brand {
   float: left;
-  background-color: #61111d;
+  background-color: #ac1128;
 }
 
 .nav-brand .navbtn {
@@ -22,7 +22,7 @@
 /*Outer wrapper*/
 .navigation {
   height: var(--nav-height);
-  background: #700000;
+  background: #aa0202;
   border-bottom: 0;
   border-top: 0;
   border-left: 0;

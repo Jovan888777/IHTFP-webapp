@@ -46,7 +46,25 @@ const App = (props) => {
   const [userId, setUserId] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
   const [eventInfo, setEventInfo] = useState(undefined);
-  const [menu, setMenu] = useState(undefined);
+
+  const [menu, setMenu] = useState({
+    nextb: [],
+    nextd: [],
+    maseehb: [],
+    maseehl: [],
+    maseehd: [],
+    maseehln: [],
+    simmonsb: [],
+    simmonsd: [],
+    simmonsln: [],
+    mccormmickb: [],
+    mccormmickd: [],
+    newvassarb: [],
+    newvassarl: [],
+    newvassard: [],
+    bakerb: [],
+    bakerd: [],
+  });
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -57,6 +75,15 @@ const App = (props) => {
       }
     });
   }, []);
+
+  /*useEffect(() => {
+    updateMenu();
+  }, [menu]); */
+
+
+  /*useEffect(() => {
+    allMenus();
+  }, [])*/
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
@@ -114,66 +141,69 @@ const App = (props) => {
   };
 
   const menuURLs = [
-    "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/",
-    "https://mit.cafebonappetit.com/cafe/simmons/",
-    "https://mit.cafebonappetit.com/cafe/next/",
-    "https://mit.cafebonappetit.com/cafe/new-vassar/",
-    "https://mit.cafebonappetit.com/cafe/mccormick/",
-    "https://mit.cafebonappetit.com/cafe/baker/",
+    {url: "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/", diningHall: "maseeh"},
+    {url: "https://mit.cafebonappetit.com/cafe/simmons/", diningHall: "simmons"},
+    {url: "https://mit.cafebonappetit.com/cafe/next/", diningHall: "next"},
+    {url: "https://mit.cafebonappetit.com/cafe/new-vassar/", diningHall: "new-vassar"},
+    {url: "https://mit.cafebonappetit.com/cafe/mccormick/", diningHall: "mccormick"},
+    {url: "https://mit.cafebonappetit.com/cafe/baker/", diningHall: "baker"},
   ];
 
   //getting the menus from the webscraping
-  const handleMenu = (url) => {
+  const handleMenu = (url, diningHall) => {
     get("/api/scrape", { url: url })
       .then((cont) => {
-        cleanMenu(cont);
-        console.log("successfully scraped menu");
+        cleanMenu(cont, diningHall);
       })
       .catch((err) => console.log("failed at scraping " + url + ": " + err));
   };
 
-  //cleaning the menus from webscraping for posting event
-  const cleanMenu = (cont) => {
-    let Dininghall = {
-      breakfast: [],
-      lunch: [],
-      dinner: [],
-      lateNight: [],
-    };
-
-    if (cont.length === 2) {
-      Dininghall.breakfast = cont[0];
-      Dininghall.dinner = cont[1];
-    }
-
-    let request = {
-      nextb: [],
-      nextd: [],
-      maseehb: Dininghall.breakfast,
-      maseehl: [],
-      maseehd: Dininghall.dinner,
-      maseehln: [],
-      simmonsb: [],
-      simmonsd: [],
-      simmonsln: [],
-      mccormmickb: [],
-      mccormmickd: [],
-      newvassarb: [],
-      newvassarl: [],
-      newvassard: [],
-      bakerb: [],
-      bakerd: [],
-    };
-    console.log(request);
-    post("/api/add-menus", request)
+  //posting the menus
+  const updateMenu = () => {
+    console.log("menu");
+    console.log(menu);
+    post("/api/add-menus", menu)
       .then(console.log("menu added successfully"))
       .catch((err) => console.log("failed to add the menu: " + err));
   };
 
+  //cleaning the menus from webscraping for posting event
+  const cleanMenu = (content, diningHall) => {
+    if (diningHall === "maseeh") {
+      menu["maseehb"] = content.Breakfast;
+      menu["maseehl"] = content.Lunch;
+      menu["maseehd"] = content.Dinner;
+      menu["maseehln"] = content.lateNight;
+    }
+    else if (diningHall === "simmons") {
+      menu["simmonsb"] = content.Breakfast;
+      menu["simmonsd"] = content.Dinner;
+      menu["simmonsln"] = content.lateNight;
+    }
+    else if (diningHall === "newvassar") {
+      menu["newvassarb"] = content.Breakfast;
+      menu["newvassarl"] = content.Lunch;
+      menu["newvassard"] = content.Dinner;
+    }
+    else if (diningHall === "next") {
+      menu["nextb"] = content.Breakfast;
+      menu["nextd"] = content.Dinner;
+    }
+    else if (diningHall === "mccormick") {
+      menu["mccormickb"] = content.Breakfast;
+      menu["mccormickd"] = content.Dinner;
+    }
+    else if (diningHall === "baker") {
+      menu["bakerb"] = content.Breakfast;
+      menu["bakerd"] = content.Dinner;
+    }
+    updateMenu();
+  };
+
   const allMenus = () => {
     ///// UNCOMMENT BELOW WHEN ALL LINK SCRAPPING IS READY
-    for (let url of menuURLs) {
-      handleMenu(url);
+    for (let element of menuURLs) {
+      handleMenu(element.url, element.diningHall);
     }
   };
 

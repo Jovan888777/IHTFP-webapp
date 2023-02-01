@@ -23,12 +23,11 @@ const ViewEvent = (props) => {
 
   //Maintaining preferences
   const [eventSettings, seteventsSettings] = useState({
-    keywords: ["food", "raffle"],
   });
 
   //Getting preferences from the server
   const loadPreferences = () => {
-    console.log("inside preferences");
+    console.log("inside");
     get("/api/event-settings")
       .then((settings) => {
         if (settings) seteventsSettings({ keywords: settings.keywords });
@@ -45,7 +44,6 @@ const ViewEvent = (props) => {
 
   //Loading preferred events based on preferences
   const loadPreferedEvents = () => {
-    console.log(eventSettings.keywords);
     setPreferedEvents(
       events.filter((element) => {
         return element.keywords.some((el) => eventSettings.keywords.includes(el));
@@ -88,15 +86,16 @@ const ViewEvent = (props) => {
   useEffect(() => {
     loadPreferences();
     loadEvents();
-  }, [props]);
+  }, []);
 
   useEffect(() => {
-    loadPreferedEvents();
-  }, [eventSettings]);
+    if (eventSettings && events)
+      loadPreferedEvents();
+  }, [eventSettings, events]);
 
   return (
     <div>
-      <h1> Upcoming Events </h1>
+      <h1 className="center"> Upcoming Events </h1>
       <div className="search-wrapper">
         <label for="search">Search Events</label>
         <input
@@ -116,11 +115,13 @@ const ViewEvent = (props) => {
           onChange={(event) => loadChecked(loaded, event.target.checked)}
         />
       </label>
-      {loaded
-        ? searchedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
-        : checkbox
-        ? preferedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
-        : events.map((element) => <EventDisplay {...element} userId={props.userId} />)}
+      <div className="viewContainer">
+        {loaded
+          ? searchedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+          : checkbox
+          ? preferedEvents.map((element) => <EventDisplay {...element} userId={props.userId} />)
+          : events.map((element) => <EventDisplay {...element} userId={props.userId} />)}
+      </div>
     </div>
   );
 };

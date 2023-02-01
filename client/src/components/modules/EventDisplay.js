@@ -14,7 +14,8 @@ const EventDisplay = (props) => {
         if (guests) {
           if (guests.includes(props.userId)) {
             setGoing(true);
-            btn.innerHTML = "Remove yourself from the guestlist!";
+            if (btn)
+              btn.innerHTML = "Remove yourself from the guestlist!";
           }
         }
       })
@@ -44,7 +45,7 @@ const EventDisplay = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="eventDisplayCard">
       <div className="row">
         <div className="column">
           <div className="event-container">

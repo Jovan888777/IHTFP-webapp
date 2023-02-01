@@ -78,11 +78,11 @@ const MyEvents = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="center">
       <h1>My Events</h1>
       {myEvents.length !== 0 ? (
         myEvents.map((element) => (
-          <div>
+          <div className="myEventsContainer">
             <EventDisplay {...element} userId={props.userId} />
 
             <div className="column">

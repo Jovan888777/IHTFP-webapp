@@ -29,14 +29,14 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
               <div>
                 <h2>You are logged in!</h2>
                 <p>
-                  You may now browse posted student events and add your own,
-                  browse dining selections for today, and edit your class planner.
+                  You may now explore student events, browse dining
+                  selections for today, and edit your class planner.
                 </p>
                 <button
                   onClick={() => {
                     googleLogout();
                     handleLogout();
-                  }}
+                  }} className="homeLogoutButton"
                 >
                   Logout
                 </button>

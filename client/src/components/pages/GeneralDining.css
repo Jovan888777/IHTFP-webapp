@@ -8,6 +8,11 @@
 .dining-container {
   border: 2px solid var(--nav-background);
   text-align: center;
+  display: block;
+  background-color: #c7c9c7;
+  border-radius: 10%;
+  margin: 8px;
+  width: 92%;
 }
 
 .center {
@@ -20,4 +25,10 @@
   line-height:3em;
   overflow:auto;
   padding:5px;
+}
+
+.mealSelector {
+  width: 15vh;
+  height: 5vh;
+  border-radius: 15%
 }
