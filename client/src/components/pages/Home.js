@@ -1,6 +1,5 @@
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
-import { useLocation } from "react-router-dom";
 
 import "../../utilities.css";
 import "./Home.css";
@@ -27,23 +26,22 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
               <div>
                 <h2>You are logged in!</h2>
                 <p>
-                  You may now explore student events, browse dining
-                  selections for today, and edit your class planner.
+                  You may now explore student events, browse dining selections for today, and edit
+                  your class planner.
                 </p>
                 <button
                   onClick={() => {
                     googleLogout();
                     handleLogout();
-                  }} className="homeLogoutButton"
+                  }}
+                  className="homeLogoutButton"
                 >
                   Logout
                 </button>
               </div>
             ) : (
               <div className="center homeContainer">
-                <p>
-                  Log in using google with the button below.
-                </p>
+                <p>Log in using google with the button below.</p>
                 <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
               </div>
             )}

@@ -65,7 +65,11 @@ var dailyActivities = schedule.scheduleJob("0 0 * * *", function () {
                 filtered = events.filter((element) => {
                   return element.keywords.some((el) => setting.keywords.includes(el));
                 });
-                email.emailSender(user.kerb + "@mit.edu", filtered);
+                if (user.kerb.includes("@mit.edu")) {
+                  email.emailSender(user.kerb, filtered);
+                } else {
+                  email.emailSender(user.kerb + "@mit.edu", filtered);
+                }
               }
             })
             .catch((err) => {

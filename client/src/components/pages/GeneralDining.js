@@ -58,38 +58,7 @@ const GeneralDining = (props) => {
         }
       }
     }
-    // menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
   };
-
-  /*const addMenuDB = () => {
-    post("/api/delete-menus")
-      .then((success) => console.log(success))
-      .catch((err) => {
-        console.log(`failed to delete all menus:${err}`);
-      });
-    post("/api/add-menus", {
-      nextb: [{ dishName: "potato", restrictions: ["vegan"] }],
-      nextd: [],
-      maseehb: [],
-      maseehl: [],
-      maseehd: [],
-      maseehln: [],
-      simmonsb: [],
-      simmonsd: [],
-      simmonsln: [],
-      bakerb: [],
-      bakerd: [],
-      mccormmickb: [],
-      miccormmickd: [],
-      newvassarb: [],
-      newvassarl: [],
-      newvassard: [],
-    })
-      .then((menu) => console.log(menu))
-      .catch((err) => {
-        console.log(`failed to post menus:${err}`);
-      }); 
-  }; */
 
   const loadMenu = () => {
     get("/api/menus")
@@ -132,9 +101,7 @@ const GeneralDining = (props) => {
 
     newChosen[mealIndex] = dining_hall.replaceAll(" ", "");
     setChosen(newChosen);
-    post("/api/chosen-meal", { chosen: newChosen })
-      .then(() => console.log("success"))
-      .catch((err) => console.log(err));
+    post("/api/chosen-meal", { chosen: newChosen }).catch((err) => console.log(err));
 
     let allBtns = document.getElementsByClassName("select-dining");
     for (let btn of allBtns) {
@@ -148,7 +115,6 @@ const GeneralDining = (props) => {
   const settingBtns = () => {
     let allBtns = document.getElementsByClassName("select-dining");
     if (chosen[mealIndex]) {
-      console.log(chosen, chosen[mealIndex]);
       for (let btn of allBtns) {
         if (btn.className.includes(chosen[mealIndex])) {
           btn.innerHTML = "Selected";
@@ -166,7 +132,6 @@ const GeneralDining = (props) => {
   useEffect(() => {
     loadDiningSettings();
     loadMenu();
-    // addMenuDB();
     loadMeal();
   }, []);
 

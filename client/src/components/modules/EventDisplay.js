@@ -54,7 +54,10 @@ const EventDisplay = (props) => {
           {props.userId === props.user_id ? (
             ""
           ) : props.guestlistNeeded ? (
-            <button className={props._id+" eventDisplayGuestlist"} onClick={(e) => addToGuestList(e.target)}>
+            <button
+              className={props._id + " eventDisplayGuestlist"}
+              onClick={(e) => addToGuestList(e.target)}
+            >
               Add yourself to the guestlist!
             </button>
           ) : (

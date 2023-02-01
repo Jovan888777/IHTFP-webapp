@@ -163,12 +163,6 @@ const Preferences = (props) => {
     "Writing",
   ];
 
-  // const deleteME = () => {
-  //   post("/api/delete-everything")
-  //     .then(() => console.log("done"))
-  //     .catch((err) => console.log(`failed to get profile:${err}`));
-  // };
-
   const loadProfile = () => {
     get("/api/profile-by-id", { userId: props.userId })
       .then((user) => {
@@ -291,8 +285,7 @@ const Preferences = (props) => {
     loadProfile();
     loadDiningSettings();
     loadClassSettings();
-    loadEventSettings();
-    // deleteME();
+    loadEventSettings;
   }, []);
 
   let profileContent = (

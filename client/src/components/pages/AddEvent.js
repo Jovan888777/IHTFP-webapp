@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate, Navigate } from "react-router-dom";
 import "./AddEvent.css";
 import { get, post } from "../../utilities";
-import * as moment from "moment";
 import KeywordInput from "../modules/KeywordInput.js";
+import * as moment from "moment";
 
 const AddEvent = (props) => {
   const [edit, setEdit] = useState(false);
@@ -103,16 +102,12 @@ const AddEvent = (props) => {
         guests: [],
       };
       //Resetting the textbox states
-      console.log(routeStrings.api);
       if (routeStrings.api === "/api/add-event") {
-        post(routeStrings.api, newEvent)
-          .then(console.log(routeStrings.console))
-          .catch((err) => console.log(err));
+        post(routeStrings.api, newEvent).catch((err) => console.log(err));
       } else if (routeStrings.api === "/api/update-event") {
-        console.log(editedEvent);
-        post(routeStrings.api, { eventId: eventId, newEvent: editedEvent })
-          .then(console.log(routeStrings.console))
-          .catch((err) => console.log(err));
+        post(routeStrings.api, { eventId: eventId, newEvent: editedEvent }).catch((err) =>
+          console.log(err)
+        );
       }
       setDone(true);
 
@@ -134,7 +129,6 @@ const AddEvent = (props) => {
         {routeStrings.console}
       </div>
       <div className="addCard center" hidden={done}>
-        {/* {done && <Navigate to="/my-events" replace={true} />} */}
         <h1>{routeStrings.button} Event</h1>
         <div className="inputs">
           <div className="halfWidth">Name:</div>
