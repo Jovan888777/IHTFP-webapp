@@ -64,14 +64,14 @@ const EventDisplay = (props) => {
           )}
         </div>
         <div className="column">
-          <ul>
+          <ul className="listDescription">
             <li>Name: {props.name}</li>
             <li>Group/Club: {props.group}</li>
             <li>Start time: {moment(props.start).format("MM-DD-YYYY kk:mm")}</li>
             <li>End time: {moment(props.end).format("MM-DD-YYYY kk:mm")}</li>
             <li>Location: {props.location}</li>
             <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
-            <li>Description: {props.description}</li>
+            <li className="listDescription">Description: {props.description}</li>
           </ul>
         </div>
       </div>
