@@ -74,6 +74,8 @@ async function scrapeProduct(url) {
           else if (keywords === 'Human') keywords = 'Humane';
 
           keywordsArray.push(keywords);
+          if (keywords === 'Vegan')
+            keywordsArray.push("Vegetarian");
         }    
       }
       
