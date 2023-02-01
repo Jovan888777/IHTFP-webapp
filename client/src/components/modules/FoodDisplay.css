@@ -1,0 +1,19 @@
+.food {
+    font-weight: bold;
+    text-align: left;
+    padding-left: 30px;
+    padding-right: 50px;
+  }
+
+.img {
+    text-align: left;
+    padding-right: 10px;
+
+    position: relative;
+    top: 5px;
+}
+
+.imgContainer {
+    text-align:left;
+}
+  

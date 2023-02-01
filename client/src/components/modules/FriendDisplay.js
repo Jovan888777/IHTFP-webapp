@@ -35,8 +35,8 @@ const FriendDisplay = (props) => {
     return (
         props.my_id === props.user_id ?
         <div></div>
-        : (<div className="user-cards">
-            <div className="card">
+        : (<div className="user-cardsNew">
+            <div className="cardNew">
                 <div className="column"></div>
                 <div className = "header"> {props.name} </div>
                 <div className = "body"> Kerberos {props.kerb} </div>

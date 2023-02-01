@@ -5,7 +5,6 @@
     padding-left: 10px;
     margin-bottom: 12px;
     cursor: pointer;
-    font-size: 22px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -28,6 +27,24 @@
 
 .viewEventSearch {
   width: 20%;
-  border-radius:15%;
-  margin: auto
+  border-radius: 15%
+}
+
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-self: center;
+}
+
+.wrap{
+  text-align: center;
+  width: 30%;
+  top: 50%;
+  left: 50%;
+  align-content: center;
+}
+
+.search-wrapper {
+  margin-top: 5vh
 }

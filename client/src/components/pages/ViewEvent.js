@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./ViewEvent.css";
 import { get } from "../../utilities";
 import EventDisplay from "../modules/EventDisplay";
+import * as moment from "moment";
+
 
 const ViewEvent = (props) => {
   /*
@@ -25,6 +27,7 @@ const ViewEvent = (props) => {
   const [eventSettings, seteventsSettings] = useState({
   });
 
+
   //Getting preferences from the server
   const loadPreferences = () => {
     get("/api/event-settings")
@@ -37,7 +40,7 @@ const ViewEvent = (props) => {
   //Getting Events from the server
   const loadEvents = () => {
     get("/api/events")
-      .then((allEvents) => setEvents(allEvents))
+      .then((allEvents) => sortEvents(allEvents, setEvents))
       .catch((err) => console.log(`failed to get events:${err}`));
   };
 
@@ -82,15 +85,33 @@ const ViewEvent = (props) => {
     }
   };
 
+  //Does not work
+  
+  const sortEvents = (content, setter) => {
+    let newEvents;
+    newEvents = content.slice().sort( (a, b) => {
+      return (a.start > b.start ? 1 
+              : a.start < b.start ? -1 
+              : 0)
+    });
+    setter(newEvents);
+  }
+
   useEffect(() => {
-    loadPreferences();
     loadEvents();
   }, []);
 
+  useEffect( () => {
+    loadPreferences();
+  }, [props.userId])
+
+  /*useEffect( () => {
+    sortEvents();
+  }, [events]); */
+
   useEffect(() => {
-    if (eventSettings && events)
-      loadPreferedEvents();
-  }, [eventSettings, events]);
+    loadPreferedEvents();
+  }, [eventSettings]);
 
   return (
     <div>
@@ -98,11 +119,10 @@ const ViewEvent = (props) => {
       <div className="search-wrapper center">
         <label for="search">Search Events</label>
         <input
-          className="viewEventSearch"
+          className="viewEventSearch center"
           onChange={(text) => {
             searching(checkbox, text.target.value);
-          }}
-        ></input>
+          }}></input>        
       </div>
       <div className="fullWidthHeight">
       </div>

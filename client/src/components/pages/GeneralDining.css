@@ -30,5 +30,14 @@
 .mealSelector {
   width: 15vh;
   height: 5vh;
-  border-radius: 15%
+  border-radius: 15%;
+  margin-top: 3vh
+}
+
+
+.notAvailable {
+  font-weight: bold;
+  font-size: large;
+  text-align: center;
+  color: red;
 }

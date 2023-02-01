@@ -6,6 +6,9 @@
   
   input {
     font-size: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
   }
   
   .user-cards {
@@ -32,4 +35,10 @@
   
   .hide {
     display: none;
+  }
+
+  .flexing {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row
   }

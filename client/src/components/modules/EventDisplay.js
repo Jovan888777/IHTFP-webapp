@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./EventDisplay.css";
 import { get, post } from "../../utilities";
+import * as moment from "moment";
+
 
 const EventDisplay = (props) => {
   const [going, setGoing] = useState(false);
@@ -51,26 +53,26 @@ const EventDisplay = (props) => {
           <div className="event-container">
             <div className="event-picture" />{" "}
           </div>
-        </div>
-        <div className="column">
-          <ul>
-            <li>Name: {props.name}</li>
-            <li>Group/Club: {props.group}</li>
-            <li>Start time: {props.start}</li>
-            <li>End time: {props.end}</li>
-            <li>Location: {props.location}</li>
-            <li>Description: {props.description}</li>
-            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
-          </ul>
           {props.userId === props.user_id ? (
             ""
           ) : props.guestlistNeeded ? (
-            <button className={props._id} onClick={(e) => addToGuestList(e.target)}>
+            <button className={props._id+" eventDisplayGuestlist"} onClick={(e) => addToGuestList(e.target)}>
               Add yourself to the guestlist!
             </button>
           ) : (
             ""
           )}
+        </div>
+        <div className="column">
+          <ul>
+            <li>Name: {props.name}</li>
+            <li>Group/Club: {props.group}</li>
+            <li>Start time: {moment(props.start).format("MM-DD-YYYY kk:mm")}</li>
+            <li>End time: {moment(props.end).format("MM-DD-YYYY kk:mm")}</li>
+            <li>Location: {props.location}</li>
+            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
+            <li>Description: {props.description}</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -78,3 +80,7 @@ const EventDisplay = (props) => {
 };
 
 export default EventDisplay;
+/*
+            <input type="date" value = {props.start.split('-')[1]+'/'+props.start.split('-')[2].split('T')[0]+'/'+
+            props.start.split('-')[0] + ' ' +  props.start.split('-')[2].split('T')[1].split('')
+            }></input> */

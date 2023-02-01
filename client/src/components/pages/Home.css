@@ -57,5 +57,7 @@
 }
 
 .homeLogoutButton {
-  background-color: #aa0202
+  margin-top: 5vh;
+  background-color: #aa0202;
+  color: white
 }

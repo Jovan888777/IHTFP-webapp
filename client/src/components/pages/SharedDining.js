@@ -13,10 +13,11 @@ const SharedDining = (props) => {
     "New Vassar",
     "Baker",
   ]);
-  const [meal, setMeal] = useState("breakfast");
+  const [meal, setMeal] = useState("dinner");
   const [mealIndex, setMealIndex] = useState(0);
   const [friends, setFriends] = useState([]);
   const [names, setNames] = useState([]);
+  const [tmpFriendChoices, setTmpFriendChoices] = useState([]);
   const [friendChoices, setFriendChoices] = useState({
     Next: [],
     Simmons: [],
@@ -28,7 +29,9 @@ const SharedDining = (props) => {
 
   const loadFriends = () => {
     get("/api/user-friends", { userId: props.userId })
-      .then((friends) => {setFriends(friends)})
+      .then((friends) => {
+        setFriends(friends);
+      })
       .catch((err) => `failed to find user friends:${err}`);
     console.log(friends);
   };
@@ -45,33 +48,26 @@ const SharedDining = (props) => {
   };
 
   const getNames = async (friends) => {
-    return Promise.all(
-      friends.map((uid) =>
-        get("/api/profile-by-id", { userId: uid })
-          .then((user) => {return {name: user.name, 
-                           user_id: uid};}
-          )
-          .catch((err) => console.log(err))
-      )
-    );
+    const output = friends.map((uid) => {
+      return get("/api/profile-by-id", { userId: uid })
+        .then((user) => {
+          return user.name;
+        })
+        .catch((err) => console.log(err));
+    });
+    setNames(await Promise.all(output));
   };
 
   const getFriendChoices = async (friends) => {
-    return Promise.all(
-      friends.map((uid) =>
-        get("/api/dining-choices", { userId: uid })
-          .then((user) => {return {choices: user.choices, 
-                           user_id: uid};}
-          )
-          .catch((err) => console.log(err))
-      )
-    );
+    if (friends) {
+      const output = friends.map((uid) => {
+        return get("/api/dining-choice", { userId: uid });
+      });
+      setTmpFriendChoices(await Promise.all(output));
+    }
   };
 
-
-
   const loadFriendChoices = () => {
-    let name;
     let newFriendChoices = {
       Next: [],
       Simmons: [],
@@ -85,19 +81,11 @@ const SharedDining = (props) => {
       newFriendChoices[chosen[mealIndex]].push(props.userName);
     }
 
-    if (names) {
-      for (let friend of names) {
-
-        /*get("/api/dining-choice", { userId: friend.user_id })
-          .then( (choices) => {
-            if (choices !== [null, null, null, null]) {
-              let choice = choices[mealIndex];
-              if (choice) {
-                newFriendChoices[choice].push("bla");
-              }
-            }
-          })
-          .catch((err) => console.log(`failed to get dining choice:${err}`));*/
+    if (tmpFriendChoices.length) {
+      for (let i = 0; i < tmpFriendChoices.length; i++) {
+        if (tmpFriendChoices[i][mealIndex]) {
+          newFriendChoices[tmpFriendChoices[i][mealIndex]].push(names[i]);
+        }
       }
     }
 
@@ -141,15 +129,11 @@ const SharedDining = (props) => {
     loadFriends();
     loadDiningSettings();
     loadMeal();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
-    getNames(friends).then(
-      (names) => setNames(names)
-    );
-    getFriendChoices(friends).then(
-      (choices) => setFriendChoices(choices)
-    );
+    getNames(friends);
+    getFriendChoices(friends);
   }, [friends]);
 
   useEffect(() => {
@@ -157,16 +141,18 @@ const SharedDining = (props) => {
   }, [meal]);
 
   useEffect(() => {
-    loadFriendChoices(meal);
-  }, [names, chosen, meal, mealIndex]);
-
-
+    loadFriendChoices();
+  }, [tmpFriendChoices, chosen, mealIndex]);
 
   return (
     <div>
       <div className="center">
         <h1>Select a meal and dining hall</h1>
-        <select className="mealSelector "value={meal} onChange={(event) => setMeal(event.target.value)}>
+        <select
+          className="mealSelector "
+          value={meal}
+          onChange={(event) => setMeal(event.target.value)}
+        >
           <option value="breakfast">breakfast</option>
           <option value="lunch">lunch</option>
           <option value="dinner">dinner</option>

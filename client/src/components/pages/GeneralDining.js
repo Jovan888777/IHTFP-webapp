@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./GeneralDining.css";
 import { get, post } from "../../utilities";
+import FoodDisplay from "../modules/FoodDisplay";
 
 const GeneralDining = (props) => {
   const [chosen, setChosen] = useState(["", "", "", ""]);
@@ -39,15 +40,18 @@ const GeneralDining = (props) => {
   //filter menus based on preferences
   const filterMenu = () => {
     //load preferences and then filter menus based on that
-
-    /* should be something like this didnt have time to test
-
-    explanation:
-      every element in user restriction is in element.restriction 
-
-    menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
-    */
-
+    let newMenus = [];
+    for (let dining in menus) {
+      for (let meals in menus[dining]) {
+        if (meals === "breakfast" || meals === "lunch" || meals === 'dinner' || meals === 'lateNight') {
+          if (menus[dining][meals].length) {
+            newMenus = menus[dining][meals].filter( (element) => {return restrictions.every(  r => (element.restrictions.includes(r)) )} );
+            menus[dining][meals] = newMenus;
+          }
+        }
+      }
+    }
+   // menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
   }
 
   /*const addMenuDB = () => {
@@ -167,9 +171,10 @@ const GeneralDining = (props) => {
     settingBtns();
   }, [mealIndex, menus, chosen]);
 
-  /*useEffect(() => {
+
+  useEffect(() => {
     filterMenu();
-  }, []);*/
+  }, [menus]);
 
   return (
     <div>
@@ -190,9 +195,10 @@ const GeneralDining = (props) => {
               <h1>{diningHall}</h1>
               <div className="menu">
                 <div className="scrollbox">
-                  {menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
-                    return <p>{food.dishName}</p>;
-                  })}
+                  {menus[diningHall.replaceAll(" ", "")][meal].length ?
+                  menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
+                    return <FoodDisplay dishName ={food.dishName} restrictions = {food.restrictions}/>
+                  }) : <div className="notAvailable">Not Available</div> }
                 </div>
               </div>
 

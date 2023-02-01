@@ -34,3 +34,130 @@
     /* it is optional, for making this div centered in parent*/
     background-image: url("../../public/pic.jpg");
   }
+
+  .profile-userbuttons {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .profile-userbuttons .btn {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 15px;
+    margin-right: 5px;
+  }
+
+  .profileDisplayCard {
+    background-color: #c7c9c7;
+    display: block;
+    border-radius: 10%;
+    padding: 5%;
+    margin: 3%;
+    width: 33%;
+  }
+
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+  
+  img{
+    max-width:100%;
+  }
+  
+  .container{
+    width:1600px;
+    max-width:100%;
+    margin:auto;
+  }
+  
+  .display{ 
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+  }
+    
+  .display .display-item{
+    flex-grow:1;
+    flex-basis:1px;
+    display:flex;
+    justify-content:space-around;
+    padding:15px;
+    max-width:100%;
+  }
+  
+  .card{
+    width:480px;
+    max-width:100%;
+    min-height:620px;
+    overflow:hidden;
+    border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    background-color:white;
+    position:relative;  
+    display: -webkit-box; 
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex; 
+    display: flex;
+    flex-direction:column;
+  }
+
+  .card  .card-top{
+      -webkit-flex-basis:155px;
+      flex-basis:155px;
+      flex-shrink:1;
+      background-color:rgba(0,0,0,.2);    
+      background-position:center;
+      background-size:cover;  
+    }
+
+  .card .card-top .card-profile{
+      flex-basis:75px;
+      flex-shrink:1;
+  }
+
+  
+  .card .card-top .card-profile .profile-image{
+        overflow:hidden;
+        border-radius:100%;
+        position:absolute;
+        left:calc(50% - 75px);
+        top:calc(25% - 75px);
+        border:4px solid white;
+        width:150px;
+        height:150px;     
+        background-size:cover;
+        background-position:center;
+  }
+
+  .card .card-top .card-info {
+      flex-basis:56,66665%;
+      flex-grow:1;
+      padding:0 15px;
+      text-align:center;
+      display: -webkit-box; 
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex; 
+      display: flex;
+      flex-direction:column;
+  }
+  .card .card-top .card-info .info-title{
+        padding-bottom:15px;
+  }
+
+  .name {
+    display: row;
+    padding-right: 20px;
+  }
+
+  .faded {
+    color: grey;
+    padding-right: 20px;
+  }
+
+ 

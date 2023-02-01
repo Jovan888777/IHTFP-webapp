@@ -40,7 +40,7 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
                 </button>
               </div>
             ) : (
-              <div className="center">
+              <div className="center homeContainer">
                 <p>
                   Log in using google with the button below.
                 </p>

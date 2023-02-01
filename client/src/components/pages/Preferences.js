@@ -338,12 +338,12 @@ const Preferences = (props) => {
       <br></br>
       Profile Picture:{" "}
       <input
+        type="file"
         name="pic"
-        type="textbox"
-        placeholder="Picture"
         className="profileInput"
         onChange={(e) => changeProfile(e)}
-        required
+        accept="image/*"
+        enctype="multipart/form-data"
       />
       <br></br>
       Primary Major:{" "}
@@ -422,7 +422,7 @@ const Preferences = (props) => {
       <input
         name="restrictions"
         type="checkbox"
-        value="vegetarian"
+        value="Vegetarian"
         className="diningInput"
         onChange={changeDiningSettings}
       />{" "}
@@ -430,7 +430,7 @@ const Preferences = (props) => {
       <input
         name="restrictions"
         type="checkbox"
-        value="vegan"
+        value="Vegan"
         className="diningInput"
         onChange={changeDiningSettings}
       />{" "}
@@ -438,7 +438,7 @@ const Preferences = (props) => {
       <input
         name="restrictions"
         type="checkbox"
-        value="kosher"
+        value="Kosher"
         className="diningInput"
         onChange={changeDiningSettings}
       />{" "}
@@ -446,7 +446,7 @@ const Preferences = (props) => {
       <input
         name="restrictions"
         type="checkbox"
-        value="halal"
+        value="Halal"
         className="diningInput"
         onChange={changeDiningSettings}
       />{" "}
@@ -454,7 +454,7 @@ const Preferences = (props) => {
       <input
         name="restrictions"
         type="checkbox"
-        value="glutenFree"
+        value="Gluten-Free"
         className="diningInput"
         onChange={changeDiningSettings}
       />{" "}

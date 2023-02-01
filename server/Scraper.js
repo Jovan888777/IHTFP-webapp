@@ -74,6 +74,8 @@ async function scrapeProduct(url) {
           else if (keywords === 'Human') keywords = 'Humane';
 
           keywordsArray.push(keywords);
+          //if (keywords === 'Vegan')
+          //  keywordsArray.push("Vegetarian");
         }    
       }
       
@@ -101,7 +103,9 @@ async function scrapeProduct(url) {
   finalContent.lateNight = final.lateNight;
 
   if (final.Brunch.length && final.Lunch.length) {
+    //console.log(finalContent.Breakfast);
     finalContent.Breakfast = final.Brunch;
+    //console.log(finalContent.Breakfast);
   }
   else if (final.Brunch.length && final.Breakfast.length) {
     finalContent.Lunch = final.Brunch;
