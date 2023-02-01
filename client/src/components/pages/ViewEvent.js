@@ -4,7 +4,6 @@ import { get } from "../../utilities";
 import EventDisplay from "../modules/EventDisplay";
 import * as moment from "moment";
 
-
 const ViewEvent = (props) => {
   /*
   TO DO: add some type of array sort by date
@@ -24,9 +23,7 @@ const ViewEvent = (props) => {
   const [searchedEvents, setSearchedEvents] = useState([]);
 
   //Maintaining preferences
-  const [eventSettings, seteventsSettings] = useState({
-  });
-
+  const [eventSettings, seteventsSettings] = useState({});
 
   //Getting preferences from the server
   const loadPreferences = () => {
@@ -85,25 +82,21 @@ const ViewEvent = (props) => {
     }
   };
 
-  //Does not work
-  
   const sortEvents = (content, setter) => {
     let newEvents;
-    newEvents = content.slice().sort( (a, b) => {
-      return (a.start > b.start ? 1 
-              : a.start < b.start ? -1 
-              : 0)
+    newEvents = content.slice().sort((a, b) => {
+      return a.start > b.start ? 1 : a.start < b.start ? -1 : 0;
     });
     setter(newEvents);
-  }
+  };
 
   useEffect(() => {
     loadEvents();
   }, []);
 
-  useEffect( () => {
+  useEffect(() => {
     loadPreferences();
-  }, [props.userId])
+  }, [props.userId]);
 
   /*useEffect( () => {
     sortEvents();
@@ -122,10 +115,10 @@ const ViewEvent = (props) => {
           className="viewEventSearch center"
           onChange={(text) => {
             searching(checkbox, text.target.value);
-          }}></input>        
+          }}
+        ></input>
       </div>
-      <div className="fullWidthHeight">
-      </div>
+      <div className="fullWidthHeight"></div>
       <label className="container">
         Filtered
         <span className="checkmark"></span>

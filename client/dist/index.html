@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <style>
+      .u-textCenter {
+        height: 100vh;
+        position: relative;
+      }
+      .vertical {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-size: 50px;
+        text-align: center;
+      }
+    </style>
     <title>Slay Queens!</title>
   </head>
 
   <body style="font-family: Trebuchet MS">
-    <div id="root">We're in index.html!</div>
+    <div id="root" class="u-textCenter">
+      <div class="vertical">
+        Wait a bit for the page to load. In the mean time... SLAAAAAAAAY QUEEN!!!!!!<br />👸💅
+      </div>
+    </div>
     <script src="/bundle.js"></script>
   </body>
 </html>
