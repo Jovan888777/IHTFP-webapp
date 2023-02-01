@@ -102,3 +102,14 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.buttonException {     
+  background: none!important;
+  background-color: none!important;
+  border: none!important;
+  outline: none!important;
+  padding: 0!important;
+  /*optional*/
+  /*input has OS specific font-family*/
+  cursor: pointer;
+}
