@@ -30,7 +30,8 @@
 .mealSelector {
   width: 15vh;
   height: 5vh;
-  border-radius: 15%
+  border-radius: 15%;
+  margin-top: 3vh
 }
 
 

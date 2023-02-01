@@ -115,15 +115,16 @@ const ViewEvent = (props) => {
 
   return (
     <div>
-      <div className="wrap">
-        <h1 className = "center"> Upcoming Events </h1>
+      <h1 className="center"> Upcoming Events </h1>
+      <div className="search-wrapper center">
+        <label for="search">Search Events</label>
         <input
-          type="search"
-          id="search"
-          placeholder="Search Event Names"
+          className="viewEventSearch center"
           onChange={(text) => {
             searching(checkbox, text.target.value);
           }}></input>        
+      </div>
+      <div className="fullWidthHeight">
       </div>
       <label className="container">
         Filtered

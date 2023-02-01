@@ -38,8 +38,7 @@ const Friends = (props) => {
     <div>
       <h1 className="center" style={{paddingTop: 20}}> Search Friends </h1>
       <div className="search-wrapper">
-        <label for="search">Search Users</label>
-        <input type="search" id = "search" onChange={(text)=>{searching(text.target.value);}}></input>
+        <input className="viewEventSearch" onChange={(text)=>{searching(text.target.value);}}></input>
         <div className="flexing">
           {loaded ? filteredUsers.map((element) => (
             <FriendDisplay name = {element.name} kerb = {element.kerb} my_id = {element._id} user_id = {props.userId} handleProfile = {props.handleProfile} reqs = {element.requests} friends = {element.friends}/>

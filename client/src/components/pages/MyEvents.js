@@ -83,9 +83,9 @@ const MyEvents = (props) => {
       {myEvents.length !== 0 ? (
         myEvents.map((element) => (
           <div className="myEventsContainer">
-            <EventDisplay {...element} userId={props.userId} />
+              <EventDisplay {...element} userId={props.userId} />
 
-            <div className="column">
+            <div className="buttonsContainer">
               {element.guestlistNeeded ? (
                 <button onClick={(e) => downloadGuestlist(element._id)}>Download Guestlist</button>
               ) : (

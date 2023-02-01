@@ -56,6 +56,8 @@
   padding: 3vh
 }
 
-.button {
-  background-color: #aa0202
+.homeLogoutButton {
+  margin-top: 5vh;
+  background-color: #aa0202;
+  color: white
 }

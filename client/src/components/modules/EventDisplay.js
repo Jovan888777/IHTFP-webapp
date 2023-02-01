@@ -51,26 +51,26 @@ const EventDisplay = (props) => {
           <div className="event-container">
             <div className="event-picture" />{" "}
           </div>
-        </div>
-        <div className="column">
-          <ul>
-            <li>Name: {props.name}</li>
-            <li>Group/Club: {props.group}</li>
-            <li>Start time: {moment(props.start).format("MM-DD-YYYY kk:mm")}</li>
-            <li>End time: {moment(props.end).format("MM-DD-YYYY kk:mm")}</li>
-            <li>Location: {props.location}</li>
-            <li>Description: {props.description}</li>
-            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
-          </ul>
           {props.userId === props.user_id ? (
             ""
           ) : props.guestlistNeeded ? (
-            <button className={props._id} onClick={(e) => addToGuestList(e.target)}>
+            <button className={props._id+" eventDisplayGuestlist"} onClick={(e) => addToGuestList(e.target)}>
               Add yourself to the guestlist!
             </button>
           ) : (
             ""
           )}
+        </div>
+        <div className="column">
+          <ul className="listDescription">
+            <li>Name: {props.name}</li>
+            <li>Group/Club: {props.group}</li>
+            <li>Start time: {moment(props.start).format("MM-DD-YYYY kk:mm")}</li>
+            <li>End time: {moment(props.end).format("MM-DD-YYYY kk:mm")}</li>
+            <li>Location: {props.location}</li>
+            <li>Keywords: {props.keywords.length === 0 ? "None" : props.keywords.join(", ")}</li>
+            <li className="listDescription">Description: {props.description}</li>
+          </ul>
         </div>
       </div>
     </div>
