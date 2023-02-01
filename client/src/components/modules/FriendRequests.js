@@ -1,3 +1,13 @@
+
+/*
+
+WARNING: Don't seperate the Accept Request, and Delete Request buttons
+It will not work if they are not besides each other
+
+
+*/
+
+
 import React, { useEffect, useState } from "react";
 import { get, post } from "../../utilities";
 import "./FriendRequests.css";
@@ -176,3 +186,4 @@ const FriendRequests = (props) => {
 };
 
 export default FriendRequests;
+

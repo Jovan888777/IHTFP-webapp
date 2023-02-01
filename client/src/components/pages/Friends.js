@@ -36,7 +36,7 @@ const Friends = (props) => {
 
   return (
     <div>
-      <h1> Friends </h1>
+      <h1 className="center" style={{paddingTop: 20}}> Search Friends </h1>
       <div className="search-wrapper">
         <label for="search">Search Users</label>
         <input type="search" id = "search" onChange={(text)=>{searching(text.target.value);}}></input>

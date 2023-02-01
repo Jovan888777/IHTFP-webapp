@@ -42,7 +42,7 @@ const ProfileDisplay = (props) => {
         (props.userId === props.profileId) ?
         (<div>
             <div className="row">
-                <div className = "column">
+                <div className = "column" style={{paddingTop: 20}}>
                     <div className="event-container">
                         <div className = "event-picture"/> 
                         <div className="profile-userbuttons">
@@ -51,7 +51,7 @@ const ProfileDisplay = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className = "column">
+                <div className = "column" style={{paddingTop: 20}}>
 
                     <div className="card-info">
                         <div className="info-title">

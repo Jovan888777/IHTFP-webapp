@@ -30,3 +30,18 @@
     width: 20vh;
     height: 5vh
   }
+
+  .search {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-self: center;
+  }
+
+  .wrap{
+    text-align: center;
+    width: 30%;
+    top: 50%;
+    left: 50%;
+    align-content: center;
+  }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./EventDisplay.css";
 import { get, post } from "../../utilities";
+import * as moment from "moment";
+
 
 const EventDisplay = (props) => {
   const [going, setGoing] = useState(false);
@@ -40,8 +42,13 @@ const EventDisplay = (props) => {
     setGoing(!going);
   };
 
+  const checking = () => {
+    console.log(props.start, props.end);
+  }
+
   useEffect(() => {
     loadGuests();
+    checking();
   }, []);
 
   return (
