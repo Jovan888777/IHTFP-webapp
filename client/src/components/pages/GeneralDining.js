@@ -195,9 +195,10 @@ const GeneralDining = (props) => {
               <h1>{diningHall}</h1>
               <div className="menu">
                 <div className="scrollbox">
-                  {menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
+                  {menus[diningHall.replaceAll(" ", "")][meal].length ?
+                  menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
                     return <FoodDisplay dishName ={food.dishName} restrictions = {food.restrictions}/>
-                  })}
+                  }) : <div className="notAvailable">Not Available</div> }
                 </div>
               </div>
 

@@ -136,30 +136,40 @@ const FriendRequests = (props) => {
 
       return (
         (props.userId === props.profileId) ? 
+        ( (requests.length) ?
         (<div>
-            <h1>Friend Requests</h1>
+            <h2 className="center" padding-top = "10px">Friend Requests</h2>
+            <div className="requestContainer">
             {requests.map((element) => (
-            
-            <div>
-                {element.name}
-                <button onClick = {(e) => acceptRequest(element.user_id, e.target, e.target.nextSibling)} > Accept Request </button>
-                <button onClick = {(e) => deleteRequest(element.user_id, e.target.previousSibling, e.target)}> Delete Request </button>
+            <div className="row">
+                <div className="column" style={{marginTop: 10}}>
+                    {element.name}
+                </div>
+                <button className="btnNew" onClick = {(e) => acceptRequest(element.user_id, e.target, e.target.nextSibling)}> Accept Request </button>
+                <button className = "btnNew" onClick = {(e) => deleteRequest(element.user_id, e.target.previousSibling, e.target)}> Delete Request </button>
             </div>
 
             ))}
-        </div>)
+            </div>
+        </div>) : <div></div> )
         : 
         (<div>
             {friends.includes(props.profileId) ?
-                <button onClick = {(e) => deleteFriend(props.profileId, e.target)}> Delete Friend </button>
+                <div className="profile-userbuttons">
+                    <button className="btn" onClick = {(e) => deleteFriend(props.profileId, e.target)}> Delete Friend </button>
+                </div>
                 : requestsOther.includes(props.userId) ?
-                <button> Friend Request Sent </button>
+                <div className="profile-userbuttons">
+                    <button className="btn"> Friend Request Sent</button>
+                </div>
                 : (requests.filter( (element) => (element.user_id === props.profileId))).length ?
-                    <div>
-                        <button onClick = {(e) => acceptRequest(props.profileId, e.target, e.target.nextSibling)} > Accept Request </button>
-                        <button onClick = {(e) => deleteRequest(props.profileId, e.target.previousSibling, e.target)}> Delete Request </button>
+                    <div className="profile-userbuttons">
+                        <button className="btn" onClick = {(e) => acceptRequest(props.profileId, e.target, e.target.nextSibling)} > Accept Request </button>
+                        <button className="btn" onClick = {(e) => deleteRequest(props.profileId, e.target.previousSibling, e.target)}> Delete Request </button>
                     </div>
-                : <button onClick = {(e) => {AddFriend(e.target)}}> Send Request </button> }
+                : <div className="profile-userbuttons">
+                    <button className="btn" onClick = {(e) => {AddFriend(e.target)}}> Send Request </button>
+                </div> }
             
         </div>)
       );

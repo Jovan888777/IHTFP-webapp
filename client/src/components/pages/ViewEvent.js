@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ViewEvent.css";
 import { get } from "../../utilities";
 import EventDisplay from "../modules/EventDisplay";
+import parse from 'date-fns/parse'
 
 const ViewEvent = (props) => {
   /*
@@ -25,9 +26,12 @@ const ViewEvent = (props) => {
   const [eventSettings, seteventsSettings] = useState({
   });
 
+  const format = 'd/M/y @ H:m:s';
+  const parseDate = d => parse(d, format, new Date());
+
+
   //Getting preferences from the server
   const loadPreferences = () => {
-    console.log("inside");
     get("/api/event-settings")
       .then((settings) => {
         if (settings) seteventsSettings({ keywords: settings.keywords });
@@ -83,10 +87,27 @@ const ViewEvent = (props) => {
     }
   };
 
+  //Does not work
+  
+  /*const sortEvents = () => {
+    let newEvents = events;
+    let newPreferedEvents = preferedEvents;
+
+    newEvents.sort((a, b) => parseDate(a.start) - parseDate(b.start));
+    setEvents(newEvents);
+
+    newPreferedEvents.sort( (a, b) => a.start - b.start);
+    setPreferedEvents(newPreferedEvents);
+  }*/
+
   useEffect(() => {
     loadPreferences();
     loadEvents();
   }, []);
+
+  /*useEffect( () => {
+    sortEvents();
+  }, [preferedEvents]); */
 
   useEffect(() => {
     if (eventSettings && events)

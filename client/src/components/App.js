@@ -83,7 +83,7 @@ const App = (props) => {
 
   /*useEffect(() => {
     allMenus();
-  }, [])*/
+  }, []); */
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
@@ -160,7 +160,7 @@ const App = (props) => {
 
   //posting the menus
   const updateMenu = () => {
-    console.log("menu");
+    //console.log("menu");
     console.log(menu);
     post("/api/add-menus", menu)
       .then(console.log("menu added successfully"))
@@ -169,6 +169,7 @@ const App = (props) => {
 
   //cleaning the menus from webscraping for posting event
   const cleanMenu = (content, diningHall) => {
+    //console.log(content, diningHall);
     if (diningHall === "maseeh") {
       menu["maseehb"] = content.Breakfast;
       menu["maseehl"] = content.Lunch;
@@ -273,7 +274,7 @@ const App = (props) => {
           <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
           <GeneralDining path="/menus/" userId={userId} isHome={false} />
           <SharedDining path="/shared-dining/" userId={userId} userName={userName} isHome={false} />
-          <Profile path="/profile/:profileId" userId={userId} isHome={false} />
+          <Profile path="/profile/:profileId" userId={userId} isHome={false}/>
           <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
           <Preferences path="/preferences/" userId={userId} isHome={false} />
           <NotFound default />

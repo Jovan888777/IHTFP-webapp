@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { get, post } from "../../utilities";
 import "./Profile.css";
+import { Link, navigate } from "@reach/router";
 
 import ProfileDisplay from "../modules/ProfileDisplay";
 import FriendRequests from "../modules/FriendRequests";
+import FriendDisplay from "../modules/FriendDisplay";
+import UserCard from "../modules/userCard";
+import { CLIENT_RENEG_LIMIT } from "tls";
 
 const Profile = (props) => {
   /// Use flex to make picture and data nicer
@@ -122,26 +126,32 @@ const Profile = (props) => {
     content = (
       <div>
         <ProfileDisplay profile = {profile} userId = {props.userId} profileId = {props.profileId} />
-        {(props.userId === props.profileId) ?
-            <button onClick = {() => console.log("Need to edit")}>Edit</button>
-            : <div></div>
-        }
-        <FriendRequests  userId = {props.userId} profileId = {props.profileId}/>
-        <h2 className="u-textCenter"> {display} </h2>
-        {props.userId === props.profileId ?
-          mutual.map((element) => (
-            <div>
-              <ProfileDisplay userId = {props.userId} profileId = {element} />
-              <button onClick = {(e) => deleteFriend(element, e.target)}>Delete Friend</button>
-            </div>
-          ))
-          : 
+        <div className="row" style={{paddingTop : 100}}>
+          <div className="column"> 
+          <h2 className="u-textCenter"> {display} </h2>
+          {props.userId === props.profileId ?
             mutual.map((element) => (
-              <ProfileDisplay userId = {props.userId} profileId = {element} />
+              <div >
+                <div className="row">
+                  <UserCard userId = {props.userId} profileId = {element}/>
+                  <div className="profile-userbuttons">
+                  <button className="btn" style={{marginTop : 20}}onClick = {(e) => deleteFriend(element, e.target)}>Delete Friend</button>
+                  </div>
+                </div>
+              </div>
             ))
-        }
-        
-
+            : 
+              mutual.map((element) => (
+                <div className="row">
+                  <UserCard userId = {props.userId} profileId = {element}/>
+                </div>
+              ))
+          }
+          </div>
+          <div className="column"> 
+            <FriendRequests  userId = {props.userId} profileId = {props.profileId}/>
+          </div>
+        </div>
       </div>
     );
   }
