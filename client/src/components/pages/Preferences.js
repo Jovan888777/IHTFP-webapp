@@ -3,6 +3,7 @@ import "./Preferences.css";
 import { get, post } from "../../utilities";
 import Accordian from "../modules/Accordian.js";
 import KeywordInput from "../modules/KeywordInput.js";
+import RankElement from "../modules/RankElement";
 
 const Preferences = (props) => {
   const [profile, setProfile] = useState({
@@ -421,44 +422,14 @@ const Preferences = (props) => {
 
   let diningContent = (
     <div>
-      <div className="rankContainer">
-        <div className="rankElement" id="el1">
-          <input type="hidden" name="1" />
-          <font className="rankDisp" id="el1">
-            2
-          </font>
-          &nbsp;&nbsp;&nbsp; Platinum
-          <b className="down">&nbsp;∨</b>
-          <b className="up">∧&nbsp;</b>
-        </div>
-        <div className="rankElement" id="el2">
-          <input type="hidden" name="2" />
-          <font className="rankDisp" id="el2">
-            3
-          </font>
-          &nbsp;&nbsp;&nbsp; Gold
-          <b className="down">&nbsp;∨</b>
-          <b className="up">∧&nbsp;</b>
-        </div>
-        <div className="rankElement" id="el3">
-          <input type="hidden" name="3" />
-          <font className="rankDisp" id="el3">
-            4
-          </font>
-          &nbsp;&nbsp;&nbsp; Silver
-          <b className="down">&nbsp;∨</b>
-          <b className="up">∧&nbsp;</b>
-        </div>
-        <div className="rankElement" id="el4">
-          <input type="hidden" name="4" />
-          <font className="rankDisp" id="el4">
-            5
-          </font>
-          &nbsp;&nbsp;&nbsp; Diamond
-          <b className="down">&nbsp;∨</b>
-          <b className="up">∧&nbsp;</b>
-        </div>
-      </div>
+      {/* <div className="rankContainer">
+        {diningSettings.rankings
+          ? diningSettings.rankings.map((diningHall) => {
+              <RankElement className={1} name={diningHall} />
+            })
+          : ""}
+      </div> */}
+      <br></br>
       Dietary Restrictions:
       <input
         name="restrictions"

@@ -80,7 +80,6 @@ const App = (props) => {
     updateMenu();
   }, [menu]); */
 
-
   /*useEffect(() => {
     allMenus();
   }, []); */
@@ -131,7 +130,7 @@ const App = (props) => {
       eventGuestlistNeeded: false,
       eventLocation: "",
     });
-    navigate("/add-event/", {...eventInfo});
+    navigate("/add-event/", { ...eventInfo });
   };
 
   //This is for navigateing to a new friend profile and seeing mutual friends
@@ -141,12 +140,15 @@ const App = (props) => {
   };
 
   const menuURLs = [
-    {url: "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/", diningHall: "maseeh"},
-    {url: "https://mit.cafebonappetit.com/cafe/simmons/", diningHall: "simmons"},
-    {url: "https://mit.cafebonappetit.com/cafe/next/", diningHall: "next"},
-    {url: "https://mit.cafebonappetit.com/cafe/new-vassar/", diningHall: "new-vassar"},
-    {url: "https://mit.cafebonappetit.com/cafe/mccormick/", diningHall: "mccormick"},
-    {url: "https://mit.cafebonappetit.com/cafe/baker/", diningHall: "baker"},
+    {
+      url: "https://mit.cafebonappetit.com/cafe/the-howard-dining-hall-at-maseeh/",
+      diningHall: "maseeh",
+    },
+    { url: "https://mit.cafebonappetit.com/cafe/simmons/", diningHall: "simmons" },
+    { url: "https://mit.cafebonappetit.com/cafe/next/", diningHall: "next" },
+    { url: "https://mit.cafebonappetit.com/cafe/new-vassar/", diningHall: "new-vassar" },
+    { url: "https://mit.cafebonappetit.com/cafe/mccormick/", diningHall: "mccormick" },
+    { url: "https://mit.cafebonappetit.com/cafe/baker/", diningHall: "baker" },
   ];
 
   //getting the menus from the webscraping
@@ -175,26 +177,21 @@ const App = (props) => {
       menu["maseehl"] = content.Lunch;
       menu["maseehd"] = content.Dinner;
       menu["maseehln"] = content.lateNight;
-    }
-    else if (diningHall === "simmons") {
+    } else if (diningHall === "simmons") {
       menu["simmonsb"] = content.Breakfast;
       menu["simmonsd"] = content.Dinner;
       menu["simmonsln"] = content.lateNight;
-    }
-    else if (diningHall === "newvassar") {
+    } else if (diningHall === "newvassar") {
       menu["newvassarb"] = content.Breakfast;
       menu["newvassarl"] = content.Lunch;
       menu["newvassard"] = content.Dinner;
-    }
-    else if (diningHall === "next") {
+    } else if (diningHall === "next") {
       menu["nextb"] = content.Breakfast;
       menu["nextd"] = content.Dinner;
-    }
-    else if (diningHall === "mccormick") {
+    } else if (diningHall === "mccormick") {
       menu["mccormickb"] = content.Breakfast;
       menu["mccormickd"] = content.Dinner;
-    }
-    else if (diningHall === "baker") {
+    } else if (diningHall === "baker") {
       menu["bakerb"] = content.Breakfast;
       menu["bakerd"] = content.Dinner;
     }
@@ -270,11 +267,10 @@ const App = (props) => {
             handleEditing={handleEditing}
             isHome={false}
           />
-          <AutomaticCourseRoad path="/automatic-course-road/" userId={userId} isHome={false} />
           <SharedClasses path="/shared-classes/" userId={userId} isHome={false} />
           <GeneralDining path="/menus/" userId={userId} isHome={false} />
           <SharedDining path="/shared-dining/" userId={userId} userName={userName} isHome={false} />
-          <Profile path="/profile/:profileId" userId={userId} isHome={false}/>
+          <Profile path="/profile/:profileId" userId={userId} isHome={false} />
           <Friends path="/friends/" userId={userId} handleProfile={handleProfile} isHome={false} />
           <Preferences path="/preferences/" userId={userId} isHome={false} />
           <NotFound default />

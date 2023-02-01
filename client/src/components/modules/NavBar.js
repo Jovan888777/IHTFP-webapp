@@ -29,14 +29,16 @@ const NavBar = (props) => {
           </Link>
         </button>
       </div>
-      
+
       <div className="dropdown">
         <button className="dropbtn">
           Profile
           <i className="fa fa-caret-down"></i>
         </button>
         <div className="dropdown-content">
-          <Link to={"/profile/" + props.userId} userId = {props.userId} profileId = {props.userId}>My Profile</Link>
+          <Link to={"/profile/" + props.userId} userId={props.userId} profileId={props.userId}>
+            My Profile
+          </Link>
           <Link to="/friends/">Friends</Link>
           <Link to="/preferences/">Preferences</Link>
           <div>{logText ? <button onClick={logClick}>{logText}</button> : <div></div>}</div>
@@ -49,7 +51,6 @@ const NavBar = (props) => {
           <i className="fa fa-caret-down"></i>
         </button>
         <div className="dropdown-content">
-          <Link to="/automatic-course-road/">Automatic Course Road</Link>
           <Link to="/shared-classes/">Shared Classes</Link>
         </div>
       </div>
@@ -60,8 +61,15 @@ const NavBar = (props) => {
         </button>
         <div className="dropdown-content">
           <Link to="/events/">View Event</Link>
-          <button to="/add-events" onClick = {() => {props.handleAddEvent();}}>Add Event</button>
           <Link to="/my-events/">My Events</Link>
+          <button
+            to="/add-events"
+            onClick={() => {
+              props.handleAddEvent();
+            }}
+          >
+            Add Event
+          </button>
         </div>
       </div>
       <div className="dropdown">

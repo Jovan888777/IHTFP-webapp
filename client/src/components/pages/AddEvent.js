@@ -59,11 +59,9 @@ const AddEvent = (props) => {
     else setEventLocation("");
     if (props.eventId) setEventId(props.eventId);
     if (props.eventKeywords) {
-      if (props.eventKeywords.length)
-        setEventKeywords([...props.eventKeywords]);
+      if (props.eventKeywords.length) setEventKeywords([...props.eventKeywords]);
       else setEventKeywords([]);
-    }
-    else setEventKeywords([]);
+    } else setEventKeywords([]);
   };
 
   useEffect(() => {
@@ -75,16 +73,7 @@ const AddEvent = (props) => {
   //ask how to pass arguments
   const postNewEvent = (event) => {
     event.preventDefault();
-    if (
-      !(
-        eventName &&
-        eventGroup &&
-        eventLocation &&
-        eventDescription &&
-        eventStart &&
-        eventEnd
-      )
-    ) {
+    if (!(eventName && eventGroup && eventLocation && eventDescription && eventStart && eventEnd)) {
       setErr("One of your input fields is empty. Please fill them all to proceed.");
     } else if (Date.parse(eventStart) > Date.parse(eventEnd)) {
       //end is less than start
@@ -148,54 +137,61 @@ const AddEvent = (props) => {
         {/* {done && <Navigate to="/my-events" replace={true} />} */}
         <h1>{routeStrings.button} Event</h1>
         <div className="inputs">
-          <div className="halfWidth">Name:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              name="eventname"
-              type="textbox"
-              placeholder="Enter some text"
-              value={eventName}
-              onChange={(event) => {
-                setEventName(event.target.value);
-              }}
-              required
-            />
+          <div className="group">
+            <div className="halfWidth">Name:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                name="eventname"
+                type="textbox"
+                placeholder="Enter some text"
+                value={eventName}
+                onChange={(event) => {
+                  setEventName(event.target.value);
+                }}
+                required
+              />
+            </div>
           </div>
-          <div className="halfWidth">Group:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              name="group"
-              type="textbox"
-              placeholder="Enter some text"
-              value={eventGroup}
-              onChange={(event) => setEventGroup(event.target.value)}
-              required
-            />
+          <div className="group">
+            <div className="halfWidth">Group:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                name="group"
+                type="textbox"
+                placeholder="Enter some text"
+                value={eventGroup}
+                onChange={(event) => setEventGroup(event.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className="halfWidth">Location:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              name="location"
-              type="textbox"
-              placeholder="Enter some text"
-              value={eventLocation}
-              onChange={(event) => setEventLocation(event.target.value)}
-              required
-            />
+          <div className="group">
+            <div className="halfWidth">Location:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                name="location"
+                type="textbox"
+                placeholder="Enter some text"
+                value={eventLocation}
+                onChange={(event) => setEventLocation(event.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="group">
             <div className="halfWidth">Keywords:</div>
             <div className="halfWidth">
               <KeywordInput
-                data={(props.eventKeywords) ? [...props.eventKeywords] : []}
+                data={props.eventKeywords ? [...props.eventKeywords] : []}
                 parentFXN={handleKeywordChange}
                 classNameUsed="event-keywords"
               />
             </div>
           </div>
+          <div className="group">
             <div className="halfWidth">Start Date and Time:</div>
             <div className="halfWidth">
               <input
@@ -209,50 +205,58 @@ const AddEvent = (props) => {
                 required
               />
             </div>
-          <div className="halfWidth">End Date and Time:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              type="datetime-local"
-              name="start"
-              min={eventStart}
-              max="2023-12-31T23:59"
-              value={eventEnd ? eventEnd : ""}
-              onChange={(event) => setEventEnd(event.target.value)}
-              required
-            />
           </div>
-          <div className="halfWidth">Guest List Needed:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              name="guestlistneeded"
-              type="checkbox"
-              checked = {eventGuestlistNeeded}
-              onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
-            />
+          <div className="group">
+            <div className="halfWidth">End Date and Time:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                type="datetime-local"
+                name="start"
+                min={eventStart}
+                max="2023-12-31T23:59"
+                value={eventEnd ? eventEnd : ""}
+                onChange={(event) => setEventEnd(event.target.value)}
+                required
+              />
+            </div>
           </div>
-
-          <div className="halfWidth">Description:</div>
-          <div className="halfWidth">
-            <textarea
-              className="inputBox bigDesc"
-              name="description"
-              placeholder="Enter some text"
-              value={eventDescription}
-              onChange={(event) => setEventDescription(event.target.value)}
-              required
-            ></textarea>
+          <div className="group">
+            <div className="halfWidth">Guest List Needed:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                name="guestlistneeded"
+                type="checkbox"
+                checked={eventGuestlistNeeded}
+                onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
+              />
+            </div>
           </div>
 
-          <div className="fullWidthHeight"></div>
-          <div className="fullWidth">
-            <input
-              className="inputBox"
-              value={routeStrings.button}
-              type="submit"
-              onClick={postNewEvent}
-            />
+          <div className="group">
+            <div className="halfWidth">Description:</div>
+            <div className="halfWidth">
+              <textarea
+                className="inputBox bigDesc"
+                name="description"
+                placeholder="Enter some text"
+                value={eventDescription}
+                onChange={(event) => setEventDescription(event.target.value)}
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div className="group">
+            <div className="fullWidthHeight"></div>
+            <div className="fullWidth">
+              <input
+                className="inputBox"
+                value={routeStrings.button}
+                type="submit"
+                onClick={postNewEvent}
+              />
+            </div>
           </div>
           <div className="fullWidth">{err}</div>
         </div>
