@@ -186,7 +186,6 @@ const AddEvent = (props) => {
               required
             />
           </div>
-          <div className="group">
             <div className="halfWidth">Keywords:</div>
             <div className="halfWidth">
               <KeywordInput
@@ -195,7 +194,6 @@ const AddEvent = (props) => {
                 classNameUsed="event-keywords"
               />
             </div>
-          </div>
             <div className="halfWidth">Start Date and Time:</div>
             <div className="halfWidth">
               <input
@@ -236,7 +234,7 @@ const AddEvent = (props) => {
           <div className="halfWidth">Description:</div>
           <div className="halfWidth">
             <textarea
-              className="inputBox bigDesc"
+              className="inputBox"
               name="description"
               placeholder="Enter some text"
               value={eventDescription}
