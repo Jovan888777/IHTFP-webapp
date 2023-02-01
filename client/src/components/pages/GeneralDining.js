@@ -43,16 +43,23 @@ const GeneralDining = (props) => {
     let newMenus = [];
     for (let dining in menus) {
       for (let meals in menus[dining]) {
-        if (meals === "breakfast" || meals === "lunch" || meals === 'dinner' || meals === 'lateNight') {
+        if (
+          meals === "breakfast" ||
+          meals === "lunch" ||
+          meals === "dinner" ||
+          meals === "lateNight"
+        ) {
           if (menus[dining][meals].length) {
-            newMenus = menus[dining][meals].filter( (element) => {return restrictions.every(  r => (element.restrictions.includes(r)) )} );
+            newMenus = menus[dining][meals].filter((element) => {
+              return restrictions.every((r) => element.restrictions.includes(r));
+            });
             menus[dining][meals] = newMenus;
           }
         }
       }
     }
-   // menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
-  }
+    // menus.filter( (element) => {return restrictions.every( r => (element.restrictions.includes(r) )} );
+  };
 
   /*const addMenuDB = () => {
     post("/api/delete-menus")
@@ -171,7 +178,6 @@ const GeneralDining = (props) => {
     settingBtns();
   }, [mealIndex, menus, chosen]);
 
-
   useEffect(() => {
     filterMenu();
   }, [menus]);
@@ -180,7 +186,11 @@ const GeneralDining = (props) => {
     <div>
       <div className="center">
         <h1>Select a meal and dining hall</h1>
-        <select className="mealSelector" value={meal} onChange={(event) => setMeal(event.target.value)}>
+        <select
+          className="mealSelector"
+          value={meal}
+          onChange={(event) => setMeal(event.target.value)}
+        >
           <option value="breakfast">breakfast</option>
           <option value="lunch">lunch</option>
           <option value="dinner">dinner</option>
@@ -195,10 +205,18 @@ const GeneralDining = (props) => {
               <h1>{diningHall}</h1>
               <div className="menu">
                 <div className="scrollbox">
-                  {menus[diningHall.replaceAll(" ", "")][meal].length ?
-                  menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
-                    return <FoodDisplay dishName ={food.dishName} restrictions = {food.restrictions}/>
-                  }) : <div className="notAvailable">Not Available</div> }
+                  {menus[diningHall.replaceAll(" ", "")][meal].length ? (
+                    menus[diningHall.replaceAll(" ", "")][meal].map((food) => {
+                      return (
+                        <div>
+                          <FoodDisplay dishName={food.dishName} restrictions={food.restrictions} />{" "}
+                          <hr />
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="notAvailable">Not Available</div>
+                  )}
                 </div>
               </div>
 
