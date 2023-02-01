@@ -4,58 +4,67 @@ import { get } from "../../utilities";
 import Card from "../modules/Card.js";
 
 const SharedClasses = (props) => {
-  const [classes, setClasses] = useState(undefined);
+  const [classes, setClasses] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [friendInClasses, setFriendInClasses] = useState(undefined);
+  const [friendNames, setFriendNames] = useState([]);
+  const [friendClasses, setFriendClasses] = useState([]);
+  const [friendInClasses, setFriendInClasses] = useState({});
 
   const loadFriends = () => {
-    get("/user-friends", { userId: props.userId })
-      .then((friends) => setFriends(friends))
+    get("/api/user-friends", { userId: props.userId })
+      .then((friends) => {
+        setFriends(friends);
+      })
       .catch((err) => `failed to find user friends:${err}`);
   };
 
   const loadClasses = () => {
-    get("/current-classes", { userId: props.userId })
+    get("/api/current-classes", { userId: props.userId })
       .then((classes) => {
         setClasses(classes);
-        let classObj = {};
-        for (let className in classes) {
-          classObj[className] = [];
-        }
-        setFriendInClasses(classObj);
       })
       .catch((err) => `failed to find user classes:${err}`);
   };
 
-  const loadFriendsInClasses = () => {
-    let name;
-    let friendChoices = {};
-
-    if (classes) {
-      for (let className of classes) {
-        friendChoices[className] = [];
-      }
-    }
-
+  const getNames = async () => {
     if (friends) {
-      for (let friendId of friends) {
-        name = get("/api/profile-by-id", { userId: friendId })
+      const output = friends.map((uid) => {
+        return get("/api/profile-by-id", { userId: uid })
           .then((user) => {
             return user.name;
           })
-          .catch((err) => console.log(`failed to get profile by id:${err}`));
+          .catch((err) => console.log(err));
+      });
+      setFriendNames(await Promise.all(output));
+    }
+  };
 
-        get("/current-classes", { userId: friendId })
-          .then((friendClasses) => {
-            for (let className of friendClasses) {
-              if (className in classes) {
-                friendChoices[choice].push(name);
-              }
-            }
-          })
-          .catch((err) => console.log(`failed to get dining choice:${err}`));
+  const getFriendClasses = async () => {
+    if (friends) {
+      const output = friends.map((uid) => {
+        return get("/api/current-classes", { userId: uid });
+      });
+      setFriendClasses(await Promise.all(output));
+    }
+  };
+
+  const loadFriendsInClasses = () => {
+    let friendChoices = {};
+
+    if (classes) {
+      console.log(classes, friendClasses);
+      for (let className of classes) {
+        friendChoices[className] = [];
       }
-
+      if (friendClasses.length) {
+        for (let i = 0; i < friendClasses.length; i++) {
+          for (let j = 0; j < friendClasses[i].length; j++) {
+            if (classes.includes(friendClasses[i][j])) {
+              friendChoices[friendClasses[i][j]].push(friendNames[i]);
+            }
+          }
+        }
+      }
       setFriendInClasses(friendChoices);
     }
   };
@@ -66,8 +75,16 @@ const SharedClasses = (props) => {
   }, [props]);
 
   useEffect(() => {
+    getNames();
+  }, [friends]);
+
+  useEffect(() => {
+    getFriendClasses();
+  }, [friendNames]);
+
+  useEffect(() => {
     loadFriendsInClasses();
-  }, [classes, friends]);
+  }, [friendClasses]);
 
   return (
     <div>
@@ -75,8 +92,8 @@ const SharedClasses = (props) => {
         <h1>Friends in your classes!</h1>
       </div>
       <br></br>
-      <div className="wrapper">
-        {classes
+      <div className="wrapper center">
+        {classes.length
           ? classes.map((classNum) => <Card title={classNum} friends={friendInClasses[classNum]} />)
           : "No Classes in the System!"}
       </div>

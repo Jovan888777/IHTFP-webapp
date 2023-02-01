@@ -148,7 +148,7 @@ router.get("/keyword-preferences", (req, res) => {
 });
 
 router.get("/current-classes", (req, res) => {
-  ClassSettings.findOne({ user_id: req.query.userid })
+  ClassSettings.findOne({ user_id: req.query.userId })
     .then((settings) => res.send(settings.currentClasses))
     .catch((err) => {
       console.log(`failed to get current classes:${err}`);

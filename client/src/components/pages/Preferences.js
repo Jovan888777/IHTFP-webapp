@@ -335,16 +335,17 @@ const Preferences = (props) => {
         onChange={(e) => changeProfile(e)}
         required
       />
-      <br></br>
-      Profile Picture:{" "}
-      {/* <input
-        type="file"
+      {/* <br></br>
+      Profile Picture:{" "} */}
+      <input
+        type="text"
         name="pic"
         className="profileInput"
         onChange={(e) => changeProfile(e)}
-        accept="image/*"
-        enctype="multipart/form-data"
-      /> */}
+        // accept="image/*"
+        // enctype="multipart/form-data"
+        hidden
+      />
       <br></br>
       Primary Major:{" "}
       <select
@@ -407,6 +408,8 @@ const Preferences = (props) => {
           <option value={concentration}>{concentration}</option>
         ))}
       </select>
+      <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -498,6 +501,7 @@ const Preferences = (props) => {
       />{" "}
       Gluten Free
       <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -521,6 +525,7 @@ const Preferences = (props) => {
         placeholder="Max Finals"
         className="classInput"
         onInput={changeClassSettings}
+        min={0}
       />
       <br></br>
       Max Number of Units per Semester:{" "}
@@ -530,7 +535,10 @@ const Preferences = (props) => {
         placeholder="Max Units"
         className="classInput"
         onInput={changeClassSettings}
+        min={0}
       />
+      <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -555,6 +563,7 @@ const Preferences = (props) => {
         className="eventInput"
         onChange={changeEventSettings}
       />
+      <br></br>
       <br></br>
       <input
         value="Save Changes"
