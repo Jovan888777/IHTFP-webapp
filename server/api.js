@@ -27,7 +27,7 @@ var dailyActivities = schedule.scheduleJob("45 23 * * *", function () {
   DiningSettings.find({})
     .then((settings) => {
       settings.map((setting) => {
-        setting.chosen = [];
+        setting.chosen = [null, null, null, null];
         setting.save();
       });
     })
@@ -73,6 +73,7 @@ const semesterlyActivities = schedule.scheduleJob("0 0 1 1,2,6 *", function () {
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
+
   if (!req.user) {
     // not logged in
     return res.send({});
@@ -225,7 +226,7 @@ router.get("/profile-by-id", auth.ensureLoggedIn, (req, res) => {
 });
 
 router.get("/profile-name", auth.ensureLoggedIn, (req, res) => {
-  User.findOne({_id: req.query.userId})
+  User.findOne({ _id: req.query.userId })
     .then((user) => res.send(user.name))
     .catch((err) => {
       console.log(`failed to get profile by id:${err}`);
@@ -270,7 +271,7 @@ router.post("/add-user", auth.ensureLoggedIn, (req, res) => {
   const newDiningSettings = new DiningSettings({
     user_id: newUser._id,
     restrictions: [],
-    chosen: [null, null, null],
+    chosen: [null, null, null, null],
     rankings: ["Next", "Simmons", "Maseeh", "McCormmick", "New Vassar", "Baker"],
   });
 
@@ -429,7 +430,9 @@ router.post("/send-request", auth.ensureLoggedIn, (req, res) => {
 router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.body.userId)
     .then((user) => {
-      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
+      user.requests = user.requests.filter((request) => {
+        return request !== req.body.profileId;
+      });
       user.friends.push(req.body.profileId);
       user.save();
       res.send(user);
@@ -443,7 +446,9 @@ router.post("/accept-request", auth.ensureLoggedIn, (req, res) => {
 router.post("/delete-request", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.body.userId)
     .then((user) => {
-      user.requests = user.requests.filter((request) => {return request !== req.body.profileId});
+      user.requests = user.requests.filter((request) => {
+        return request !== req.body.profileId;
+      });
       user.save();
       res.send(user);
     })
@@ -469,6 +474,7 @@ router.post("/update-event-guestlist", auth.ensureLoggedIn, (req, res) => {
 router.post("/update-user", auth.ensureLoggedIn, (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
+      console.log(req.body.new);
       user.name = req.body.new.name;
       user.kerb = req.body.new.kerb;
       user.pronouns = req.body.new.pronouns;
@@ -570,9 +576,11 @@ router.post("/reset-chosen", auth.ensureLoggedIn, (req, res) => {
 router.post("/delete-friend", auth.ensureLoggedIn, (req, res) => {
   console.log("delete");
   User.findById(req.body.userId)
-    .then( (user) => {
+    .then((user) => {
       console.log(req.body.userId, req.body.profileId);
-      user.friends = user.friends.filter((request) => {return request !== req.body.profileId});
+      user.friends = user.friends.filter((request) => {
+        return request !== req.body.profileId;
+      });
       user.save();
     })
     .catch((err) => {

@@ -165,7 +165,7 @@ const GeneralDining = (props) => {
 
   useEffect(() => {
     settingBtns();
-  }, [mealIndex, menus]);
+  }, [mealIndex, menus, chosen]);
 
   /*useEffect(() => {
     filterMenu();

@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
 import "./Accordian.css";
 import { get, post } from "../../utilities";
+import { events } from "socket.io/lib/socket";
 
 const Accordian = (props) => {
-  const [data, setData] = useState(props.data);
+  const [data, setData] = useState({});
   const [isActive, setIsActive] = useState(false);
   const [err, setErr] = useState("");
 
-  const update = (e) => {
-    data[e.target.name] = e.target.value;
-  };
+  const loadData = () => {
+    let newData = {};
+    for (let key in props.data) {
+      if (Array.isArray(props.data[key])) {
+        newData[key] = [...props.data[key]];
+      } else {
+        newData[key] = props.data[key];
+      }
+    }
 
-  const setUp = (data) => {
+    setData(newData);
+
     const inputs = document.getElementsByClassName(props.classNameUsed);
     for (const input of inputs) {
-      input.value = props.data[input.name];
-      input.addEventListener("input", update);
+      if (input.tagName.toLowerCase() === "input") {
+        if (input.type === "checkbox") {
+          if (Array.isArray(newData[input.name])) {
+            input.checked = newData[input.name].includes(input.value);
+          } else {
+            input.checked = newData[input.name];
+          }
+        } else {
+          input.value = newData[input.name];
+        }
+      } else if (input.tagName.toLowerCase() === "select") {
+        input.value = newData[input.name];
+      }
     }
   };
 
-  const updateData = () => {
-    post(`/api/${props.changing}`, { new: data })
-      .then(() => console.log(`succesfully updated ${props.changing}`))
-      .catch((err) => {
-        console.log(`failed to update ${props.changing}:${err}`);
-      });
-  };
-
   useEffect(() => {
-    setUp(props.data);
+    loadData();
   }, [props]);
 
   return (
@@ -39,7 +50,6 @@ const Accordian = (props) => {
       </div>
       <div className="accordion-content" hidden={!isActive}>
         {props.content}
-        <input value="Save Changes" type="submit" onClick={updateData} />
         <div>{err}</div>
       </div>
     </div>

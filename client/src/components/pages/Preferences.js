@@ -21,6 +21,147 @@ const Preferences = (props) => {
   const [classSettings, setClassSettings] = useState({});
   const [eventSettings, setEventSettings] = useState({});
 
+  let majors = [
+    "1-ENG",
+    "2",
+    "2-A",
+    "2-OE",
+    "3",
+    "3-A",
+    "3-C",
+    "4",
+    "4-B",
+    "5",
+    "5-7",
+    "6-1",
+    "6-2",
+    "6-3 (NEW)",
+    "6-3 (OLD)",
+    "6-4",
+    "6-7",
+    "6-9",
+    "6-14",
+    "7",
+    "8",
+    "9",
+    "10",
+    "10-B",
+    "10-C",
+    "10-ENG",
+    "11",
+    "11-6",
+    "12",
+    "14",
+    "14-2",
+    "15-1",
+    "15-2",
+    "15-3",
+    "16",
+    "16-ENG",
+    "17",
+    "18",
+    "18-C",
+    "20",
+    "21",
+    "21A",
+    "21E",
+    "21G",
+    "21H",
+    "21L",
+    "21M-1",
+    "21M-2",
+    "21S",
+    "21W",
+    "22",
+    "22-ENG",
+    "24-1",
+    "24-2",
+    "CMS",
+    "STS",
+  ];
+  let minors = [
+    "1",
+    "2",
+    "2-A",
+    "3",
+    "3-A",
+    "3-C",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "8",
+    "9",
+    "11",
+    "12",
+    "14",
+    "15-1",
+    "15-2",
+    "15-3",
+    "17",
+    "18",
+    "20",
+    "21",
+    "21",
+    "21A",
+    "21G",
+    "21H",
+    "21L",
+    "21M",
+    "21W",
+    "24-1",
+    "24-2",
+    "CMS",
+    "E&I",
+    "IDSS",
+    "STS",
+  ];
+  let concentrations = [
+    "African and African Diaspora Studies",
+    "American Studies",
+    "Ancient and Medieval Studies",
+    "Anthropology",
+    "Archaeology and Archaeological Science",
+    "Art, Culture, and Technology",
+    "Asian and Asian Diaspora Studies",
+    "Comparative Media Studies",
+    "Computing and Society",
+    "Development Economics",
+    "Economics",
+    "Education",
+    "English Language Studies (ELS)",
+    "Ethics",
+    "Chinese",
+    "French",
+    "German",
+    "Japanese",
+    "Korean ",
+    "Portuguese",
+    "Russian",
+    "Spanish",
+    "Other Languages",
+    "Studies in International Literatures and Cultures (SILC)",
+    "Theory of Languages",
+    "History",
+    "History of Architecture, Art, and Design",
+    "Latin American and Latino/a Studies",
+    "Legal Studies",
+    "Linguistics",
+    "Literature",
+    "Middle Eastern Studies",
+    "Music",
+    "Philosophy",
+    "Political Science",
+    "Religious Studies",
+    "Russian and Eurasian Studies",
+    "Science, Technology, and Society (STS)",
+    "Theater Arts",
+    "Urban Studies",
+    "Women's and Gender Studies",
+    "Writing",
+  ];
+
   // const deleteME = () => {
   //   post("/api/delete-everything")
   //     .then(() => console.log("done"))
@@ -69,6 +210,7 @@ const Preferences = (props) => {
         if (settings) {
           classSettings.max_finals = settings.max_finals;
           classSettings.max_units = settings.max_units;
+          classSettings.currentClasses = settings.currentClasses;
         }
       })
       .catch((err) => {
@@ -91,6 +233,59 @@ const Preferences = (props) => {
       });
   };
 
+  const changeEventSettings = (e) => {
+    if (e.target.tagName.toLowerCase() === "input") {
+      if (e.target.type === "checkbox") {
+        eventSettings[e.target.name] = !eventSettings[e.target.name];
+      } else {
+        eventSettings[e.target.name] = e.target.value;
+      }
+    }
+  };
+
+  const changeClassSettings = (e) => {
+    classSettings[e.target.name] = e.target.value;
+  };
+
+  const changeProfile = (e) => {
+    profile[e.target.name] = e.target.value;
+  };
+
+  const changeDiningSettings = (e) => {
+    if (e.target.type === "checkbox") {
+      if (Array.isArray(diningSettings[e.target.name])) {
+        let currentVal = [...diningSettings[e.target.name]];
+        if (diningSettings[e.target.name].includes(e.target.value)) {
+          currentVal = currentVal.filter((item) => item !== e.target.value);
+        } else {
+          currentVal.push(e.target.value);
+        }
+        diningSettings[e.target.name] = currentVal;
+      }
+    } else {
+      diningSettings[e.target.name] = e.target.value;
+    }
+  };
+
+  const changeEventKeywords = (newKeywords) => {
+    eventSettings.keywords = newKeywords;
+  };
+
+  const changeClasses = (newClasses) => {
+    classSettings.currentClasses = newClasses;
+  };
+
+  const updateData = (changing, data) => {
+    console.log(data);
+    post(`/api/${changing}`, { new: data })
+      .then(() => {
+        console.log(`succesfully updated ${changing}`);
+      })
+      .catch((err) => {
+        console.log(`failed to update ${changing}:${err}`);
+      });
+  };
+
   useEffect(() => {
     loadProfile();
     loadDiningSettings();
@@ -102,10 +297,24 @@ const Preferences = (props) => {
   let profileContent = (
     <div>
       Name:{" "}
-      <input name="name" type="textbox" placeholder="Name" className="profileInput" required />
+      <input
+        name="name"
+        type="textbox"
+        placeholder="Name"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Kerb:{" "}
-      <input name="kerb" type="textbox" placeholder="Kerb" className="profileInput" required />
+      <input
+        name="kerb"
+        type="textbox"
+        placeholder="Kerb"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Pronouns:{" "}
       <input
@@ -113,79 +322,207 @@ const Preferences = (props) => {
         type="textbox"
         placeholder="Pronouns"
         className="profileInput"
+        onChange={(e) => changeProfile(e)}
         required
       />
       <br></br>
-      Year: <input name="year" type="number" placeholder="year" className="profileInput" required />
+      Year:{" "}
+      <input
+        name="year"
+        type="number"
+        placeholder="year"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Profile Picture:{" "}
-      <input name="pic" type="textbox" placeholder="Picture" className="profileInput" required />
+      <input
+        name="pic"
+        type="textbox"
+        placeholder="Picture"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      />
       <br></br>
       Primary Major:{" "}
-      <input
+      <select
         name="primaryMajor"
-        type="textbox"
-        placeholder="Primary Major"
         className="profileInput"
+        onChange={(e) => changeProfile(e)}
         required
-      />
+      >
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {majors.map((major) => (
+          <option value={major}>{major}</option>
+        ))}
+      </select>
       <br></br>
       Secondary Major (optional):{" "}
-      <input
+      <select
         name="secondaryMajor"
-        type="textbox"
-        placeholder="Secondary Major"
         className="profileInput"
-      />
-      <br></br>
-      Minor 1:{" "}
-      <input name="minorOne" type="textbox" placeholder="Minor 1" className="profileInput" />
-      <br></br>
-      Minor 2:{" "}
-      <input name="minorTwo" type="textbox" placeholder="Minor 2" className="profileInput" />
-      <br></br>
-      Concentration:{" "}
-      <input
-        name="concentration"
-        type="textbox"
-        placeholder="Concentration"
-        className="profileInput"
+        onChange={(e) => changeProfile(e)}
         required
+      >
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {majors.map((major) => (
+          <option value={major}>{major}</option>
+        ))}
+      </select>
+      <br></br>
+      Minor 1:
+      <select name="minorOne" className="profileInput" onChange={(e) => changeProfile(e)} required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {minors.map((minor) => (
+          <option value={minor}>{minor}</option>
+        ))}
+      </select>
+      <br></br>
+      Minor 2:
+      <select name="minorTwo" className="profileInput" onChange={(e) => changeProfile(e)} required>
+        <option value="" defaultChecked>
+          --select--
+        </option>
+        {minors.map((minor) => (
+          <option value={minor}>{minor}</option>
+        ))}
+      </select>
+      <br></br>
+      Concentration:
+      <select
+        name="concentration"
+        className="profileInput"
+        onChange={(e) => changeProfile(e)}
+        required
+      >
+        {concentrations.map((concentration) => (
+          <option value={concentration}>{concentration}</option>
+        ))}
+      </select>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("update-user", profile)}
       />
       <br></br>
     </div>
   );
+
   let diningContent = (
     <div>
       Dietary Restrictions:
-      <input name="restrictions" type="checkbox" value="vegetarian" className="diningInput" />{" "}
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="vegetarian"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
       Vegetarian
-      <input name="restrictions" type="checkbox" value="vegan" className="diningInput" /> Vegan
-      <input name="restrictions" type="checkbox" value="kosher" className="diningInput" /> Kosher
-      <input name="restrictions" type="checkbox" value="halal" className="diningInput" /> Halal
-      <input name="restrictions" type="checkbox" value="glutenFree" className="diningInput" />{" "}
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="vegan"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Vegan
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="kosher"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Kosher
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="halal"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
+      Halal
+      <input
+        name="restrictions"
+        type="checkbox"
+        value="glutenFree"
+        className="diningInput"
+        onChange={changeDiningSettings}
+      />{" "}
       Gluten Free
       <br></br>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("dining-settings", diningSettings)}
+      />
     </div>
   );
 
   let classContent = (
     <div>
-      Current Classes: <KeywordInput path="current-classes" itemId={props.userId} />
+      Current Classes:{" "}
+      <KeywordInput
+        data={classSettings.currentClasses}
+        parentFXN={changeClasses}
+        classNameUsed="classes-keywords"
+      />
       Max Number of Finals per Semester:{" "}
-      <input name="max_finals" type="number" placeholder="Max Finals" className="classInput" />
+      <input
+        name="max_finals"
+        type="number"
+        placeholder="Max Finals"
+        className="classInput"
+        onInput={changeClassSettings}
+      />
       <br></br>
       Max Number of Units per Semester:{" "}
-      <input name="max_units" type="number" placeholder="Max Units" className="classInput" />
+      <input
+        name="max_units"
+        type="number"
+        placeholder="Max Units"
+        className="classInput"
+        onInput={changeClassSettings}
+      />
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("class-settings", classSettings)}
+      />
     </div>
   );
 
   let eventContent = (
     <div>
-      Favorite Keywords: <KeywordInput path="keyword-preferences" itemId={props.userId} />
+      Favorite Keywords:{" "}
+      <KeywordInput
+        data={eventSettings.keywords}
+        parentFXN={changeEventKeywords}
+        classNameUsed="event-keywords"
+      />
       <br></br>
-      Allow Summary Emails: <input name="allEmails" type="checkbox" className="eventInput" />
+      Allow Summary Emails:{" "}
+      <input
+        name="allowEmails"
+        type="checkbox"
+        className="eventInput"
+        onChange={changeEventSettings}
+      />
       <br></br>
+      <input
+        value="Save Changes"
+        type="submit"
+        onClick={() => updateData("event-settings", eventSettings)}
+      />
     </div>
   );
 
@@ -193,34 +530,26 @@ const Preferences = (props) => {
     <div className="accordion">
       <Accordian
         data={profile}
-        changing="update-user"
         title="Profile Details"
         content={profileContent}
-        parentFXN={setProfile}
         classNameUsed="profileInput"
       />
       <Accordian
         data={diningSettings}
-        changing="dining-settings"
         title="Dining Settings"
         content={diningContent}
-        parentFXN={setDiningSettings}
         classNameUsed="diningInput"
       />
       <Accordian
         data={eventSettings}
-        changing="event-settings"
         title="Event Settings"
         content={eventContent}
-        parentFXN={setEventSettings}
         classNameUsed="eventInput"
       />
       <Accordian
         data={classSettings}
-        changing="class-settings"
         title="Class Settings"
         content={classContent}
-        parentFXN={setClassSettings}
         classNameUsed="classInput"
       />
     </div>

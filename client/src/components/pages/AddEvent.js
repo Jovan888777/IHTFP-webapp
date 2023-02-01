@@ -24,10 +24,12 @@ const AddEvent = (props) => {
   const [done, setDone] = useState(null);
   const [eventId, setEventId] = useState(null);
 
+  const handleKeywordChange = (newData) => {
+    setEventKeywords(newData);
+  };
+
   //Setting values according to props preposting
   const prepost = () => {
-    console.log("prepost");
-    console.log(props.eventName);
     if (props.eventName) {
       setEventName(props.eventName);
       setRouteStrings({
@@ -35,7 +37,14 @@ const AddEvent = (props) => {
         button: "Edit",
         console: "Your event was successfully edited!",
       });
-    } else setEventName("");
+    } else {
+      setEventName("");
+      setRouteStrings({
+        api: "/api/add-event",
+        button: "Add",
+        console: "Your event was successfully added!",
+      });
+    }
     if (props.eventGroup) setEventGroup(props.eventGroup);
     else setEventGroup("");
     if (props.eventDescription) setEventDescription(props.eventDescription);
@@ -187,7 +196,11 @@ const AddEvent = (props) => {
           </div>
           <div className="halfWidth">Keywords:</div>
           <div className="fullWidth">
-            <KeywordInput type="add" path="" itemId="" />
+            <KeywordInput
+              data={props.eventKeywords}
+              parentFXN={handleKeywordChange}
+              classNameUsed="event-keywords"
+            />
           </div>
           <div className="halfWidth">Start Date and Time:</div>
           <div className="halfWidth">
@@ -197,7 +210,7 @@ const AddEvent = (props) => {
               name="start"
               min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
               max="2023-12-31T23:59"
-              value={eventStart}
+              value={eventStart ? eventStart : ""}
               onChange={(event) => setEventStart(event.target.value)}
               required
             />
@@ -210,7 +223,7 @@ const AddEvent = (props) => {
               name="start"
               min={eventStart}
               max="2023-12-31T23:59"
-              value={eventEnd}
+              value={eventEnd ? eventEnd : ""}
               onChange={(event) => setEventEnd(event.target.value)}
               required
             />
@@ -221,7 +234,7 @@ const AddEvent = (props) => {
               className="inputBox"
               name="guestlistneeded"
               type="checkbox"
-              value={eventGuestlistNeeded}
+              checked = {eventGuestlistNeeded}
               onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
             />
           </div>
