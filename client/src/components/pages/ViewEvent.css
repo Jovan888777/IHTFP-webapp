@@ -20,13 +20,14 @@
     width: 15px;
   }
 
-  .viewContainer {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row
-  }
+.viewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row
+}
 
-  .viewEventSearch {
-    width: 20vh;
-    height: 5vh
-  }
+.viewEventSearch {
+  width: 20%;
+  border-radius:15%;
+  margin: auto
+}

@@ -28,7 +28,6 @@ const ViewEvent = (props) => {
 
   //Getting preferences from the server
   const loadPreferences = () => {
-    console.log("inside preferences");
     get("/api/event-settings")
       .then((settings) => {
         if (settings) seteventsSettings({ keywords: settings.keywords });
@@ -45,7 +44,6 @@ const ViewEvent = (props) => {
 
   //Loading preferred events based on preferences
   const loadPreferedEvents = () => {
-    console.log(eventSettings.keywords);
     setPreferedEvents(
       events.filter((element) => {
         return element.keywords.some((el) => eventSettings.keywords.includes(el));
@@ -88,24 +86,22 @@ const ViewEvent = (props) => {
   useEffect(() => {
     loadPreferences();
     loadEvents();
-  }, [props]);
-
-  useEffect(() => {
     loadPreferedEvents();
-  }, [eventSettings]);
+  }, []);
 
   return (
     <div>
       <h1 className="center"> Upcoming Events </h1>
-      <div className="search-wrapper">
+      <div className="search-wrapper center">
         <label for="search">Search Events</label>
         <input
-          type="search"
-          id="search"
+          className="viewEventSearch"
           onChange={(text) => {
             searching(checkbox, text.target.value);
           }}
         ></input>
+      </div>
+      <div className="fullWidthHeight">
       </div>
       <label className="container">
         Filtered

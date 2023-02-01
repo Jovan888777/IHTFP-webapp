@@ -183,19 +183,8 @@ const AddEvent = (props) => {
               required
             />
           </div>
-          <div className="halfWidth">Description:</div>
-          <div className="halfWidth">
-            <textarea
-              className="inputBox"
-              name="description"
-              placeholder="Enter some text"
-              value={eventDescription}
-              onChange={(event) => setEventDescription(event.target.value)}
-              required
-            ></textarea>
-          </div>
           <div className="halfWidth">Keywords:</div>
-          <div className="fullWidth">
+          <div className="halfWidth">
             <KeywordInput
               data={props.eventKeywords}
               parentFXN={handleKeywordChange}
@@ -238,6 +227,20 @@ const AddEvent = (props) => {
               onChange={() => setEventGuestlistNeeded(!eventGuestlistNeeded)}
             />
           </div>
+
+          <div className="halfWidth">Description:</div>
+          <div className="halfWidth">
+            <textarea
+              className="inputBox"
+              name="description"
+              placeholder="Enter some text"
+              value={eventDescription}
+              onChange={(event) => setEventDescription(event.target.value)}
+              required
+            ></textarea>
+          </div>
+
+          <div className="fullWidthHeight"></div>
           <div className="fullWidth">
             <input
               className="inputBox"

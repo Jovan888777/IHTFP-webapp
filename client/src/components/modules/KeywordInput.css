@@ -31,3 +31,8 @@
   right: 8px;
   top: 2px;
 }
+
+.keyboardInput {
+  width: 30vh;
+  border-radius: 15%
+}

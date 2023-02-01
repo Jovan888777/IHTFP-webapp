@@ -1,5 +1,6 @@
 .bg {
     background-image: url("../public/bgWhite.jpg");
     position: absolute;
-    width: 100%
+    width: 100%;
+    min-height: 91vh
 }

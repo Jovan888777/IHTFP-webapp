@@ -79,7 +79,7 @@ const KeywordInput = (props) => {
           }
         }}
       >
-        <input type="text" className={props.classNameUsed} onKeyUp={(e) => multiSearchKeyup(e)} />
+        <input type="text" className={props.classNameUsed+" keyboardInput"} onKeyUp={(e) => multiSearchKeyup(e)} placeholder="Enter some text"/>
       </div>
     </div>
   );
