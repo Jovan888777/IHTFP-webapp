@@ -27,7 +27,8 @@
 
 .viewEventSearch {
   width: 20%;
-  border-radius: 15%
+  border-radius: 15%;
+  margin: auto;
 }
 
 .search {
