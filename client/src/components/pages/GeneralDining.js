@@ -180,7 +180,7 @@ const GeneralDining = (props) => {
                       );
                     })
                   ) : (
-                    <div className="notAvailable">Not Available</div>
+                    <div className="notAvailable">Closed for {meal}</div>
                   )}
                 </div>
               </div>
