@@ -277,12 +277,12 @@ const Preferences = (props) => {
   };
 
   const updateData = (changing, data) => {
-    console.log(data);
     post(`/api/${changing}`, { new: data })
       .then(() => {
-        console.log(`succesfully updated ${changing}`);
+        alert("Successfully Updated!");
       })
       .catch((err) => {
+        alert("Failed to Update. Please try again.");
         console.log(`failed to update ${changing}:${err}`);
       });
   };
