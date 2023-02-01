@@ -343,6 +343,7 @@ const Preferences = (props) => {
         className="profileInput"
         onChange={(e) => changeProfile(e)}
         accept="image/*"
+        enctype="multipart/form-data"
       />
       <br></br>
       Primary Major:{" "}
