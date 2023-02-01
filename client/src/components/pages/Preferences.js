@@ -335,15 +335,16 @@ const Preferences = (props) => {
         onChange={(e) => changeProfile(e)}
         required
       />
-      <br></br>
-      Profile Picture:{" "}
+      {/* <br></br>
+      Profile Picture:{" "} */}
       <input
-        type="file"
+        type="text"
         name="pic"
         className="profileInput"
         onChange={(e) => changeProfile(e)}
-        accept="image/*"
-        enctype="multipart/form-data"
+        // accept="image/*"
+        // enctype="multipart/form-data"
+        hidden
       />
       <br></br>
       Primary Major:{" "}
@@ -407,6 +408,8 @@ const Preferences = (props) => {
           <option value={concentration}>{concentration}</option>
         ))}
       </select>
+      <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -418,6 +421,44 @@ const Preferences = (props) => {
 
   let diningContent = (
     <div>
+      <div className="rankContainer">
+        <div className="rankElement" id="el1">
+          <input type="hidden" name="1" />
+          <font className="rankDisp" id="el1">
+            2
+          </font>
+          &nbsp;&nbsp;&nbsp; Platinum
+          <b className="down">&nbsp;∨</b>
+          <b className="up">∧&nbsp;</b>
+        </div>
+        <div className="rankElement" id="el2">
+          <input type="hidden" name="2" />
+          <font className="rankDisp" id="el2">
+            3
+          </font>
+          &nbsp;&nbsp;&nbsp; Gold
+          <b className="down">&nbsp;∨</b>
+          <b className="up">∧&nbsp;</b>
+        </div>
+        <div className="rankElement" id="el3">
+          <input type="hidden" name="3" />
+          <font className="rankDisp" id="el3">
+            4
+          </font>
+          &nbsp;&nbsp;&nbsp; Silver
+          <b className="down">&nbsp;∨</b>
+          <b className="up">∧&nbsp;</b>
+        </div>
+        <div className="rankElement" id="el4">
+          <input type="hidden" name="4" />
+          <font className="rankDisp" id="el4">
+            5
+          </font>
+          &nbsp;&nbsp;&nbsp; Diamond
+          <b className="down">&nbsp;∨</b>
+          <b className="up">∧&nbsp;</b>
+        </div>
+      </div>
       Dietary Restrictions:
       <input
         name="restrictions"
@@ -460,6 +501,7 @@ const Preferences = (props) => {
       />{" "}
       Gluten Free
       <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -483,6 +525,7 @@ const Preferences = (props) => {
         placeholder="Max Finals"
         className="classInput"
         onInput={changeClassSettings}
+        min={0}
       />
       <br></br>
       Max Number of Units per Semester:{" "}
@@ -492,7 +535,10 @@ const Preferences = (props) => {
         placeholder="Max Units"
         className="classInput"
         onInput={changeClassSettings}
+        min={0}
       />
+      <br></br>
+      <br></br>
       <input
         value="Save Changes"
         type="submit"
@@ -517,6 +563,7 @@ const Preferences = (props) => {
         className="eventInput"
         onChange={changeEventSettings}
       />
+      <br></br>
       <br></br>
       <input
         value="Save Changes"

@@ -3,7 +3,6 @@ import "./EventDisplay.css";
 import { get, post } from "../../utilities";
 import * as moment from "moment";
 
-
 const EventDisplay = (props) => {
   const [going, setGoing] = useState(false);
   const [guests, setGuests] = useState([]);
@@ -16,8 +15,7 @@ const EventDisplay = (props) => {
         if (guests) {
           if (guests.includes(props.userId)) {
             setGoing(true);
-            if (btn)
-              btn.innerHTML = "Remove yourself from the guestlist!";
+            if (btn) btn.innerHTML = "Remove yourself from the guestlist!";
           }
         }
       })
@@ -80,7 +78,3 @@ const EventDisplay = (props) => {
 };
 
 export default EventDisplay;
-/*
-            <input type="date" value = {props.start.split('-')[1]+'/'+props.start.split('-')[2].split('T')[0]+'/'+
-            props.start.split('-')[0] + ' ' +  props.start.split('-')[2].split('T')[1].split('')
-            }></input> */

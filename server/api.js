@@ -22,7 +22,7 @@ const socketManager = require("./server-socket");
 const email = require("./Email");
 
 // scheduled task. Once a day at midnight
-var dailyActivities = schedule.scheduleJob("45 23 * * *", function () {
+var dailyActivities = schedule.scheduleJob("0 0 * * *", function () {
   // Reset chosen dining
   DiningSettings.find({})
     .then((settings) => {
@@ -35,23 +35,46 @@ var dailyActivities = schedule.scheduleJob("45 23 * * *", function () {
       console.log(`failed to update chosen meal:${err}`);
     });
 
-  // send emails depeding on keyword preferences
-  EventSettings.find({})
-    .then((settings) => {
-      settings.map((setting) => {
-        User.findById(setting.user_id)
-          .then((user) => {
-            if (user.kerb !== "") {
-              ///////////// MUST IMPLEMENT EVENT FILTERING BY KEYWORD HERE
-              emailSender(user.kerb + "@mit.edu", []);
-            }
-          })
-          .catch((err) => {
-            console.log(`failed to get profile by id:${err}`);
-          });
-      });
+  // Get rid of old events
+  let now = new Date().toISOString();
+  Event.find({})
+    .then((events) => {
+      for (let event of events) {
+        if (event.start.toISOString() < now) {
+          Event.deleteOne({ _id: event._id })
+            .then(console.log("deleted: ", event.start))
+            .catch((err) => {
+              console.log(`failed to delete old event:${err}`);
+            });
+        }
+      }
     })
-    .catch((err) => console.log(`failed to get event settings:${err}`));
+    .catch((err) => {
+      console.log(`failed to get all events:${err}`);
+    });
+
+  // send emails depeding on keyword preferences
+  Event.find({}).then((events) => {
+    let filtered;
+    EventSettings.find({})
+      .then((settings) => {
+        settings.map((setting) => {
+          User.findById(setting.user_id)
+            .then((user) => {
+              if (user.kerb !== "") {
+                filtered = events.filter((element) => {
+                  return element.keywords.some((el) => setting.keywords.includes(el));
+                });
+                email.emailSender(user.kerb + "@mit.edu", filtered);
+              }
+            })
+            .catch((err) => {
+              console.log(`failed to get profile by id:${err}`);
+            });
+        });
+      })
+      .catch((err) => console.log(`failed to get event settings:${err}`));
+  });
 });
 
 // scheduled task. On the first of Jan, Feb and June (to reset for a new semester)
@@ -125,7 +148,7 @@ router.get("/keyword-preferences", (req, res) => {
 });
 
 router.get("/current-classes", (req, res) => {
-  ClassSettings.findOne({ user_id: req.query.userid })
+  ClassSettings.findOne({ user_id: req.query.userId })
     .then((settings) => res.send(settings.currentClasses))
     .catch((err) => {
       console.log(`failed to get current classes:${err}`);
@@ -142,7 +165,10 @@ router.get("/friend-requests", (req, res) => {
 
 router.get("/menus", (req, res) => {
   Menu.findOne({})
-    .then((menus) => res.send(menus))
+    .then((menus) => {
+      console.log(menus);
+      res.send(menus);
+    })
     .catch((err) => {
       console.log(`failed to get menus:${err}`);
     });

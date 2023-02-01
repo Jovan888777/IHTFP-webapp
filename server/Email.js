@@ -17,7 +17,25 @@ async function emailSender(targetEmail, events) {
       from: process.env.EMAIL,
       to: targetEmail,
       subject: "Events Suggested For You!",
-      text: "That was easy!",
+      text:
+        "Recommended Events: \n\n\n" +
+        events
+          .map(
+            (el) =>
+              el.name +
+              " (" +
+              el.group +
+              ") in " +
+              el.location +
+              "\n" +
+              el.start.toLocaleString() +
+              " - " +
+              el.end.toLocaleString() +
+              (el.guestlistNeeded ? "\n RSVP needed" : "") +
+              "\n" +
+              el.description
+          )
+          .join("\n\n"),
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
