@@ -131,7 +131,7 @@ const App = (props) => {
       eventGuestlistNeeded: false,
       eventLocation: "",
     });
-    navigate("/add-event/");
+    navigate("/add-event/", {...eventInfo});
   };
 
   //This is for navigateing to a new friend profile and seeing mutual friends

@@ -53,13 +53,17 @@ const AddEvent = (props) => {
     else setEventStart(null);
     if (props.eventEnd) setEventEnd(moment(props.eventEnd).format("YYYY-MM-DDTkk:mm"));
     else setEventEnd(null);
-    if (props.eventKeywords) setEventKeywords(props.eventKeywords);
-    else setEventKeywords([]);
     if (props.eventGuestlistNeeded) setEventGuestlistNeeded(props.eventGuestlistNeeded);
     else setEventGuestlistNeeded(false);
     if (props.eventLocation) setEventLocation(props.eventLocation);
     else setEventLocation("");
     if (props.eventId) setEventId(props.eventId);
+    if (props.eventKeywords) {
+      if (props.eventKeywords.length)
+        setEventKeywords([...props.eventKeywords]);
+      else setEventKeywords([]);
+    }
+    else setEventKeywords([]);
   };
 
   useEffect(() => {
@@ -78,8 +82,7 @@ const AddEvent = (props) => {
         eventLocation &&
         eventDescription &&
         eventStart &&
-        eventEnd &&
-        eventKeywords
+        eventEnd
       )
     ) {
       setErr("One of your input fields is empty. Please fill them all to proceed.");
@@ -183,27 +186,29 @@ const AddEvent = (props) => {
               required
             />
           </div>
-          <div className="halfWidth">Keywords:</div>
-          <div className="halfWidth">
-            <KeywordInput
-              data={props.eventKeywords}
-              parentFXN={handleKeywordChange}
-              classNameUsed="event-keywords"
-            />
+          <div className="group">
+            <div className="halfWidth">Keywords:</div>
+            <div className="halfWidth">
+              <KeywordInput
+                data={(props.eventKeywords) ? [...props.eventKeywords] : []}
+                parentFXN={handleKeywordChange}
+                classNameUsed="event-keywords"
+              />
+            </div>
           </div>
-          <div className="halfWidth">Start Date and Time:</div>
-          <div className="halfWidth">
-            <input
-              className="inputBox"
-              type="datetime-local"
-              name="start"
-              min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
-              max="2023-12-31T23:59"
-              value={eventStart ? eventStart : ""}
-              onChange={(event) => setEventStart(event.target.value)}
-              required
-            />
-          </div>
+            <div className="halfWidth">Start Date and Time:</div>
+            <div className="halfWidth">
+              <input
+                className="inputBox"
+                type="datetime-local"
+                name="start"
+                min={new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))}
+                max="2023-12-31T23:59"
+                value={eventStart ? eventStart : ""}
+                onChange={(event) => setEventStart(event.target.value)}
+                required
+              />
+            </div>
           <div className="halfWidth">End Date and Time:</div>
           <div className="halfWidth">
             <input
@@ -231,7 +236,7 @@ const AddEvent = (props) => {
           <div className="halfWidth">Description:</div>
           <div className="halfWidth">
             <textarea
-              className="inputBox"
+              className="inputBox bigDesc"
               name="description"
               placeholder="Enter some text"
               value={eventDescription}

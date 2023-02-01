@@ -60,7 +60,7 @@ const NavBar = (props) => {
         </button>
         <div className="dropdown-content">
           <Link to="/events/">View Event</Link>
-          <Link to="/add-event/" onClick = {() => {props.handleAddEvent();}}>Add Event</Link>
+          <button to="/add-events" onClick = {() => {props.handleAddEvent();}}>Add Event</button>
           <Link to="/my-events/">My Events</Link>
         </div>
       </div>

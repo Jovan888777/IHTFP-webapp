@@ -50,8 +50,9 @@
   padding: 5%;
   margin: 3%;
   width: 43%;
+  overflow: auto;
 }
 
 .listDescription {
-  overflow-wrap: normal
+  overflow-wrap: normal;
 }
