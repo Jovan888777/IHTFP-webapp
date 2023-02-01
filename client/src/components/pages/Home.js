@@ -14,8 +14,6 @@ const Home = ({ userId, handleLogin, handleLogout }) => {
     var bgHome = "unloggedBgHome";
   }
 
-  console.log(bgHome)
-
   return (
     <div className={bgHome}>
       <div className="center">
