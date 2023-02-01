@@ -23,7 +23,6 @@ const ViewEvent = (props) => {
 
   //Maintaining preferences
   const [eventSettings, seteventsSettings] = useState({
-    keywords: ["food", "raffle"],
   });
 
   //Getting preferences from the server
@@ -86,8 +85,12 @@ const ViewEvent = (props) => {
   useEffect(() => {
     loadPreferences();
     loadEvents();
-    loadPreferedEvents();
   }, []);
+
+  useEffect(() => {
+    if (eventSettings && events)
+      loadPreferedEvents();
+  }, [eventSettings, events]);
 
   return (
     <div>

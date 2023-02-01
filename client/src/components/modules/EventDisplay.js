@@ -14,7 +14,8 @@ const EventDisplay = (props) => {
         if (guests) {
           if (guests.includes(props.userId)) {
             setGoing(true);
-            btn.innerHTML = "Remove yourself from the guestlist!";
+            if (btn)
+              btn.innerHTML = "Remove yourself from the guestlist!";
           }
         }
       })
